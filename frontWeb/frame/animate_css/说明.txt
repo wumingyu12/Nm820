@@ -1,0 +1,8 @@
+一个动画库
+依赖angularjs的动画模块要先引入
+过场动画可以这样，可以用ng-class来动态改变动画类
+<div ui-view class="animated bounceIn bounceOut"></div>
+重复的单个元素动画infinite代表动画不断重复
+<botton class="animated bounce infinite"></botton>
+具体可以见
+/view/animate_example/animate.html

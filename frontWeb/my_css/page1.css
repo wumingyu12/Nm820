@@ -1,0 +1,82 @@
+.my-p1-body{
+	width: 100%;
+	height: 100%;
+	position: relative;
+}
+
+/*=====显示状态卡片的控件的类==========*/
+.my-p1-stateshow{ 
+	width: 100%;
+	height: 60%;
+	background-color: rgb(220,220,220);
+	position: relative;
+}
+.my-p1-stateshow .my-p1-stateshow-same{/*定义每个卡片的公共部分*/
+	width: 40%;
+	height: 40%;
+	background-color: rgb(225,255,255);
+	position: absolute;
+	box-shadow: 0px 0px 10px black;
+}
+.my-p1-stateshow .my-p1-stateaddr1{/*定义每个卡片的位置*/
+	top:8%;
+	left: 8%;
+}
+.my-p1-stateshow .my-p1-stateaddr2{/*定义每个卡片的位置*/
+	top:8%;
+	left: 50%;
+}
+.my-p1-stateshow .my-p1-stateaddr3{/*定义每个卡片的位置*/
+	top:54%;
+	left: 8%;
+}
+.my-p1-stateshow .my-p1-stateaddr4{/*定义每个卡片的位置*/
+	top:54%;
+	left: 50%;
+}
+/*========卡片里的内容===============*/
+.my-p1-iconsize{/*卡片里的图标字体大小*/
+	font-size: 5em;
+	top: 50%;
+	right:70%;/*靠my-p1-cardtext左边*/
+	position: absolute;
+	 -webkit-transform: translateY(-50%);
+	 -moz-transform: translateY(-50%);
+	 -ms-transform:translateY(-50%);
+	 transform:translateY(-50%);
+	 text-shadow:0px 0px 5px black;
+
+}
+.my-p1-cardtext{/*卡片里显示温度值的父类*/
+	right: 40%;/*靠my-p1-ringstate左边*/
+	position: absolute;
+	width: 30%;
+	text-align: center;
+	top: 50%;
+
+	-webkit-transform: translateY(-50%);
+	 -moz-transform: translateY(-50%);
+	 -ms-transform:translateY(-50%);
+	 transform:translateY(-50%);
+}
+.my-p1-cardtext span{/*里面的字体大小*/
+	font-size: 1.5em;
+	font-weight:bold;
+	text-shadow:0px 0px 1px black;
+}
+.my-p1-ringstate{/*卡片里的圆环状态条*/
+	width: 40%;
+	height: 80%;
+	right:0;
+	top:50%;
+	position: absolute;
+	-webkit-transform: translateY(-50%);
+	 -moz-transform: translateY(-50%);
+	 -ms-transform:translateY(-50%);
+	 transform:translateY(-50%);
+}
+/*========滑块目标温度选择===============*/
+.my-p1-sliderbar{
+	width: 100%;
+	height: 18%;
+}

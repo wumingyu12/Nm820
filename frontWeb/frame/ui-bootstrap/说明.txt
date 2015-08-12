@@ -1,0 +1,9 @@
+依赖于ng 与bootstrap，版本3.0以上
+官网要翻墙
+
+
+依赖
+    AngularJS (requires AngularJS 1.2.x, tested with 1.2.16)
+    Bootstrap CSS (tested with version 3.1.1). This version of the library (0.12.1) works only with Bootstrap CSS in version 3.x. 0.8.0 is the last version of this library that supports Bootstrap CSS in version 2.3.x.
+
+
