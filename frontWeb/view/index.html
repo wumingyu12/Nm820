@@ -27,7 +27,11 @@
 	<script src="/js/App.js"></script>
 	<script src="/js/page1_controlIndex.js"></script><!-- 页面1用到的指令等，一定要跟在app.js后 -->
 	<script src="/js/page2_control.js"></script><!-- 页面1用到的指令等，一定要跟在app.js后 -->
-
+	
+	<!-- 引入angular char -->
+	<link rel="stylesheet" href="/frame/angular-chart/angular-chart.css">
+	<script src="/frame/angular-chart/Chart.min.js"></script>
+	<script src="/frame/angular-chart/angular-chart.js"></script>
 
 </head>
 <body ng-controller="bodyCtrl">
@@ -47,5 +51,15 @@
 		<div class="my-main-show " ng-include="$root.mainShow.url">
 		</div>
 	</div>
+
+     <div class="col-lg-6 col-sm-12" id="line-chart" ng-controller="LineCtrl">
+      <div class="panel panel-default">
+        <div class="panel-heading">Line Chart</div>
+        <div class="panel-body">
+          <canvas id="line" class="chart chart-line" data="data" labels="labels" legend="true"
+                  click="onClick" hover="onHover" series="series"></canvas>
+        </div>
+      </div>
+    </div>
 </body>
 </html>

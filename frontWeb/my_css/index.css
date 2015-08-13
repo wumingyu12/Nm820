@@ -27,7 +27,7 @@ html,body{/*全屏--*/
 /*----------------*/
 
 body{
-	overflow:hidden;/*没有滚动条*/
+	/*overflow:hidden;没有滚动条*/
 }
 .my-main{/*底布*/
 	width: 100%;
