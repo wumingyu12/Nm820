@@ -64,6 +64,10 @@ body{
 .my-nav-button:active{/*悬停*/
 	background-color:rgb(144,55,55);
 }
+.my-nav-button-select{/*高亮显示当前图标*/
+	background-color:rgb(44,55,55) !important;
+
+}
 .my-nav-button span{/*选项按钮里的字体*/
 /*选项按钮里的图标,垂直居中*/
 	 position: absolute;
@@ -78,6 +82,7 @@ body{
 	 -ms-transform: translateX(-50%) translateY(-50%);
 	 transform: translateX(-50%) translateY(-50%);
 }
+/**/
 
 /*主界面的css---*/
 .my-main-show{

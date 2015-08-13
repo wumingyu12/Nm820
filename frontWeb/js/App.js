@@ -32,13 +32,12 @@ myApp.controller('navleftCtrl',[
 	'$scope',
 	'$rootScope',
 	function ($scope,$rootScope){
-		$scope.navShow="true";
-		$scope.toggleNav=function(){//显示隐藏导航条
-			$scope.navShow=!$scope.navShow;
-		};
+		$scope.currentIndexNum=0;//指示当前选择的导航按钮，用于ng-class高亮显示
 		$scope.showMain=function(index){//单击导航条的按钮显示对应页面
 			$rootScope.mainShow=$rootScope.mainShows[index];
 			$scope.navShow=!$scope.navShow;//隐藏回导航条
+			$scope.currentIndexNum=index;
+			console.log($scope.currentIndexNum);
 		};
 	}
 ]);
