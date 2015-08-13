@@ -45,6 +45,7 @@ body{
 	width: 100%;
 	max-height: 60px;
 	background-color: rgb(22,22,22);
+
 }
 /*导航按钮*/
 .my-nav-button{/*导航按钮*/
@@ -61,9 +62,7 @@ body{
 	background-color:rgb(44,55,55);
 	cursor: pointer;
 }
-.my-nav-button:active{/*悬停*/
-	background-color:rgb(144,55,55);
-}
+
 .my-nav-button-select{/*高亮显示当前图标*/
 	background-color:rgb(44,55,55) !important;
 
@@ -86,7 +85,8 @@ body{
 
 /*主界面的css---*/
 .my-main-show{
-	height:80%;
+	height:85%;/*导航条最多15%*/
 	width: 100%;/*与.my-nav-toggle的width关系*/
 	display: inline-block;
+	position: relative;
 }
