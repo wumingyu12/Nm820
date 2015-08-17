@@ -1,0 +1,22 @@
+/**/
+/*my-page12-mainpage*/
+/*|__my-page12-wenshiduChat*/
+/**/
+/**/
+
+/*主页面*/
+.my-page12-mainpage{
+	position: relative;
+	width: 100%;
+	height: 100%;
+	background-color: white;
+}
+
+/*温湿度图表*/
+.my-page12-wenshiduChat{
+	width:80%;
+	height:80%;
+	position: relative;
+	top: 100px;
+	left: 100px;
+}

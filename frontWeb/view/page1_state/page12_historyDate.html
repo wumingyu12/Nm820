@@ -1,10 +1,23 @@
 <!-- 环境控制器的第二个页面，显示历史数据 -->
+<div class="my-page12-mainpage">
+	<!-- 温湿度曲线 -->
+	<div class="my-page12-wenshiduChat" id="line-chart" ng-controller="page12_LineCtrl">
+	    <div class="panel panel-default">
+	        <div class="panel-heading">Line Chart</div>
+	        <div class="panel-body">
+	            <canvas id="line" 
+	          		class="chart chart-line" 
+	          		legend="flase"
+	                click="onClick" 
+	                hover="onHover" 
+					data="ocw.data" 
+					labels="ocw.labels" 
+					colours="ocw.colours"
 
-
-<div>
-	历史数据
+					>
+	            </canvas>
+	       </div>
+	    </div>
+	</div>
 </div>
-<ul>
-	<li></li>
-</ul>
 

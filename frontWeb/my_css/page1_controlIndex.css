@@ -1,3 +1,12 @@
+/*------------------------------*/
+/*my-page1-main
+/*|__my-page1-left-nav
+/*   |__my-page1-left-nav-button*/
+/*   	|__my-page1-left-nav-button:hover*/
+/*   	|__my-page1-left-nav-button-select*/
+/*|__m-y-page1-left-nav
+/*------------------------------*/
+
 /*页面1主显示界面*/
 .my-page1-main{
 	width: 100%;
@@ -42,4 +51,16 @@
 	cursor: pointer;
 	text-decoration: none;/*无下划线*/
 	color: white;
+}
+/*------------------------------*/
+/*父样式.my-page1-mainShow*/
+/*宽度与my-page1-left-nav组合*/
+/*定位在page1的右侧*/
+/*左侧导航条*/
+/*------------------------------*/
+.my-page1-mainShow{
+	width: 85%;
+	height: 100%;
+	float: left;
+	position: relative;
 }
