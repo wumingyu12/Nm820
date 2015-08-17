@@ -9,11 +9,17 @@
 	          		class="chart chart-line" 
 	          		legend="flase"
 	                click="onClick" 
-	                hover="onHover" 
+	                hover="onHover"
+	                series="ocw.series"
 					data="ocw.data" 
 					labels="ocw.labels" 
 					colours="ocw.colours"
-
+	                options="{
+        				scaleShowHorizontalLines: false,
+        				scaleShowVerticalLines: false,
+        				tooltipTemplate: '<%= value %> $',
+        				responsive: true
+    				}"
 					>
 	            </canvas>
 	       </div>
