@@ -1,9 +1,34 @@
 <!-- 环境控制器的第二个页面，显示历史数据 -->
 <div class="my-page12-mainpage">
-	<!-- 温湿度曲线 -->
-	<div class="my-page12-wenshiduChat" id="line-chart" ng-controller="page12_LineCtrl">
+	<!-- 24小时温度曲线 colours="ocw.colours"--> 
+	<div class="my-page12-wenduChat-day" id="line-chart" ng-controller="page12_LineCtrl_wenduDay">
 	    <div class="panel panel-default">
-	        <div class="panel-heading">Line Chart</div>
+	        <div class="panel-heading">24小时温度曲线</div>
+	        <div class="panel-body">
+	            <canvas id="line" 
+	          		class="chart chart-line" 
+	          		legend="flase"
+	                click="onClick" 
+	                hover="onHover"
+	                series="ocw.series"
+					data="ocw.data" 
+					labels="ocw.labels" 
+
+	                options="{
+        				scaleShowHorizontalLines: true,
+        				scaleShowVerticalLines: true,
+        				tooltipTemplate: '<%= value %> $',
+        				responsive: true
+    				}"
+					>
+	            </canvas>
+	       </div>
+	    </div>
+	</div>
+	<!-- 一个月内最大最小平均温度曲线 datasetFill: false不填充颜色--> 
+	<div class="my-page12-wenduChat-month" id="line-chart" ng-controller="page12_LineCtrl_wenduMonth">
+	    <div class="panel panel-default">
+	        <div class="panel-heading">月平均，最高，最低温度</div>
 	        <div class="panel-body">
 	            <canvas id="line" 
 	          		class="chart chart-line" 
@@ -15,10 +40,11 @@
 					labels="ocw.labels" 
 					colours="ocw.colours"
 	                options="{
-        				scaleShowHorizontalLines: false,
-        				scaleShowVerticalLines: false,
+        				scaleShowHorizontalLines: true,
+        				scaleShowVerticalLines: true,
         				tooltipTemplate: '<%= value %> $',
-        				responsive: true
+        				responsive: true,
+        				datasetFill: false
     				}"
 					>
 	            </canvas>
