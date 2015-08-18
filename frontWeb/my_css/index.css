@@ -1,3 +1,22 @@
+/*body*/
+/*|__my-main*/
+/*   |__my-nav*/
+/*      |__my-nav-button*/
+/*         |__my-nav-button:hover*/
+/*         |__my-nav-button-select*/
+/*         |__span*/
+/*   |__my-main-show*/
+/*=============================================*/
+/*@media  800~  500~800 200~500*/
+/*|__my-nav */
+/*   |__height*/
+/*|__my-main-show*/
+/*   |__height*/
+/**/
+/**/
+
+
+
 html,body{/*全屏--*/
 	margin: 0px;
 	width: 100%;
@@ -11,15 +30,33 @@ html,body{/*全屏--*/
 	body{
 		font-size:16px;
 	}
+	.my-nav{
+		height: 6%;
+	}
+	.my-main-show{
+		height: 94%;
+	}
 }
 @media (min-width: 500px) and (max-width: 800px){/*当宽度小于500-800px的所有情况*/
 	body{
 		font-size:10px;
 	}
+	.my-nav{
+		height: 10%;
+	}
+	.my-main-show{
+		height: 90%;
+	}
 }
 @media (min-width: 200px) and (max-width: 500px){/*当宽度200-500的所有情况*/
 	body{
 		font-size:7px;
+	}
+	.my-nav{
+		height: 10%;
+	}
+	.my-main-show{
+		height: 90%;
 	}
 }
 /*-------------------*/
@@ -37,13 +74,13 @@ body{
 /*-------------------*/
 /*导航图标集合*/
 /*----------------*/
-.my-nav{/*定位在底板顶部*/
+.my-nav{/*定位在底板顶部,height是定位在媒体查询中*/
 	position: relative;
 	top: 0px;
 	left:0;
-	height: 15%;
+	/*height: 15%;*/
 	width: 100%;
-	max-height: 60px;
+	/*max-height: 60px;*/
 	background-color: rgb(22,22,22);
 
 }
@@ -85,7 +122,7 @@ body{
 
 /*主界面的css---*/
 .my-main-show{
-	height:85%;/*导航条最多15%*/
+	/*height:85%;/*导航条最多15%*/
 	width: 100%;/*与.my-nav-toggle的width关系*/
 	display: inline-block;
 	position: relative;

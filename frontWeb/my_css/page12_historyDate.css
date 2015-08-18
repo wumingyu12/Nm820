@@ -15,8 +15,8 @@
 
 /*温湿度图表*/
 .my-page12-wenduChat-day{
-	width:40%;
-	height:40%;
+	width:35%;
+	height:20%;/*控制不了他的高度，与宽度成比例关系*/
 	position: absolute;
 	top: 2%;
 	left: 5%;
@@ -25,8 +25,8 @@
 
 /*一个月内最高，最低，平均的气温*/
 .my-page12-wenduChat-month{
-	width:40%;
-	height:40%;
+	width:35%;
+	height:20%;
 	position:absolute;
 	top: 2%;
 	left: 50%;

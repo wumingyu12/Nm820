@@ -4,8 +4,45 @@
 /*   |__my-page1-left-nav-button*/
 /*   	|__my-page1-left-nav-button:hover*/
 /*   	|__my-page1-left-nav-button-select*/
-/*|__m-y-page1-left-nav
+/*|__my-page1-mainShow
 /*------------------------------*/
+/*@media  800~  500~800 200~500*/
+/*|__my-page1-left-nav */
+/*   |__width*/
+/*|__my-page1-mainShow*/
+/*   |__width*/
+/**/
+/**/
+
+/*=======================*/
+/*自适应媒体查询*/
+/*=======================*/
+
+@media all and (min-width: 800px){/*当宽度大于800px的所有情况*/
+	.my-page1-left-nav{
+		width: 10%;
+	}
+	.my-page1-mainShow{
+		width: 90%;
+	}
+}
+@media (min-width: 500px) and (max-width: 800px){/*当宽度小于500-800px的所有情况*/
+	.my-page1-left-nav{
+		width: 12%;
+	}
+	.my-page1-mainShow{
+		width: 88%;
+	}
+}
+@media (min-width: 200px) and (max-width: 500px){/*当宽度200-500的所有情况*/
+	.my-page1-left-nav{
+		width: 15%;
+	}
+	.my-page1-mainShow{
+		width: 85%;
+	}
+}
+
 
 /*页面1主显示界面*/
 .my-page1-main{
@@ -17,11 +54,12 @@
 /*------------------------------*/
 /*父样式.my-page1-main*/
 /*左侧导航条*/
+/*width在媒体查询中定义*/
 /*------------------------------*/
 .my-page1-left-nav{
-	width: 15%;
+	/*width: 15%;*/
 	height: 100%;
-	max-width: 200px;
+	/*max-width: 200px;*/
 	float: left;
 	position: relative;
 	background-color: rgb(222,222,222);
@@ -57,9 +95,10 @@
 /*宽度与my-page1-left-nav组合*/
 /*定位在page1的右侧*/
 /*左侧导航条*/
+/*width在媒体查询中定义*/
 /*------------------------------*/
 .my-page1-mainShow{
-	width: 85%;
+	/*width: 85%;*/
 	height: 100%;
 	float: left;
 	position: relative;
