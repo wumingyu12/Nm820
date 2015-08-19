@@ -1,4 +1,4 @@
-<div class="my-page13-mainpage">
+<div class="my-page13-mainpage" ng-controller="page13_testCtrl">
 	<!-- 第一个表通风等级表 -->
 	<div class="my-page13-tongfengClass">
 		<div  class="panel panel-default">
@@ -245,7 +245,13 @@
 		<!-- 第三个表最小最大通风等级表 -->
 	<div class="my-page13-tongfengMaxmin">
 		<div  class="panel panel-default">
-			<div class="panel-heading">温度曲线图</div>
+			<div class="panel-heading my-page13-panelhead">
+				<span >温度曲线图</span>
+				<!-- 按钮用于切换图表显示还是表格显示 -->
+				<a href=""><span class="glyphicon glyphicon-refresh my-page13-changeTab" ng-click="onClick()" aria-hidden="true"></span></a>
+				 
+				 
+			</div>
 			<div class="panel-body" style="padding:0px;">
 				<table class="table table-bordered table-condensed table-striped ">
 					<thead>
