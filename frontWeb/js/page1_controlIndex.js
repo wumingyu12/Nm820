@@ -4,7 +4,8 @@ page1_model.controller('page1_MainCtrl',[
 	function ($scope){
 		$scope.mainShows=[//主页面用
 			{url:'page1_state/page11_controllerState.html'},
-			{url:'page1_state/page12_historyDate.html'}
+			{url:'page1_state/page12_historyDate.html'},
+			{url:'page1_state/page13_parmShow.html'}
 		];
 		$scope.mainShow=$scope.mainShows[0];//默认是第一个页面
 

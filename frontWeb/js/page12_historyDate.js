@@ -38,7 +38,7 @@ page12_model.controller('page12_LineCtrl_wenduDay',[
 	}
 ]);
 
-//24小时温度曲线的控制器，
+//月平均，最大，最小温度曲线的控制器，
 page12_model.controller('page12_LineCtrl_wenduMonth',[
 	'$scope',
 	function ($scope){
@@ -68,5 +68,22 @@ page12_model.controller('page12_LineCtrl_wenduMonth',[
         	}]
       	};
   		$scope.ocw = lineJson;
+	}
+]);
+
+//日湿度曲线,曲线图，
+page12_model.controller('page12_LineCtrl_shiduDay',[
+	'$scope',
+	function ($scope){
+	  	//图表点击时动作
+		$scope.onClick = function (points, evt) {
+	    	console.log(points, evt);
+		};
+		$scope.data = [
+			[65, 59, 80, 81, 56, 55, 40,65, 59, 80, 81, 56, 55, 40,65, 59, 80, 81, 56, 55, 40,22,23,24],
+			[22, 22, 22, 22, 22, 22, 22,22, 22, 22, 22, 22, 22, 22,22, 22, 22, 22, 22, 22, 22,22,22,22],
+	  	];
+	  	$scope.series=["平均湿度","室外湿度"];
+	  	$scope.labels=["0时", "1时", "2时", "3时", "4时", "5时", "6时","7时", "8时", "9时", "10时", "11时", "12时", "13时","14时", "15时", "16时", "17时", "18时", "19时", "20时","21时","22时","23时"];
 	}
 ]);

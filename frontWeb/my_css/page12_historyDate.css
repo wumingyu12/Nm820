@@ -2,8 +2,8 @@
 /*my-page12-mainpage*/
 /*|__my-page12-wenduChat-day  24温度曲线*/
 /*|__my-page12-wenduChat-month 一个月内最高，最低，平均的气温*/
-/**/
-/**/
+/*|__my-page12-shiduChat-day 24小时湿度*/
+/*|__my-page12-shiduChat-month  一个月湿度*/
 
 /*主页面*/
 .my-page12-mainpage{
@@ -31,4 +31,21 @@
 	top: 2%;
 	left: 50%;
 	display: inline-block;
+}
+/*24x小时湿度*/
+.my-page12-shiduChat-day{
+	width: 35%;
+	height: 20%;
+	position: absolute;
+	left: 5%;
+	top: 50%;
+}
+
+/*一个月湿度*/
+.my-page12-shiduChat-month{
+	width: 35%;
+	height: 20%;
+	position: absolute;
+	left: 50%;
+	top: 50%;
 }
