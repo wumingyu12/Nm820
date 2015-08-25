@@ -5,6 +5,8 @@
 /*|__my-page13-tongfengMaxmin 第三个图表温度曲线表*/
 /*   |__my-page13-panelhead 公共css但在此定义，用于在表头添加一个切换图表按钮*/
 /*      |__my-page13-changeTab 切换图表显示的的图标按钮*/
+/*      |__my-page13-reflashDate 刷新数据的图标*/
+/*	 |__my-page13-wenduCurve  显示温度曲线的图表*/
 .my-page13-mainpage{
 	width: 100%;
 	height: 100%;
@@ -96,4 +98,15 @@
 	top: 10px;
 	right: 12px;
 	font-size: 26px;
+}
+/*刷新数据的按钮*/
+.my-page13-reflashDate{
+	position: absolute;
+	top: 10px;
+	right: 60px;
+	font-size: 26px;
+}
+/*曲线显示的外层div*/
+.my-page13-tongfengCurve{
+	padding: 20px;
 }

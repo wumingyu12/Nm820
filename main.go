@@ -31,7 +31,7 @@ func main() {
 	http.Handle("/frame/", http.FileServer(http.Dir("frontWeb")))
 	http.Handle("/my_css/", http.FileServer(http.Dir("frontWeb")))
 	http.Handle("/js/", http.FileServer(http.Dir("frontWeb")))
-	http.Handle("/download/", http.FileServer(http.Dir("./")))
+	http.Handle("/testjson/", http.FileServer(http.Dir("frontWeb"))) //放测试用的json文件模拟restful
 	//这里的handle当一个连接过来的时候都会多开一个wshandler
 	//http.Handle("/ws", websocket.Handler(wshandler.WsHandler)) //响应了ws://127.0.0.1/ws的websocket
 
