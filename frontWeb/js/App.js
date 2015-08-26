@@ -1,4 +1,4 @@
-var myApp = angular.module('MyApp', ['ngAnimate','MyApp.page1','MyApp.page12','MyApp.page2','chart.js']);//[]里可以注入模块
+var myApp = angular.module('MyApp', ['ngAnimate','MyApp.page1','MyApp.page12','MyApp.page11','MyApp.page2','chart.js']);//[]里可以注入模块
 
 myApp.controller('bodyCtrl',[
 	'$scope',

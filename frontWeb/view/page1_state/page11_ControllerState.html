@@ -1,7 +1,65 @@
-状态显示
-<ul>
-	<li>当前温度：xxx</li>
-	<li>当前湿度：xxx</li>
-	<li>通风等级：xxx</li>
-	<li>日龄天数：xxx天</li>
-<li></li>
+<div class="my-page11-mainpage">
+	<!-- 自动实时的温度变化图 -->
+	<div class="my-page11-wenduChat-current" id="line-chart" ng-controller="page11_LineCtrl_wenduDay">    
+    	<!-- 显示温度的图表 -->
+        <canvas id="line" 
+      		class="chart chart-line" 
+            click="onClick" 
+            hover="onHover"
+            series="ocw.series"
+			data="ocw.data" 
+			labels="ocw.labels" 
+
+            options="{
+				scaleShowHorizontalLines: true,
+				scaleShowVerticalLines: true,
+				tooltipTemplate: '<%= value %> $',
+				responsive: true,
+				pointDot : false,
+				scaleShowLabels : false,
+				scaleOverride:true,
+				scaleSteps : 5,
+				scaleStepWidth : 10,
+				scaleStartValue : 0,
+				pointHitDetectionRadius : 3,
+				scaleGridLineWidth:0.4,
+			}"
+			>
+        </canvas>
+        <!-- 显示温度的数值 -->
+        <span class="my-page11-textwendu"><i class="icon-wendu"></i>{{wenduCurrent}}℃</span>
+    </div>
+
+    	<!-- 自动实时的湿度度变化图 -->
+	<div class="my-page11-shiduChat-current" id="line-chart" ng-controller="page11_LineCtrl_wenduDay">    
+    	<!-- 显示温度的图表 -->
+        <canvas id="line" 
+      		class="chart chart-line" 
+            click="onClick" 
+            hover="onHover"
+            series="ocw.series"
+			data="ocw.data" 
+			labels="ocw.labels" 
+
+            options="{
+				scaleShowHorizontalLines: true,
+				scaleShowVerticalLines: true,
+				tooltipTemplate: '<%= value %> $',
+				responsive: true,
+				pointDot : false,
+				scaleShowLabels : false,
+				scaleOverride:true,
+				scaleSteps : 5,
+				scaleStepWidth : 10,
+				scaleStartValue : 0,
+				pointHitDetectionRadius : 3,
+				scaleGridLineWidth:0.4,
+			}"
+			>
+        </canvas>
+        <!-- 显示温度的数值 -->
+        <span class="my-page11-textwendu"><i class="icon-wendu"></i>{{wenduCurrent}}℃</span>
+    </div>
+</div>
+
+
