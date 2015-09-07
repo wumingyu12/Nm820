@@ -33,8 +33,8 @@ static int openSerial(char *cSerialName)
     tcgetattr(iFd, &opt);
 
 
-     cfsetispeed(&opt, B115200);
-     cfsetospeed(&opt, B115200);
+     cfsetispeed(&opt, B4800);
+     cfsetospeed(&opt, B4800);
 
     opt.c_lflag   &=   ~(ECHO   |   ICANON   |   IEXTEN   |   ISIG);
     opt.c_iflag   &=   ~(BRKINT   |   ICRNL   |   INPCK   |   ISTRIP   |   IXON);
@@ -59,7 +59,7 @@ int sss(void)
     int len;
     int fd, i;
 
-    fd = openSerial("/dev/ttySAC1");
+    fd = openSerial("/dev/ttySAC3");
 
     for(i = 0; i < 16; i++)
         tmp[i] = i%0xFF;
