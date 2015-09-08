@@ -3,7 +3,7 @@ page1_model.controller('page1_MainCtrl',[
 	'$scope',
 	function ($scope){
 		$scope.mainShows=[//主页面用
-			{url:'page1_state/page11_controllerState.html'},
+			{url:'page1_state/page11_contState.html'},
 			{url:'page1_state/page12_historyDate.html'},
 			{url:'page1_state/page13_parmShow.html'}
 		];
