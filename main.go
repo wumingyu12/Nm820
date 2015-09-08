@@ -1,6 +1,7 @@
 package main
 
 import (
+	"./goService/nm820" //nm820的引用库
 	"fmt"
 	"github.com/gorilla/mux" //路由库
 	"html/template"
@@ -26,6 +27,7 @@ func NotFoundHandler(w http.ResponseWriter, r *http.Request) { //如果路由规
 //================================================================
 
 func main() {
+	nm820.GetState()
 	http.Handle("/view/", http.FileServer(http.Dir("frontWeb")))
 	//view/xxx/xxx的文件在frontweb里面找
 	http.Handle("/frame/", http.FileServer(http.Dir("frontWeb")))

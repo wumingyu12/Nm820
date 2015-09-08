@@ -70,7 +70,7 @@ func (nm *NM820_StatePara) reflashValue(b []byte) error { //默认输入的是10
 	nm.Hour = twobyte_to_uint16(b[18], b[17])
 	nm.Min = twobyte_to_uint16(b[20], b[19])
 	nm.Sec = twobyte_to_uint16(b[22], b[21])
-	nm.TemAvg = twobyte_to_int16(b[24], b[23]) / 10 //
+	nm.TemAvg = twobyte_to_int16(b[24], b[23]) //
 	for i := 0; i < 5; i++ {
 		nm.Tem_1to5[i] = twobyte_to_int16(b[26+i*2], b[25+i*2])
 	}
