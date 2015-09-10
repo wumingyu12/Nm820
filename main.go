@@ -27,7 +27,7 @@ func NotFoundHandler(w http.ResponseWriter, r *http.Request) { //如果路由规
 //================================================================
 
 func main() {
-	nm820.GetState()
+	//nm820.GetState()
 	http.Handle("/view/", http.FileServer(http.Dir("frontWeb")))
 	//view/xxx/xxx的文件在frontweb里面找
 	http.Handle("/frame/", http.FileServer(http.Dir("frontWeb")))
@@ -42,7 +42,11 @@ func main() {
 
 	mux_router := mux.NewRouter()               //用mux库做路由
 	mux_router.HandleFunc("/", NotFoundHandler) //初始化Session管理器
-	http.Handle("/", mux_router)                //这一句别忘了 否则前面的mux_router是不作用的
+	//resetful得到nm820的状态
+	//注意http://10.33.51.186:2234/resetful/nm820/GetState/是匹配不了的最后面不能有/
+	mux_router.HandleFunc("/resetful/nm820/GetState", nm820.GetState).Methods("GET")
+
+	http.Handle("/", mux_router) //这一句别忘了 否则前面的mux_router是不作用的
 	fmt.Println("正在监听2234端口,main.go")
 	//http.HandleFunc("/", NotFoundHandler) //当没有找到路径名字时，后面改为用mux库了
 	err1 := http.ListenAndServe(":2234", nil)

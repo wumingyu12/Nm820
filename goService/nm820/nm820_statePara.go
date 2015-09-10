@@ -4,6 +4,8 @@ import (
 	"errors"
 	//"fmt"
 	"github.com/huin/goserial" //引入串口库
+	"log"
+	//"time"
 )
 
 //=========================================================
@@ -64,12 +66,20 @@ func (nm *NM820_StatePara) sendCmd() {
 	s, err := goserial.OpenPort(c) //打开串口
 	defer s.Close()                //用完关闭
 	checkerr(err)
+	log.SetFlags(log.Lshortfile | log.LstdFlags) //设置打印时添加上所在文件，行数
+	log.Println("打开串口成功")
 	//发送协议命令
 	_, err = s.Write(append(g_statepara, sumCheck(g_statepara))) //在原来的命令后面再加一个校验和比特再发送
 	checkerr(err)
+	log.Println("发送命令成功")
 	//将接受到的数组赋值给g_statepara_recBuf
-	_, err = s.Read(g_statepara_recBuf) //这里要注意只有完全读满buf才会完成这一步
+	tempbuf := make([]byte, 100)
+	//_, err = s.Read(g_statepara_recBuf) //这里要注意只有完全读满buf才会完成这一步
+	//s.SetReadDeadline(time.Now().Add(45 * time.Second))
+	_, err = s.Read(tempbuf) //这里要注意只有完全读满buf才会完成这一步
+	g_statepara_recBuf = tempbuf
 	checkerr(err)
+	log.Println("接受串口数据成功")
 
 }
 

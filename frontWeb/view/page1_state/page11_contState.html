@@ -1,4 +1,20 @@
 <div class="my-page11-mainpage">
+	<!-- 3d背景图片与动画 -->
+
+		<!-- 动画循环播放，加载后自动播放 -->
+	<video 
+		src="/view/page1_state/page11_video/fengji1.mp4" 
+		loop="loop" 
+		autoplay="autoplay"
+		class="my-page11-fan1"
+		page11-set-position 
+        pos-top="236" 
+        pos-left="3279" 
+        parent-width="4096" 
+        parent-height="2304" 
+        my-widht="110" 
+        my-height="110" >
+	</video>
 	<!-- 自动实时的温度变化图 -->
 	<div class="my-page11-wenduChat-current" id="line-chart" ng-controller="page11_LineCtrl_wenduDay">    
     	<!-- 显示温度的图表 -->

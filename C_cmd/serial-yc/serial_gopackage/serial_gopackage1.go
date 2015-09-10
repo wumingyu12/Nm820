@@ -148,6 +148,7 @@ func main() {
 	checkerr(err)
 	//接收协议命令
 	for {
+		g_cmd_recBuf[0] = 0xaa
 		_, err = s.Read(g_cmd_recBuf) //这里要注意只有完全读满buf才会完成这一步
 		checkerr(err)
 

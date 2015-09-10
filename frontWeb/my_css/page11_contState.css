@@ -1,0 +1,36 @@
+/*my-page11-mainpage 具有一张大的背景图*/
+/*|__my-page11-fan1 动画风机1*/
+/*|__my-page11-wenduChat-current  实时温度的自走曲线*/
+/*   |__my-page11-textwendu    显示温度的数值*/
+/*|__my-page11-shiduChat-current  实时湿度自走曲线*/
+
+.my-page11-mainpage{
+	width: 100%;
+	height: 100%;
+	background-image: url(/view/page1_state/page11_video/fengji_0027.jpg);
+	background-size: 100% 100%;
+	position: relative;
+}
+.my-page11-fan1{
+	position: absolute;
+}
+
+/*实时温度的自走曲线*/
+.my-page11-wenduChat-current{
+	width: 300px;
+	height: 300px;
+	position: relative;
+}
+.my-page11-textwendu{
+	position: absolute;
+	top: 20px;
+	left: 100px;
+	font-size: 40px;
+	color: red;
+}
+/*实时湿度的自走曲线*/
+.my-page11-shiduChat-current{
+	position: absolute;
+	top: 20px;
+	left: 500px;
+}
