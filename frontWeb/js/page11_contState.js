@@ -51,7 +51,7 @@ page11_model.directive('page11SetPosition',function(){
     // compile: function(tElement, tAttrs, function transclude(function(scope, cloneLinkingFn){ return function linking(scope, elm, attrs){}})),
     link: function(scope, elem, attrs, controller) {
       //计算缩放比例
-      console.log(elem.parent());
+      //console.log(elem.parent());
       var scaleWdith=parseFloat(elem.parent().css('width'))/parseFloat(scope.parentWidth);
       var scaleHeight=parseFloat(elem.parent().css('height'))/parseFloat(scope.parentHeight);
       //alert(scaleHeight+"---"+scaleWdith)
@@ -70,16 +70,17 @@ page11_model.directive('page11SetPosition',function(){
   };
 });
 
+/*
 //24小时温度曲线的控制器，
 page11_model.controller('page11_LineCtrl_wenduDay',[
 	'$scope',
 	function ($scope){
-		/*如果不用json图表的另一种表达数据的方式
-		$scope.data = [
-			[65, 59, 80, 81, 56, 55, 40,65, 59, 80, 81, 56, 55, 40,65, 59, 80, 81, 56, 55, 40,22,23,24],
-	    	[22, 59, 80, 33, 56, 55, 40,22, 59, 80, 81, 55, 55, 40,66, 59, 80, 81, 33, 55, 40,22,23,24],
-	  	];
-	  	*/
+		//如果不用json图表的另一种表达数据的方式
+		//$scope.data = [
+		//	[65, 59, 80, 81, 56, 55, 40,65, 59, 80, 81, 56, 55, 40,65, 59, 80, 81, 56, 55, 40,22,23,24],
+	  //  	[22, 59, 80, 33, 56, 55, 40,22, 59, 80, 81, 55, 55, 40,66, 59, 80, 81, 33, 55, 40,22,23,24],
+	  //	];
+	
 	  	//图表点击时动作
 		$scope.onClick = function (points, evt) {
 	    	console.log(points, evt);
@@ -119,3 +120,46 @@ page11_model.controller('page11_LineCtrl_wenduDay',[
     testtimeout();
 	}
 ]);
+*/
+
+/*========================控制器==温湿度状态显示面板==============================================
+  双向绑定：1.TemAvg 温度  HumiAvg 湿度  GDay 日龄 FanLevel 通风等级
+            2. Year Month Day Hour Min Sec 时间
+  内部方法：1.longPoll()  定时更新数据，通过resetful --/resetful/nm820/GetState  
+                          不能连接时温湿度显示false
+            2.addzero(s) //时间补零函数
+
+=================================================================================================*/
+page11_model.controller('page11StatepanCtrl', ['$scope','$http','$timeout', function($scope,$http,$timeout){
+  var addzero=function(s){ //时间补零函数
+    return s < 10 ? '0' + s: s;
+  };
+
+  //定时更新数据，通过resetful
+  var longPoll = function() {
+    console.log("心跳");
+    $timeout(function() {
+      //定时执行的函数，为一个get json
+      $http.get("/resetful/nm820/GetState")
+      .success(function(data) { 
+        $scope.TemAvg=data.TemAvg/10;//返回的数值是乘上10的
+        $scope.HumiAvg=data.HumiAvg/10;
+        $scope.GDay=data.GDay; //日龄
+        $scope.FanLevel=data.FanLevel; //通风等级
+        $scope.Year=data.Year;
+        $scope.Month=addzero(data.Month);
+        $scope.Day=addzero(data.Day);
+        $scope.Hour=addzero(data.Hour);
+        $scope.Min=addzero(data.Min);
+        $scope.Sec=addzero(data.Sec);
+      })
+      .error(function(){
+        $scope.TemAvg="false";
+        $scope.HumiAvg="false";
+      });
+      longPoll();//最后记得回调
+    }, 1000);//10秒执行一次
+  }; 
+  longPoll();//记得一开始要启动定时
+}])
+

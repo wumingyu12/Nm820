@@ -1,8 +1,9 @@
 /*my-page11-mainpage 具有一张大的背景图*/
 /*|__my-page11-fan1 动画风机1*/
-/*|__my-page11-wenduChat-current  实时温度的自走曲线*/
-/*   |__my-page11-textwendu    显示温度的数值*/
-/*|__my-page11-shiduChat-current  实时湿度自走曲线*/
+/*|__my-page11-statepan  实时显示的状态面板*/
+/*   |__<p> 用来显示温度，湿度，日期等*/
+/*   |__my-page11-wenshidu  温湿度*/
+
 
 .my-page11-mainpage{
 	width: 100%;
@@ -14,23 +15,45 @@
 .my-page11-fan1{
 	position: absolute;
 }
-
-/*实时温度的自走曲线*/
+.my-page11-statepan{
+	width: 15%;
+	height: 30%;
+	top: 60%;
+	left: 80%;
+	background-color: blue;
+	position: absolute;
+	opacity: 0.7;
+	box-shadow: 10px 10px rgb(0,0,0);
+	border-radius:10px;
+}
+.my-page11-statepan>p{
+	color: white;
+	font-weight: bold;
+	font-size: 20px;
+	margin-left: 10px;
+}
+.my-page11-wenshidu{
+	font-size: 40px;
+	color: white;
+}
+/*实时温度的自走曲线
 .my-page11-wenduChat-current{
 	width: 300px;
 	height: 300px;
 	position: relative;
-}
+}*/
+/*
 .my-page11-textwendu{
 	position: absolute;
 	top: 20px;
 	left: 100px;
 	font-size: 40px;
 	color: red;
-}
-/*实时湿度的自走曲线*/
+}*/
+/*实时湿度的自走曲线
 .my-page11-shiduChat-current{
 	position: absolute;
 	top: 20px;
 	left: 500px;
 }
+*/

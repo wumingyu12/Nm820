@@ -15,9 +15,9 @@
         my-widht="110" 
         my-height="110" >
 	</video>
-	<!-- 自动实时的温度变化图 -->
+	<!-- 自动实时的温度变化图 
 	<div class="my-page11-wenduChat-current" id="line-chart" ng-controller="page11_LineCtrl_wenduDay">    
-    	<!-- 显示温度的图表 -->
+    	显示温度的图表
 		<canvas id="line" 
       		class="chart chart-line" 
             click="onClick" 
@@ -42,39 +42,17 @@
 			}"
 		>
        </canvas>
-        <!-- 显示温度的数值 -->
+        显示温度的数值 
         <span class="my-page11-textwendu"><i class="icon-wendu"></i>{{wenduCurrent}}℃</span>
     </div>
-
-    	<!-- 自动实时的温度变化图 -->
-	<div class="my-page11-shiduChat-current" id="line-chart" ng-controller="page11_LineCtrl_wenduDay">    
-    	<!-- 显示温度的图表 -->
-		<canvas id="line" 
-      		class="chart chart-line" 
-            click="onClick" 
-            hover="onHover"
-            series="ocw.series"
-			data="ocw.data" 
-			labels="ocw.labels" 
- 
-            options="{
-				scaleShowHorizontalLines: true,
-				scaleShowVerticalLines: true,
-				tooltipTemplate: '<%= value %> $',
-				responsive: true,
-				pointDot : false,
-				scaleShowLabels : false,
-				scaleOverride:true,
-				scaleSteps : 5,
-				scaleStepWidth : 10,
-				scaleStartValue : 0,
-				pointHitDetectionRadius : 3,
-				scaleGridLineWidth:0.4,
-			}"
-		>
-       </canvas>
-        <!-- 显示温度的数值 -->
-        <span class="my-page11-textwendu"><i class="icon-wendu"></i>{{wenduCurrent}}℃</span>
+    -->
+    <!-- 一个透明面板,请求resetful得到温度，湿度，时间，日龄，通风等级 -->
+    <div class="my-page11-statepan" ng-controller="page11StatepanCtrl">
+        <p>日龄：{{GDay}} 通风等级：{{FanLevel}}</p>
+    	<p>控制器时间:{{Year}}-{{Month}}-{{Day}}  {{Hour}}:{{Min}}:{{Sec}}</p>
+    	<div class="my-page11-wenshidu"><i class="icon-wendu"></i><span ng-bind="TemAvg">11</span>℃</dvi>
+    	<div class="my-page11-wenshidu"><i class="icon-wendu"></i><span ng-bind="HumiAvg">11</span>%</div>
+    	
     </div>
 
 
