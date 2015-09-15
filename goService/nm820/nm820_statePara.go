@@ -3,8 +3,8 @@ package nm820
 import (
 	"errors"
 	//"fmt"
-	"github.com/huin/goserial" //引入串口库
-	"log"
+	//"github.com/huin/goserial" //引入串口库
+	//"log"
 	//"time"
 )
 
@@ -15,7 +15,8 @@ import (
 
 //============将要发送的协议命令，得到nm820的状态=============
 var g_statepara = []byte{0x8a, 0x9b, 0x00, 0x01, 0x05, 0x02, 0x00, 0x09, 0x00}
-var g_statepara_recBuf = make([]byte, 100) //发送g_statepara返回的byte，理论上是100个
+
+//var b = make([]byte, 100) //发送g_statepara返回的byte，理论上是100个
 
 //NM820状态结构体,根据协议的txt修改，请注意其数值都是小端存储的在NM820中
 type NM820_StatePara struct {
@@ -50,81 +51,44 @@ type NM820_StatePara struct {
 	RelayState [20]byte //继电器状态 0=断开 1=闭合
 }
 
-//---------------------------------------------------
-//--------发送协议命令--------------------------
-//--------将返回的byte数组放到g_statepara_recBuf
-//--------用串口发送-----
-//--------------------------------------------------
-func (nm *NM820_StatePara) sendCmd() {
-	c := &goserial.Config{
-		Name:     con_PORTNAME,
-		Baud:     con_BAUD,
-		Size:     goserial.Byte8,
-		StopBits: goserial.StopBits1,
-		Parity:   goserial.ParityNone,
-	} //以波特率和串口名打开
-	s, err := goserial.OpenPort(c) //打开串口
-	defer s.Close()                //用完关闭
-	checkerr(err)
-	log.SetFlags(log.Lshortfile | log.LstdFlags) //设置打印时添加上所在文件，行数
-	log.Println("打开串口成功")
-	//发送协议命令
-	tempbuf := make([]byte, 100)
-	_, _ = s.Write(append(g_statepara, sumCheck(g_statepara))) //在原来的命令后面再加一个校验和比特再发送
-	_, err = s.Read(tempbuf)                                   //这里要注意只有完全读满buf才会完成这一步
-	checkerr(err)
-	log.Println("发送命令成功")
-
-	//==================接收==============
-	//将接受到的数组赋值给g_statepara_recBuf
-
-	//_, err = s.Read(g_statepara_recBuf) //这里要注意只有完全读满buf才会完成这一步
-	//s.SetReadDeadline(time.Now().Add(45 * time.Second))
-
-	g_statepara_recBuf = tempbuf
-	//checkerr(err)
-	log.Printf("接受串口数据成功:%x\n", tempbuf)
-
-}
-
 //--------------------------------------------------------------------------------------
 //--------byte[100]更新为NM820_StatePara结构体
-//---使用前先用sendCmd更新g_statepara_recBuf，再用g_statepara_recBuf作为参数给结构体赋值
+//---使用前先用sendCmd更新b，再用b作为参数给结构体赋值
 //----------------------------------------------------------------------------------------
-func (nm *NM820_StatePara) reflashValue() error { //默认输入的是100的byte[]
+func (nm *NM820_StatePara) reflashValue(b []byte) error { //默认输入的是100的byte[]
 	//判断校验和是否一样
-	//fmt.Printf("last:%x\n", g_statepara_recBuf[99])
-	if sumCheck(g_statepara_recBuf[0:99]) != g_statepara_recBuf[99] { //前面99个数的校验和是否等于最后一个校验位,b[0]--b[98]
+	//fmt.Printf("last:%x\n", b[99])
+	if sumCheck(b[0:99]) != b[99] { //前面99个数的校验和是否等于最后一个校验位,b[0]--b[98]
 		return errors.New("sum check is wrong!!")
 	}
 	//按小端的方式(具有就是高字节打头，如下)将byte赋值给结构体，重00 09 5a后面开始，就是byte[9]开始
-	nm.GDay = twobyte_to_uint16(g_statepara_recBuf[10], g_statepara_recBuf[9])
-	nm.Year = twobyte_to_uint16(g_statepara_recBuf[12], g_statepara_recBuf[11])
-	nm.Month = twobyte_to_uint16(g_statepara_recBuf[14], g_statepara_recBuf[13])
-	nm.Day = twobyte_to_uint16(g_statepara_recBuf[16], g_statepara_recBuf[15])
-	nm.Hour = twobyte_to_uint16(g_statepara_recBuf[18], g_statepara_recBuf[17])
-	nm.Min = twobyte_to_uint16(g_statepara_recBuf[20], g_statepara_recBuf[19])
-	nm.Sec = twobyte_to_uint16(g_statepara_recBuf[22], g_statepara_recBuf[21])
-	nm.TemAvg = twobyte_to_int16(g_statepara_recBuf[24], g_statepara_recBuf[23]) //
+	nm.GDay = twobyte_to_uint16(b[10], b[9])
+	nm.Year = twobyte_to_uint16(b[12], b[11])
+	nm.Month = twobyte_to_uint16(b[14], b[13])
+	nm.Day = twobyte_to_uint16(b[16], b[15])
+	nm.Hour = twobyte_to_uint16(b[18], b[17])
+	nm.Min = twobyte_to_uint16(b[20], b[19])
+	nm.Sec = twobyte_to_uint16(b[22], b[21])
+	nm.TemAvg = twobyte_to_int16(b[24], b[23]) //
 	for i := 0; i < 5; i++ {
-		nm.Tem_1to5[i] = twobyte_to_int16(g_statepara_recBuf[26+i*2], g_statepara_recBuf[25+i*2])
+		nm.Tem_1to5[i] = twobyte_to_int16(b[26+i*2], b[25+i*2])
 	}
-	nm.HumiAvg = twobyte_to_uint16(g_statepara_recBuf[36], g_statepara_recBuf[35])
-	nm.Hmi_1to2[0] = twobyte_to_uint16(g_statepara_recBuf[38], g_statepara_recBuf[37])
-	nm.Hmi_1to2[1] = twobyte_to_uint16(g_statepara_recBuf[40], g_statepara_recBuf[39])
-	nm.NH3 = twobyte_to_uint16(g_statepara_recBuf[42], g_statepara_recBuf[41])
-	nm.Light = twobyte_to_uint16(g_statepara_recBuf[44], g_statepara_recBuf[43])
-	nm.FanLevel = twobyte_to_uint16(g_statepara_recBuf[46], g_statepara_recBuf[45])
-	nm.Pos_SideWin = twobyte_to_uint16(g_statepara_recBuf[48], g_statepara_recBuf[47])
-	nm.Pos_Curtain = twobyte_to_uint16(g_statepara_recBuf[50], g_statepara_recBuf[49])
+	nm.HumiAvg = twobyte_to_uint16(b[36], b[35])
+	nm.Hmi_1to2[0] = twobyte_to_uint16(b[38], b[37])
+	nm.Hmi_1to2[1] = twobyte_to_uint16(b[40], b[39])
+	nm.NH3 = twobyte_to_uint16(b[42], b[41])
+	nm.Light = twobyte_to_uint16(b[44], b[43])
+	nm.FanLevel = twobyte_to_uint16(b[46], b[45])
+	nm.Pos_SideWin = twobyte_to_uint16(b[48], b[47])
+	nm.Pos_Curtain = twobyte_to_uint16(b[50], b[49])
 	for i := 0; i < 4; i++ {
-		nm.Pos_Roller[i] = twobyte_to_uint16(g_statepara_recBuf[52+i*2], g_statepara_recBuf[51+i*2])
+		nm.Pos_Roller[i] = twobyte_to_uint16(b[52+i*2], b[51+i*2])
 	}
 	for i := 0; i < 20; i++ {
-		nm.RelayType[i] = g_statepara_recBuf[59+i]
+		nm.RelayType[i] = b[59+i]
 	}
 	for i := 0; i < 20; i++ {
-		nm.RelayState[i] = g_statepara_recBuf[79+i]
+		nm.RelayState[i] = b[79+i]
 	}
 	return nil //什么错误都没就返回空
 }
