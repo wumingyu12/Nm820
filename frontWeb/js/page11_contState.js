@@ -1,5 +1,41 @@
 var page11_model=angular.module('MyApp.page11', []);
 
+/*========================服务 在非当前页面中，停止心跳获取Nm820状态===============================
+
+==================================================================================================*/
+page11_model.factory('page11getstateSer', ['$timeout','$http',function($timeout,$http){
+  var TemAvg,HumiAvg,GDay,FanLevel,Year,Month,Day,Hour,Min,Sec;
+    //定时更新数据，通过resetful
+  var longPoll = function() {
+    console.log("心跳");
+    $timeout(function() {
+      //定时执行的函数，为一个get json
+      $http.get("/resetful/nm820/GetState")
+      .success(function(data) { 
+        TemAvg=data.TemAvg/10;//返回的数值是乘上10的
+        HumiAvg=data.HumiAvg/10;
+        GDay=data.GDay; //日龄
+        FanLevel=data.FanLevel; //通风等级
+        Year=data.Year;
+        Month=addzero(data.Month);
+        Day=addzero(data.Day);
+        Hour=addzero(data.Hour);
+        Min=addzero(data.Min);
+        Sec=addzero(data.Sec);
+      })
+      .error(function(){
+        TemAvg="false";
+        HumiAvg="false";
+      });
+      longPoll();//最后记得回调
+    }, 1000);//10秒执行一次
+  }; 
+  longPoll();//记得一开始要启动定时
+  return function name(){
+    
+  };
+}]);
+
 /*=====================指令 缩放并设置定位位置================================================
  依赖：1.jquery库
        2.一个父节点，并且子节点是相对于父节点绝对定位(在css里面有position: absolute;)
@@ -130,36 +166,44 @@ page11_model.controller('page11_LineCtrl_wenduDay',[
             2.addzero(s) //时间补零函数
 
 =================================================================================================*/
-page11_model.controller('page11StatepanCtrl', ['$scope','$http','$timeout', function($scope,$http,$timeout){
-  var addzero=function(s){ //时间补零函数
-    return s < 10 ? '0' + s: s;
-  };
+page11_model.controller('page11StatepanCtrl', [
+  '$scope',
+  '$http',
+  '$timeout',
+  'page11getstateSer',
+  function($scope,$http,$timeout,page11getstateSer){
+    var addzero=function(s){ //时间补零函数
+      return s < 10 ? '0' + s: s;
+    };
 
-  //定时更新数据，通过resetful
-  var longPoll = function() {
-    console.log("心跳");
-    $timeout(function() {
-      //定时执行的函数，为一个get json
-      $http.get("/resetful/nm820/GetState")
-      .success(function(data) { 
-        $scope.TemAvg=data.TemAvg/10;//返回的数值是乘上10的
-        $scope.HumiAvg=data.HumiAvg/10;
-        $scope.GDay=data.GDay; //日龄
-        $scope.FanLevel=data.FanLevel; //通风等级
-        $scope.Year=data.Year;
-        $scope.Month=addzero(data.Month);
-        $scope.Day=addzero(data.Day);
-        $scope.Hour=addzero(data.Hour);
-        $scope.Min=addzero(data.Min);
-        $scope.Sec=addzero(data.Sec);
-      })
-      .error(function(){
-        $scope.TemAvg="false";
-        $scope.HumiAvg="false";
-      });
-      longPoll();//最后记得回调
-    }, 1000);//10秒执行一次
-  }; 
-  longPoll();//记得一开始要启动定时
-}])
+    //定时更新数据，通过resetful
+    /*
+    var longPoll = function() {
+      console.log("心跳");
+      $timeout(function() {
+        //定时执行的函数，为一个get json
+        $http.get("/resetful/nm820/GetState")
+        .success(function(data) { 
+          $scope.TemAvg=data.TemAvg/10;//返回的数值是乘上10的
+          $scope.HumiAvg=data.HumiAvg/10;
+          $scope.GDay=data.GDay; //日龄
+          $scope.FanLevel=data.FanLevel; //通风等级
+          $scope.Year=data.Year;
+          $scope.Month=addzero(data.Month);
+          $scope.Day=addzero(data.Day);
+          $scope.Hour=addzero(data.Hour);
+          $scope.Min=addzero(data.Min);
+          $scope.Sec=addzero(data.Sec);
+        })
+        .error(function(){
+          $scope.TemAvg="false";
+          $scope.HumiAvg="false";
+        });
+        longPoll();//最后记得回调
+      }, 1000);//10秒执行一次
+    }; 
+    longPoll();//记得一开始要启动定时
+    */
+  }
+])
 

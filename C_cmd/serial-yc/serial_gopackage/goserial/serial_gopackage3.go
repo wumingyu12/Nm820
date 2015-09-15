@@ -78,7 +78,6 @@ func goSendSerial(wb <-chan []byte, rb chan<- []byte, rbnum <-chan int, io io.Re
 			readbuf[i] = b[0]
 		}
 		//io.Read(readbuf) //接收串口数据,一个个字节读取否则有bug
-		log.Println("3")
 		rb <- readbuf
 		log.Printf("已经发送：%x\n", send)
 		fmt.Printf("接收到串口数据:%x\n", readbuf)
@@ -106,7 +105,7 @@ func main() {
 
 	go goSendSerial(chanWb, chanRb, chanRbNum, s)
 	chanWb <- append(g_cmd, sumCheck(g_cmd))
-	chanRbNum <- 99 //开启一次锁让进程发送一次命令,接收一次命令，接收字节数为100
+	chanRbNum <- 100 //开启一次锁让进程发送一次命令,接收一次命令，接收字节数为100
 	rec := <-chanRb
 	log.Printf("接收通道：%x\n", rec)
 	time.Sleep(100 * time.Second)

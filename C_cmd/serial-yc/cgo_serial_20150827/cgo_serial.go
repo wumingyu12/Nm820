@@ -67,8 +67,8 @@ int sss(void)
     while (1) {
         len = read(fd, tmp, 0x01);
         for(i = 0; i < len; i++){
-            printf("%d",i);
-            printf("%d-%x",i,tmp[i]);
+            //printf("%d",i);
+            printf("%x",tmp[i]);
             printf("\n");
         }
     }
