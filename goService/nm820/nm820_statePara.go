@@ -72,8 +72,11 @@ func (nm *NM820_StatePara) sendCmd() {
 	_, err = s.Write(append(g_statepara, sumCheck(g_statepara))) //在原来的命令后面再加一个校验和比特再发送
 	checkerr(err)
 	log.Println("发送命令成功")
+
+	//==================接收==============
 	//将接受到的数组赋值给g_statepara_recBuf
 	tempbuf := make([]byte, 100)
+	ch := make(chan []byte, 1)
 	//_, err = s.Read(g_statepara_recBuf) //这里要注意只有完全读满buf才会完成这一步
 	//s.SetReadDeadline(time.Now().Add(45 * time.Second))
 	_, err = s.Read(tempbuf) //这里要注意只有完全读满buf才会完成这一步

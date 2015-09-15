@@ -147,29 +147,27 @@ func main() {
 	_, err = s.Write(append(g_cmd, sumCheck(g_cmd))) //在原来的命令后面再加一个校验和比特再发送
 	checkerr(err)
 	//接收协议命令
-	for {
-		g_cmd_recBuf[0] = 0xaa
-		_, err = s.Read(g_cmd_recBuf) //这里要注意只有完全读满buf才会完成这一步
-		checkerr(err)
+	_, err = s.Read(g_cmd_recBuf) //这里要注意只有完全读满buf才会完成这一步
+	checkerr(err)
 
-		fmt.Printf("get:%x\n", g_cmd_recBuf)
+	fmt.Printf("get:%x\n", g_cmd_recBuf)
 
-		nm820_StatePara := &NM820_StatePara{}
-		//nm820_StatePara.Pos_Roller[1] = 0xfe
+	nm820_StatePara := &NM820_StatePara{}
+	//nm820_StatePara.Pos_Roller[1] = 0xfe
 
-		fmt.Printf("Day:%x\n", nm820_StatePara.GDay)
-		err = nm820_StatePara.reflashValue(g_cmd_recBuf)
-		checkerr(err)
+	fmt.Printf("Day:%x\n", nm820_StatePara.GDay)
+	err = nm820_StatePara.reflashValue(g_cmd_recBuf)
+	checkerr(err)
 
-		fmt.Printf("GDay:%d\n", nm820_StatePara.GDay)
-		fmt.Printf("Tem:%d\n", nm820_StatePara.TemAvg)
-		fmt.Printf("Hour:%d\n", nm820_StatePara.Hour)
-		fmt.Printf("FanLevel:%d\n", nm820_StatePara.FanLevel)
-		fmt.Printf("relaystate:%x\n", nm820_StatePara.RelayState)
-		fmt.Printf("RelayType:%x\n", nm820_StatePara.RelayType)
-		//fmt.Printf("roller1:%x\n", nm820_StatePara.Pos_Roller[1])
-		//fmt.Printf("%x\n B", nm820_StatePara.Month)
-	}
+	fmt.Printf("GDay:%d\n", nm820_StatePara.GDay)
+	fmt.Printf("Tem:%d\n", nm820_StatePara.TemAvg)
+	fmt.Printf("Hour:%d\n", nm820_StatePara.Hour)
+	fmt.Printf("FanLevel:%d\n", nm820_StatePara.FanLevel)
+	fmt.Printf("relaystate:%x\n", nm820_StatePara.RelayState)
+	fmt.Printf("RelayType:%x\n", nm820_StatePara.RelayType)
+	//fmt.Printf("roller1:%x\n", nm820_StatePara.Pos_Roller[1])
+	//fmt.Printf("%x\n B", nm820_StatePara.Month)
+
 }
 
 //---------------------------------------------

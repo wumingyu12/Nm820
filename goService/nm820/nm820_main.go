@@ -57,6 +57,27 @@ func twobyte_to_int16(b1 byte, b2 byte) int16 {
 	return int16(b1)<<8 + int16(b2) //b1左移8位再加上低位的b2
 }
 
+/*==========================包初始化函数==================================
+	在包引入时会被调用，隐式调用
+	作用：
+		1.开启一个go fuc 用来一直保持串口的打开,一个发送通道，一个接收通道
+=======================================================================*/
+/*func init() {
+	log.SetFlags(log.Lshortfile | log.LstdFlags) //设置打印时添加上所在文件，行数
+	log.Println("init被调用")
+	go func() {
+		//串口参数
+		c := &goserial.Config{
+			Name:     con_PORTNAME,
+			Baud:     con_BAUD,
+			Size:     goserial.Byte8,
+			StopBits: goserial.StopBits1,
+			Parity:   goserial.ParityNone,
+		} //以波特率和串口名打开
+		s, err := goserial.OpenPort(c) //打开串口
+	}()
+}
+*/
 /**************************************************************************
 给resetful调用的函数，外部可访问,resetful
 ***************************************************************************/

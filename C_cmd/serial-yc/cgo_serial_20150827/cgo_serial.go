@@ -55,22 +55,22 @@ static int openSerial(char *cSerialName)
 
 int sss(void)
 {
+    char cmd[10]={0x8A,0x9B,0x00,0x01,0x05,0x02,0x00,0x09,0x00,0x36};
     char tmp[1024];
     int len;
     int fd, i;
 
     fd = openSerial("/dev/ttySAC3");
 
-    for(i = 0; i < 16; i++)
-        tmp[i] = i%0xFF;
-
-    write(fd, tmp, 16);
+    write(fd, cmd, 10);
 
     while (1) {
         len = read(fd, tmp, 0x01);
-        for(i = 0; i < len; i++)
-            printf(" %d", tmp[i]);
-        printf("\n");
+        for(i = 0; i < len; i++){
+            printf("%d",i);
+            printf("%d-%x",i,tmp[i]);
+            printf("\n");
+        }
     }
 }
 
