@@ -27,9 +27,10 @@ var g_cmd = []byte{0x8a, 0x9b, 0x00, 0x01, 0x05, 0x02, 0x00, 0x09, 0x00}
 
 //var g_cmd_recBuf = make([]byte, 100) //发送g_cmd返回的byte，理论上是100个
 
-var chanWb = make(chan []byte, 1) //发送的比特数组，缓冲0个
-var chanRb = make(chan []byte, 1) //接收的比特,缓冲0个
-var chanRbNum = make(chan int, 1) //无缓冲表面是互斥锁，只有这个有值才会让串口发送命令
+var chanWb = make(chan []byte, 1)      //发送的比特数组，缓冲0个
+var chanRb = make(chan []byte, 1)      //接收的比特,缓冲0个
+var chanRbNum = make(chan int, 1)      //无缓冲表面是互斥锁，只有这个有值才会让串口发送命令
+var chanSerialBusy = make(chan int, 1) //有东西在里面代表busy，其他程序不要写上面的3个东西
 
 //-------------------------------------------------
 //在计算byte的累加验证位，这是nm820采用的验证方式
@@ -104,9 +105,11 @@ func main() {
 	checkerr(err)
 
 	go goSendSerial(chanWb, chanRb, chanRbNum, s)
+	chanSerialBusy <- 1 //有东西在里面代表busy，其他程序不要写上面的3个东西
 	chanWb <- append(g_cmd, sumCheck(g_cmd))
 	chanRbNum <- 100 //开启一次锁让进程发送一次命令,接收一次命令，接收字节数为100
 	rec := <-chanRb
+	<-chanSerialBusy
 	log.Printf("接收通道：%x\n", rec)
 	time.Sleep(100 * time.Second)
 }

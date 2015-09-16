@@ -6,44 +6,30 @@ var page11_model=angular.module('MyApp.page11', []);
     1.当在本页面那就定时发送请求resetful
     2.当当前界面不是本界面就不发送心跳包
   注入的地方：
-    1.page11StatepanCtrl 状态显示控制器
-    2.
+    1.page11StatepanCtrl 状态显示控制器，引用状态
+    2.page1_controlIndex.js page1_MainCtrl改变ifCurrentPage值
   提供的变量：
     1.nm820StateDate={TemAvg:"0",HumiAvg:"0",GDay:"0",FanLevel:"0",Year:"0",Month:"0",Day:"0",Hour:"0",Min:"0",Sec:"0"};
      TemAvg 温度  HumiAvg 湿度  GDay 日龄 FanLevel 通风等级
      Year Month Day Hour Min Sec 时间
+    2.ifCurrentPage 指示是否是当前页，只有确定是当前页才进行重复地请求
+  方法：1.getstate(ifcurrentp),通过传入的ifcurrentp值确定是否请求resetful
 ==================================================================================================*/
 page11_model.factory('page11getstateSer', ['$timeout','$http',function($timeout,$http){
-  var addzero=function(s){ //时间补零函数
-    return s < 10 ? '0' + s: s;
-  };
-  //保持状态信息的类
-  var nm820StateDate={TemAvg:"0",HumiAvg:"0",GDay:"0",FanLevel:"0",Year:"0",Month:"0",Day:"0",Hour:"0",Min:"0",Sec:"0"};
-  //定时更新数据，通过resetful
-  var longPoll = function() {
-    console.log("心跳");
-    $http.get("/resetful/nm820/GetState")
-      .success(function(data) { 
-        nm820StateDate.TemAvg=data.TemAvg/10;//返回的数值是乘上10的
-        nm820StateDate.HumiAvg=data.HumiAvg/10;
-        nm820StateDate.GDay=data.GDay; //日龄
-        nm820StateDate.FanLevel=data.FanLevel; //通风等级
-        nm820StateDate.Year=data.Year;
-        nm820StateDate.Month=addzero(data.Month);
-        nm820StateDate.Day=addzero(data.Day);
-        nm820StateDate.Hour=addzero(data.Hour);
-        nm820StateDate.Min=addzero(data.Min);
-        nm820StateDate.Sec=addzero(data.Sec);
-        console.log(nm820StateDate);
-      })
-      .error(function(){
-        nm820StateDate.TemAvg="fff";
-      });
-    $timeout(longPoll, 1000);
-  }; 
-  longPoll();//记得一开始要启动定时
+
+  var ifCurrentPage="yes";//是否为当前页，是的话resetful请求就可以
   return {
-    nm820StateDate:nm820StateDate,
+    getstate:function(ifcurrentp){
+      console.log(ifcurrentp);
+      //如果是当前页就请求resetful
+      if (ifcurrentp=="yes") {
+        return $http.get("/resetful/nm820/GetState");
+      }
+      else {
+        return null;
+      };
+    },
+    ifCurrentPage:ifCurrentPage,//这个就是用于上面的参数
   };
 }]);
 
@@ -172,7 +158,8 @@ page11_model.controller('page11_LineCtrl_wenduDay',[
 /*========================控制器==温湿度状态显示面板==============================================
   双向绑定：1.TemAvg 温度  HumiAvg 湿度  GDay 日龄 FanLevel 通风等级
             2. Year Month Day Hour Min Sec 时间,通过服务
-  内部方法：
+  内部方法：1.addzero在显示时间时将个位数前面补零
+            2.longpoll不断请求后台数据，但不是在当前页就不请求
 =================================================================================================*/
 page11_model.controller('page11StatepanCtrl', [
   '$scope',
@@ -182,14 +169,36 @@ page11_model.controller('page11StatepanCtrl', [
   function($scope,$http,$timeout,page11getstateSer){
     //定时更新数据，通过从服务page11getstateSer中
     //用watch更新数据
+    /*
     $scope.$watch(function () { return page11getstateSer.nm820StateDate; },
       function (value) {
           //console.log("In $watch - lastUpdated:" + value);
           $scope.nm820state = value;
       }
     );
-
-
+    */
+    var addzero=function(s){ //时间补零函数
+      return s < 10 ? '0' + s: s;
+    };
+    var longPoll=function(){
+      var p=page11getstateSer.getstate(page11getstateSer.ifCurrentPage);
+      if (p!=null) {//说明在当前页面，返回一个$q对象不是null具体看服务page11getstateSer。
+        p.success(function(data){
+          $scope.TemAvg=data.TemAvg/10;//返回的数值是乘上10的
+          $scope.HumiAvg=data.HumiAvg/10;
+          $scope.GDay=data.GDay; //日龄
+          $scope.FanLevel=data.FanLevel; //通风等级
+          $scope.Year=data.Year;
+          $scope.Month=addzero(data.Month);
+          $scope.Day=addzero(data.Day);
+          $scope.Hour=addzero(data.Hour);
+          $scope.Min=addzero(data.Min);
+          $scope.Sec=addzero(data.Sec);
+        })
+      };
+      $timeout(longPoll,1000);
+    };
+    longPoll();
   }
 ])
 

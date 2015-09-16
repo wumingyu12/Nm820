@@ -48,10 +48,10 @@
     -->
     <!-- 一个透明面板,请求resetful得到温度，湿度，时间，日龄，通风等级 -->
     <div class="my-page11-statepan" ng-controller="page11StatepanCtrl">
-        <p>日龄：{{nm820state.GDay}} 通风等级：{{nm820state.FanLevel}}</p>
-    	<p>控制器时间:{{nm820state.Year}}-{{nm820state.Month}}-{{nm820state.Day}}  {{nm820state.Hour}}:{{nm820state.Min}}:{{nm820state.Sec}}</p>
-    	<div class="my-page11-wenshidu"><i class="icon-wendu"></i><span ng-bind="nm820state.TemAvg">11</span>℃</dvi>
-    	<div class="my-page11-wenshidu"><i class="icon-wendu"></i><span ng-bind="nm820state.HumiAvg">11</span>%</div>
+        <p>日龄：{{GDay}} 通风等级：{{FanLevel}}</p>
+    	<p>控制器时间:{{Year}}-{{Month}}-{{Day}}  {{Hour}}:{{Min}}:{{Sec}}</p>
+    	<div class="my-page11-wenshidu"><i class="icon-wendu"></i><span ng-bind="TemAvg">11</span>℃</dvi>
+    	<div class="my-page11-wenshidu"><i class="icon-wendu"></i><span ng-bind="HumiAvg">11</span>%</div>
     	
     </div>
 

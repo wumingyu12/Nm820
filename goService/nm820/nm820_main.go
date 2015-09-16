@@ -24,9 +24,11 @@ const (
 	//CMD []byte={}
 )
 
-var chanWb = make(chan []byte, 1) //发送的比特数组，缓冲0个
-var chanRb = make(chan []byte, 1) //接收的比特,缓冲0个
-var chanRbNum = make(chan int, 1) //无缓冲表面是互斥锁，只有这个有值才会让串口发送命令
+//串口发送接受的用到的通道
+var chanWb = make(chan []byte, 1)      //发送的比特数组，缓冲0个
+var chanRb = make(chan []byte, 1)      //接收的比特,缓冲0个
+var chanRbNum = make(chan int, 1)      //无缓冲表面是互斥锁，只有这个有值才会让串口发送命令
+var chanSerialBusy = make(chan int, 1) //有东西在里面代表busy，其他程序不要写上面的3个东西
 
 /*=======================线程函数====================
 	依赖：1.chekerr()函数
@@ -151,9 +153,11 @@ func GetState(w http.ResponseWriter, r *http.Request) {
 	para := &NM820_StatePara{}
 
 	//发送数据并获取，前提func init()的运行,g_statepara在另一个go中
+	chanSerialBusy <- 1
 	chanWb <- append(g_statepara, sumCheck(g_statepara))
 	chanRbNum <- 100 //开启一次锁让进程发送一次命令,接收一次命令，接收字节数为100
 	rec := <-chanRb  //类型byte[100]
+	<-chanSerialBusy
 
 	//用返回的数据更新结构体
 	err := para.reflashValue(rec)
