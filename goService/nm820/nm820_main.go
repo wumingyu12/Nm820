@@ -116,8 +116,8 @@ func checkerr(err error) {
 //----------------------------------------------------------------------------
 //将两个byte类型合并为一个uint16类型,组合后b1，b2排列，如果是小端请自行调换位置
 //------------------------------------------------------------------------------
-func twobyte_to_uint16(b1 byte, b2 byte) uint16 {
-	return uint16(b1)<<8 + uint16(b2) //b1左移8位再加上低位的b2
+func twobyte_to_uint16(bh byte, bl byte) uint16 {
+	return uint16(bh)<<8 + uint16(bl) //bh左移8位再加上低位的bl
 }
 
 //--------------------------------
@@ -127,6 +127,15 @@ func twobyte_to_int16(b1 byte, b2 byte) int16 {
 	return int16(b1)<<8 + int16(b2) //b1左移8位再加上低位的b2
 }
 
+//------------------------------------
+//--uint16转换为2个byte
+//----------------------------------
+func uint16_to_twobyte(i uint16) (byte, byte) {
+	bh := byte(i >> 8)   //高位
+	bl := byte(i & 0xff) //低位
+	return bh, bl
+}
+
 /**************************************************************************
 给resetful调用的函数，外部可访问,resetful
 ***************************************************************************/
@@ -134,6 +143,8 @@ func twobyte_to_int16(b1 byte, b2 byte) int16 {
 /*=====================================================
 	得到nm820的状态，主体函数在nm820_statePara.go里面
 	发送的json根据结构图NM820_StatePara
+	需要的外部参数：
+		1.g_statepara 发送的命令
     请求url：/resetful/nm820/GetState
  	正常返回一个json：
 				{"GDay":34,"Year":2000,"Month":1,"Day":13,"Hour":23,"Min":59,"Sec":9,"TemAvg":242,
@@ -153,7 +164,7 @@ func GetState(w http.ResponseWriter, r *http.Request) {
 	para := &NM820_StatePara{}
 
 	//发送数据并获取，前提func init()的运行,g_statepara在另一个go中
-	chanSerialBusy <- 1
+	chanSerialBusy <- 1 //为了其他地方使用串口时发送接受流程不被打断
 	chanWb <- append(g_statepara, sumCheck(g_statepara))
 	chanRbNum <- 100 //开启一次锁让进程发送一次命令,接收一次命令，接收字节数为100
 	rec := <-chanRb  //类型byte[100]
@@ -171,4 +182,43 @@ func GetState(w http.ResponseWriter, r *http.Request) {
 	//fmt.Printf("para:%s\n", b)
 	log.Println("结束--resetful请求nm820获取状态。")
 	//fmt.Printf("para:%s\n", b)
+}
+
+/*======================================================================================
+	请求：
+	作用：以当前日龄为准，向前倒推30日的历史温度数据，并返回
+	返回：
+	依赖的函数：
+		1.uint16_to_twobyte
+		2.NM820_StatePara.go
+=========================================================================================*/
+func GetTempHistory(w http.ResponseWriter, r *http.Request) {
+
+	log.SetFlags(log.Lshortfile | log.LstdFlags) //设置打印时添加上所在文件，行数
+	log.Println("开始--resetful请求获取温度历史数据。")
+
+	//先得到当前的日龄
+	chanSerialBusy <- 1 //为了其他地方使用串口时发送接受流程不被打断
+	chanWb <- append(g_statepara, sumCheck(g_statepara))
+	chanRbNum <- 100 //开启一次锁让进程发送一次命令,接收一次命令，接收字节数为100
+	rec := <-chanRb  //类型byte[100]
+	<-chanSerialBusy
+
+	p := &NM820_StatePara{}
+	err := p.reflashValue(rec) //用返回的数据更新结构体
+	checkerr(err)
+	day := p.GDay //得到当前日龄uint16格式
+
+	hd := &NM820_History30{}
+	//注意如果day为当前日的话是返回错误的,所以从day-1日开始
+	hd.addData(day-1, "Tem") //可选类型"Tem"---温度"Humi"---湿度"NH3"---氨气"Light"--光照
+	//log.Println(hd)
+
+	//将hd转换为json
+	b, err := json.Marshal(hd) //用这个函数时一定要确保字段名首位大写
+	checkerr(err)
+	//必须要string,确保没发送其他了否则解释不了为json在angular
+	fmt.Fprintf(w, "%s", b) //注意在armlinux下面不能用fmt.Fprintf(w, string(b))的方式
+	//fmt.Printf("para:%s\n", b)
+	log.Println("结束--resetful请求获取温度历史数据。")
 }

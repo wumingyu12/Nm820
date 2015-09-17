@@ -20,7 +20,6 @@ page11_model.factory('page11getstateSer', ['$timeout','$http',function($timeout,
   var ifCurrentPage="yes";//是否为当前页，是的话resetful请求就可以
   return {
     getstate:function(ifcurrentp){
-      console.log(ifcurrentp);
       //如果是当前页就请求resetful
       if (ifcurrentp=="yes") {
         return $http.get("/resetful/nm820/GetState");
