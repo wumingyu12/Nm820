@@ -51,11 +51,13 @@ func goSendSerial(wb <-chan []byte, rb chan<- []byte, rbnum <-chan int, io io.Re
 		readbuf := make([]byte, rbnum) //堵塞，如果有值可以取出，开始一次发送命令
 		log.Println("堵塞终止")
 		send := <-wb
+		log.Printf("重通道中得到发送命令：%x\n", send)
 		io.Write(send) //发送命令,wb中取出一个
 		b := make([]byte, 1)
 		for i := 0; i < rbnum; i++ {
 			io.Read(b)
 			readbuf[i] = b[0]
+			//log.Printf("接收到：%d--%x\n", i, b[0])
 		}
 		//io.Read(readbuf) //接收串口数据,一个个字节读取否则有bug
 		rb <- readbuf

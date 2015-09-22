@@ -1,7 +1,9 @@
 /**/
 /*my-page12-mainpage*/
 /*|__my-page12-wenduChat-day  24温度曲线*/
-/*|__my-page12-wenduChat-month 一个月内最高，最低，平均的气温*/
+/*|__my-page12-wenduChat-month 一个月内最高，最低，平均的气温*/\
+/*   |__my-page12-reflashDate 用于表头刷新数据的按钮位置*/
+/*		|__my-page12-rotate 旋转动画*/
 /*|__my-page12-shiduChat-day 24小时湿度*/
 /*|__my-page12-shiduChat-month  一个月湿度*/
 
@@ -12,6 +14,26 @@
 	height: 100%;
 	background-color: white;
 	
+}
+/*用于表头刷新数据的按钮位置*/
+.my-page12-reflashDate{
+	position: absolute;
+	top: 10px;
+	right: 30px;
+	font-size: 26px;
+
+}
+/*旋转动画*/
+.my-page12-rotate{
+	animation: spin 3s linear infinite;
+}
+@keyframes spin {
+0% {
+   	transform:rotate(0deg);
+ }
+ 100% {
+   	transform:rotate(-360deg);
+ }
 }
 
 /*温湿度图表*/

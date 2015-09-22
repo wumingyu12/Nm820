@@ -29,7 +29,11 @@
 	<!-- 一个月内最大最小平均温度曲线 datasetFill: false不填充颜色--> 
 	<div class="my-page12-wenduChat-month" id="line-chart" ng-controller="page12_LineCtrl_wenduMonth">
 	    <div class="panel panel-default">
-	        <div class="panel-heading">月平均，最高，最低温度</div>
+	        <div class="panel-heading">
+	        	<span>月平均，最高，最低温度</span>
+	        	<!-- 按钮用于刷新数据 -->
+				<a href=""><span class="glyphicon glyphicon-refresh my-page12-reflashDate" ng-class="{'my-page12-rotate':isRotate}" ng-click="reflashData()" aria-hidden="true"></span></a>
+	        </div>
 	        <div class="panel-body">
 	            <canvas id="line" 
 	          		class="chart chart-line" 
@@ -45,7 +49,11 @@
         				scaleShowVerticalLines: true,
         				tooltipTemplate: '<%= value %> $',
         				responsive: true,
-        				datasetFill: false
+        				datasetFill: false,
+        				scaleOverride:true,
+        				scaleSteps:4,
+        				scaleStartValue:15,
+        				scaleStepWidth:5,
     				}"
 					>
 	            </canvas>
@@ -53,7 +61,7 @@
 	    </div>
 	</div>
 
-		<!-- 24小时内湿度柱状图--> 
+		<!-- 24小时内湿度曲线图--> 
 	<div class="my-page12-shiduChat-day" id="line-chart" ng-controller="page12_LineCtrl_shiduDay">
 	    <div class="panel panel-default">
 	        <div class="panel-heading">24小时湿度</div>
@@ -72,7 +80,7 @@
 	    </div>
 	</div>
 
-			<!-- 24小时内湿度柱状图--> 
+			<!-- 30日日龄内湿度内湿度曲线--> 
 	<div class="my-page12-shiduChat-month" id="line-chart" ng-controller="page12_LineCtrl_shiduDay">
 	    <div class="panel panel-default">
 	        <div class="panel-heading">24小时湿度</div>

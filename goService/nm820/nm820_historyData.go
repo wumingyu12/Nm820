@@ -17,10 +17,10 @@ type HisTemp struct {
 //用于resetful返回的结构体,以当前日龄为准，向前存储30个数据
 //这个结构体通用的，可以存储温度，湿度，光照，氨气等等都可以，下面的添加方法不同就会不同
 type NM820_History30 struct {
-	Days []uint16 //天龄列表
-	Maxs []uint16 //最大温度
-	Mins []uint16 //最小温度
-	Avgs []uint16
+	Days []uint16  //天龄列表
+	Maxs []float32 //最大温度
+	Mins []float32 //最小温度
+	Avgs []float32
 }
 
 /*==============================================================
@@ -38,6 +38,8 @@ type NM820_History30 struct {
 			"Light"--光照
 	注意：1.如要读日龄无记录，返回当日的记录 ，日龄为0
 		  2.如果日龄恰好是当前日，也会返回日龄0
+	遗留问题：
+		  1.每次要请求历史数据都需要
 	返回的包：
 		8A 9B 00 01 0F 82 00 02 0A 00 20 【Days 20 00】【Maxs 45 01】【Mins FA 00】【Avgs FA 00】 3D
 ================================================================*/
@@ -74,9 +76,9 @@ func (hs *NM820_History30) addData(baseDay uint16, sensorType string) {
 
 		//日龄,解析得到的包，并加到数组中
 		hs.Days = append(hs.Days, twobyte_to_uint16(rec[12], rec[11]))
-		hs.Maxs = append(hs.Maxs, twobyte_to_uint16(rec[14], rec[13]))
-		hs.Mins = append(hs.Mins, twobyte_to_uint16(rec[16], rec[15]))
-		hs.Avgs = append(hs.Avgs, twobyte_to_uint16(rec[18], rec[17]))
+		hs.Maxs = append(hs.Maxs, float32(twobyte_to_uint16(rec[14], rec[13]))/10)
+		hs.Mins = append(hs.Mins, float32(twobyte_to_uint16(rec[16], rec[15]))/10)
+		hs.Avgs = append(hs.Avgs, float32(twobyte_to_uint16(rec[18], rec[17]))/10)
 		//log.Printf("days:%d-%d-%d-%d", days_buf, maxs_buf, mins_buf, avgs_buf)
 	}
 }
