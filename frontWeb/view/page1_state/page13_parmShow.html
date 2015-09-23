@@ -139,12 +139,18 @@
 			</div>
 		</div>
 	</div>
+	<!--============================================== -->
 	<!-- 第二个表温度曲线表 -->
-	<div class="my-page13-wenduquxianTab">
+	<!--============================================== -->
+	<div class="my-page13-wenduquxianTab" ng-controller="page13_wenduCurveCtrl">
 		<div  class="panel panel-default">
-			<div class="panel-heading">温度曲线图</div>
+			<div class="panel-heading">
+				<span>温度曲线图</span>
+				<!-- 按钮用于切换图表显示还是表格显示 -->
+				<a href=""><span class="glyphicon glyphicon-sort my-page13-changeTab" ng-click="changeTabChat()" aria-hidden="true"></span></a>
+			</div>
 			<div class="panel-body" style="padding:0px;">
-				<table class="table table-bordered table-condensed table-striped ">
+				<table ng-if="ifShowTab" class="table table-bordered table-condensed table-striped ">
 					<thead>
 						<tr>
 							<th>序号</th>
@@ -155,94 +161,44 @@
 						</tr>
 					</thead>
 					<tbody>
-						<tr>
-							<th>0</th>
-							<th>0</th>
-							<th>0</th>
-							<th>0</th>
-							<th>0</th>
+						<tr data-ng-repeat="n in Days track by $index">
+							<th>{{$index+1}}</th>
+							<th>{{n}}</th>
+							<th>{{Targets[$index]}}</th>
+							<th>{{Heats[$index]}}</th>
+							<th>{{Cools[$index]}}</th>
 
 						</tr>
-												<tr>
-							<th>0</th>
-							<th>0</th>
-							<th>0</th>
-							<th>0</th>
-							<th>0</th>
-							
-						</tr>
-
-												<tr>
-							<th>0</th>
-							<th>0</th>
-							<th>0</th>
-							<th>0</th>
-							<th>0</th>
-							
-						</tr>
-												<tr>
-							<th>0</th>
-							<th>0</th>
-							<th>0</th>
-							<th>0</th>
-							<th>0</th>
-							
-						</tr>
-												<tr>
-							<th>0</th>
-							<th>0</th>
-							<th>0</th>
-							<th>0</th>
-							<th>0</th>
-							
-						</tr>
-												<tr>
-							<th>0</th>
-							<th>0</th>
-							<th>0</th>
-							<th>0</th>
-							<th>0</th>
-							
-						</tr>
-												<tr>
-							<th>0</th>
-							<th>0</th>
-							<th>0</th>
-							<th>0</th>
-							<th>0</th>
-							
-						</tr>
-												<tr>
-							<th>0</th>
-							<th>0</th>
-							<th>0</th>
-							<th>0</th>
-							<th>0</th>
-							
-						</tr>
-												<tr>
-							<th>0</th>
-							<th>0</th>
-							<th>0</th>
-							<th>0</th>
-							<th>0</th>
-							
-						</tr>
-												<tr>
-							<th>0</th>
-							<th>0</th>
-							<th>0</th>
-							<th>0</th>
-							<th>0</th>
-							
-						</tr>
-
 					</tbody>
 				</table>
+
+				<!-- 图表显示通风等级曲线图 一开始是不显示-->
+				<div class="my-page13-tongfengCurve" ng-if="ifShowCurve">
+					<canvas id="line" 
+		          		class="chart chart-line" 
+		          		legend="flase"
+		                click="onClick" 
+		                hover="onHover"
+		                series="CurveData.series"
+						data="CurveData.data" 
+						labels="CurveData.labels" 
+
+		                options="{
+	        				scaleShowHorizontalLines: true,
+	        				scaleShowVerticalLines: true,
+	        				tooltipTemplate: '<%= value %> $',
+	        				responsive: true,
+	        				datasetFill: false
+	    				}"
+						>
+		            </canvas>
+				</div>
 			</div>
 		</div>
 	</div>
+	<!--============================================== -->
 		<!-- 第三个表最小最大通风等级表 -->
+	<!--============================================== -->
 	<div class="my-page13-tongfengMaxmin" ng-controller="page13_tongfenMaxminCtrl">
 		<div  class="panel panel-default">
 			<div class="panel-heading my-page13-panelhead">

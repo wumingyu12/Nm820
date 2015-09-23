@@ -9,6 +9,7 @@ import (
 	//"errors"
 	"encoding/json"
 	"fmt"
+	"github.com/gorilla/mux"   //路由库
 	"github.com/huin/goserial" //引入串口库
 	"io"
 	"log"
@@ -142,7 +143,7 @@ func uint16_to_twobyte(i uint16) (byte, byte) {
 给resetful调用的函数，外部可访问,resetful
 ***************************************************************************/
 
-/*=====================================================
+/*===============================resetful======================
 	得到nm820的状态，主体函数在nm820_statePara.go里面
 	发送的json根据结构图NM820_StatePara
 	需要的外部参数：
@@ -186,8 +187,9 @@ func GetState(w http.ResponseWriter, r *http.Request) {
 	//fmt.Printf("para:%s\n", b)
 }
 
-/*======================================================================================
-	请求：
+/*=======================================resetful===============================================
+	请求：/resetful/nm820/GetDataHistory/{type}
+		 type: Tem 返回温度 Humi 湿度  NH3氨气 Light光照
 	作用：以当前日龄为准，向前倒推30日的历史温度数据，并返回
 	返回：
 	依赖的函数：
@@ -195,9 +197,12 @@ func GetState(w http.ResponseWriter, r *http.Request) {
 		2.NM820_StatePara.go
 =========================================================================================*/
 func GetTempHistory(w http.ResponseWriter, r *http.Request) {
+	//先判断要请求的历史数据类型
+	vars := mux.Vars(r) //r为*http.Request
+	datatype := vars["type"]
 
 	log.SetFlags(log.Lshortfile | log.LstdFlags) //设置打印时添加上所在文件，行数
-	log.Println("开始--resetful请求获取温度历史数据。")
+	log.Printf("开始--resetful请求获取历史数据--%s\n", datatype)
 
 	//先得到当前的日龄
 	chanSerialBusy <- 1 //为了其他地方使用串口时发送接受流程不被打断
@@ -213,7 +218,7 @@ func GetTempHistory(w http.ResponseWriter, r *http.Request) {
 
 	hd := &NM820_History30{}
 	//注意如果day为当前日的话是返回错误的,所以从day-1日开始
-	hd.addData(day-1, "Tem") //可选类型"Tem"---温度"Humi"---湿度"NH3"---氨气"Light"--光照
+	hd.addData(day-1, datatype) //可选类型"Tem"---温度"Humi"---湿度"NH3"---氨气"Light"--光照
 	//log.Println(hd)
 
 	//将hd转换为json
@@ -222,5 +227,30 @@ func GetTempHistory(w http.ResponseWriter, r *http.Request) {
 	//必须要string,确保没发送其他了否则解释不了为json在angular
 	fmt.Fprintf(w, "%s", b) //注意在armlinux下面不能用fmt.Fprintf(w, string(b))的方式
 	//fmt.Printf("para:%s\n", b)
-	log.Println("结束--resetful请求获取温度历史数据。")
+	log.Println("结束--resetful请求获取历史数据--%s\n", datatype)
+}
+
+/*=====================================resetful=================================================
+	请求：/resetful/nm820/sysPara/WenduCurve
+	作用：获取温度曲线表
+	返回：
+	依赖的函数：
+		1.uint16_to_twobyte
+		2.NM820_sysPara.go
+=========================================================================================*/
+func WenduCurve(w http.ResponseWriter, r *http.Request) {
+	log.SetFlags(log.Lshortfile | log.LstdFlags) //设置打印时添加上所在文件，行数
+	log.Printf("开始--resetful请求获取温度曲线表数据\n")
+
+	p := &NM820_WenduCurve{}
+	err := p.addData() //用返回的串口数据更新结构体
+	checkerr(err)
+
+	//将hd转换为json
+	b, err := json.Marshal(p) //用这个函数时一定要确保字段名首位大写
+	checkerr(err)
+	//必须要string,确保没发送其他了否则解释不了为json在angular
+	fmt.Fprintf(w, "%s", b) //注意在armlinux下面不能用fmt.Fprintf(w, string(b))的方式
+	//fmt.Printf("para:%s\n", b)
+	log.Printf("结束--resetful请求获取温度曲线表数据\n")
 }

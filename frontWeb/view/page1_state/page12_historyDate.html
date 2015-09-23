@@ -1,6 +1,8 @@
 <!-- 环境控制器的第二个页面，显示历史数据 -->
 <div class="my-page12-mainpage">
+	<!-- ====================================================--> 
 	<!-- 24小时温度曲线 colours="ocw.colours"--> 
+	<!-- ====================================================--> 
 	<div class="my-page12-wenduChat-day" id="line-chart" ng-controller="page12_LineCtrl_wenduDay">
 	    <div class="panel panel-default">
 	        <div class="panel-heading">24小时温度曲线</div>
@@ -25,8 +27,9 @@
 	       </div>
 	    </div>
 	</div>
-
-	<!-- 一个月内最大最小平均温度曲线 datasetFill: false不填充颜色--> 
+	<!-- ====================================================--> 
+	<!-- 一个月内最大最小平均温度曲线 datasetFill: false不填充颜色-->
+	<!-- ====================================================-->  
 	<div class="my-page12-wenduChat-month" id="line-chart" ng-controller="page12_LineCtrl_wenduMonth">
 	    <div class="panel panel-default">
 	        <div class="panel-heading">
@@ -60,8 +63,9 @@
 	       </div>
 	    </div>
 	</div>
-
+	<!-- ====================================================--> 
 		<!-- 24小时内湿度曲线图--> 
+	<!-- ====================================================--> 
 	<div class="my-page12-shiduChat-day" id="line-chart" ng-controller="page12_LineCtrl_shiduDay">
 	    <div class="panel panel-default">
 	        <div class="panel-heading">24小时湿度</div>
@@ -79,11 +83,15 @@
 	       </div>
 	    </div>
 	</div>
-
+	<!-- ====================================================--> 
 			<!-- 30日日龄内湿度内湿度曲线--> 
-	<div class="my-page12-shiduChat-month" id="line-chart" ng-controller="page12_LineCtrl_shiduDay">
+	<!-- ====================================================--> 
+	<div class="my-page12-shiduChat-month" id="line-chart" ng-controller="page12_LineCtrl_shiduMonth">
 	    <div class="panel panel-default">
-	        <div class="panel-heading">24小时湿度</div>
+	        <div class="panel-heading">
+	        	<span>24小时湿度</span>
+				<a href=""><span class="glyphicon glyphicon-refresh my-page12-reflashDate" ng-class="{'my-page12-rotate':isRotate}" ng-click="reflashData()" aria-hidden="true"></span></a>
+	        </div>
 	        <div class="panel-body">
 	            <canvas id="line" 
 	          		class="chart chart-line" 
@@ -92,7 +100,14 @@
 	                hover="onHover"
 	                series="series"
 					data="data" 
-					labels="labels" 
+					labels="labels"
+					options="{
+        				datasetFill: false,
+        				scaleOverride:true,
+        				scaleSteps:6,
+        				scaleStartValue:70,
+        				scaleStepWidth:5,
+    				}" 
 					>
 	            </canvas>
 	       </div>

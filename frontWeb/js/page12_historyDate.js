@@ -84,7 +84,7 @@ page12_model.controller('page12_LineCtrl_wenduMonth',[
       $scope.ocw.data[1]=["20", "20", "20", "20", "20", "20", "20","20", "20", "20","20","20","20","20","20","20","20","20","20","20","20","20","20","20","20","20","20","20","20","20","20"];
       $scope.ocw.data[2]=["20", "20", "20", "20", "20", "20", "20","20", "20", "20","20","20","20","20","20","20","20","20","20","20","20","20","20","20","20","20","20","20","20","20","20"];
 
-      $http.get('/resetful/nm820/GetTempHistory').success(function(data){
+      $http.get('/resetful/nm820/GetDataHistory/Tem').success(function(data){
         console.log(data.Avgs);
         $scope.ocw.labels=data.Days;
         $scope.ocw.data[0]=data.Maxs;
@@ -97,7 +97,7 @@ page12_model.controller('page12_LineCtrl_wenduMonth',[
   }
 ]);
 
-page12_model.controller('page12_LineCtrl_wenduMonth',[
+page12_model.controller('page12_LineCtrl_shiduDay',[
 	'$scope',
   '$http',
 	function ($scope,$http){
@@ -147,21 +147,46 @@ page12_model.controller('page12_LineCtrl_wenduMonth',[
     }
 	}
 ]);
-
-//日湿度曲线,曲线图，
+/*====================月平均，最大，最小湿度=================================
+  参数：
+      1.$scope.ocw用于初始化显示图表的数据
+      2.$scope.isRotate=false;//一开始刷新图标是不转的
+  方法：
+      1.reflashData更新温度月数据
+=========================================================*/
 page12_model.controller('page12_LineCtrl_shiduMonth',[
 	'$scope',
-	function ($scope){
+  '$http',
+	function ($scope,$http){
 	  	//图表点击时动作
 		$scope.onClick = function (points, evt) {
 	    	console.log(points, evt);
 		};
 		$scope.data = [
-			[65, 59, 80, 81, 56, 55, 40,65, 59, 80, 81, 56, 55, 40,65, 59, 80, 81, 56, 55, 40,22,23,24],
-			[22, 22, 22, 22, 22, 22, 22,22, 22, 22, 22, 22, 22, 22,22, 22, 22, 22, 22, 22, 22,22,22,22],
+			[80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80],
+			[80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80],
+      [80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80],
 	  	];
-	  	$scope.series=["平均湿度","室外湿度"];
-	  	$scope.labels=["0时", "1时", "2时", "3时", "4时", "5时", "6时","7时", "8时", "9时", "10时", "11时", "12时", "13时","14时", "15时", "16时", "17时", "18时", "19时", "20时","21时","22时","23时"];
+	  	$scope.series=["最高湿度","平均湿度","最低湿度"];
+	  	$scope.labels=[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30];
+
+          //resetful更新数据,单击刷新按钮时
+    $scope.reflashData=function(){
+      $scope.isRotate=true;//刷新图标是转的
+      //让数据先初始化加载后有个动画效果
+      $scope.data[0]=[80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80];
+      $scope.data[1]=[80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80];
+      $scope.data[2]=[80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80];
+
+      $http.get('/resetful/nm820/GetDataHistory/Humi').success(function(data){
+        console.log(data.Avgs);
+        $scope.labels=data.Days;
+        $scope.data[0]=data.Maxs;
+        $scope.data[1]=data.Avgs;
+        $scope.data[2]=data.Mins;
+        $scope.isRotate=false;//刷新图标是不转的
+      });
+    }
 	}
 ]);
 

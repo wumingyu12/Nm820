@@ -42,11 +42,14 @@ func main() {
 
 	mux_router := mux.NewRouter()               //用mux库做路由
 	mux_router.HandleFunc("/", NotFoundHandler) //初始化Session管理器
+
 	//resetful得到nm820的状态
 	//注意http://10.33.51.186:2234/resetful/nm820/GetState/是匹配不了的最后面不能有/
 	mux_router.HandleFunc("/resetful/nm820/GetState", nm820.GetState).Methods("GET")
 	//得到历史温度
-	mux_router.HandleFunc("/resetful/nm820/GetTempHistory", nm820.GetTempHistory).Methods("GET")
+	mux_router.HandleFunc("/resetful/nm820/GetDataHistory/{type}", nm820.GetTempHistory).Methods("GET")
+	//得到温度曲线，按日龄 /resetful/nm820/sysPara/WenduCurve
+	mux_router.HandleFunc("/resetful/nm820/sysPara/WenduCurve", nm820.WenduCurve).Methods("GET")
 
 	http.Handle("/", mux_router) //这一句别忘了 否则前面的mux_router是不作用的
 	fmt.Println("正在监听2234端口,main.go")
