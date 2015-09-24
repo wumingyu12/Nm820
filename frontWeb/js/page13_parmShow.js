@@ -1,4 +1,16 @@
 var page13_model=angular.module('MyApp.page13',[]);
+/*================================通风等级表============================================
+==============================================================================*/
+page13_model.controller('page13_wenduTableCtrl', [
+	'$scope',
+	'$http',
+	function ($scope,$http){
+		$http.get('/resetful/nm820/sysPara/WindTables').success(function(data){
+			$scope.data=data.WindTables;
+			console.log($scope.data);
+		});
+	}
+]);
 
 /*============================控制器 温度曲线======================================
 	1.图表切换
@@ -40,41 +52,43 @@ page13_model.controller('page13_wenduCurveCtrl', [
 	    	$scope.ifShowTab=!$scope.ifShowTab;
 	    	$scope.ifShowCurve=!$scope.ifShowCurve;
 		};
-
-
 	}
-])
-//第三个表格24小时通风等级曲线的控制器，
-page12_model.controller('page13_tongfenMaxminCtrl',[
+]);
+/*===========================控制器 最大最小通风等级===============================================
+	第三个表格通风等级曲线的控制器，
+============================================================================*/
+page13_model.controller('page13_WindLevelCtrl', [
 	'$scope',
 	'$http',
 	function ($scope,$http){
-		//用于切换是用图表显示还是表格
+		$scope.ifShowTab=true;//一开始时是显示表格不显示曲线
+		$scope.ifShowCurve=false;
 
+		//图表显示数据
+		$scope.CurveData={
+			"series": ["最小通风等级","最大通风等级"],
+        	//也可以用上面的scope.data的形式
+        	"data": [[1,2,3,45,6,7,7,8,8],
+        			 [2,34,5,5,5,5,5,5,5]],
+        	"labels":[1,2,3,4,5,6,7,8,9],
+		};
 
-		$http.get('/testjson/page13/tongfengClass.json').success(function(data){
-			$scope.tongfengdata = data[0];
-			console.log($scope.tongfengdata);
+		$http.get('/resetful/nm820/sysPara/WindLevel').success(function(data){
+			$scope.Day=data.Day;
+			$scope.Min=data.Min;
+			$scope.Max=data.Max;
+
+			//温度曲线图表的样子
+			$scope.CurveData.labels=data.Day;
+			$scope.CurveData.data[0]=data.Min;
+			$scope.CurveData.data[1]=data.Max;
 		});
-		 //用于显示的数据，日龄，最小通风等级，最大通风等级
-  		$scope.tongfengCurves=[
-  			{day:'0',minClass:'12',maxClass:'13'},
-  			{day:'0',minClass:'12',maxClass:'13'},
-  			{day:'0',minClass:'12',maxClass:'13'},
-  			{day:'0',minClass:'12',maxClass:'13'},
-  			{day:'0',minClass:'12',maxClass:'13'},
-  			{day:'0',minClass:'12',maxClass:'13'},
-  			{day:'0',minClass:'12',maxClass:'13'},
-  			{day:'0',minClass:'12',maxClass:'13'},
-  			{day:'0',minClass:'12',maxClass:'13'},
-  			{day:'0',minClass:'12',maxClass:'13'},
-  			{day:'0',minClass:'12',maxClass:'13'},
-  		]
-  		//点击显示表格与图表切换
+
+
+		//点击显示表格与图表切换
 		$scope.changeTabChat = function(){
 	    	$scope.ifShowTab=!$scope.ifShowTab;
 	    	$scope.ifShowCurve=!$scope.ifShowCurve;
 		};
-
 	}
 ]);

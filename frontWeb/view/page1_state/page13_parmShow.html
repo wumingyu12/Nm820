@@ -1,6 +1,6 @@
 <div class="my-page13-mainpage">
 	<!-- 第一个表通风等级表 -->
-	<div class="my-page13-tongfengClass">
+	<div class="my-page13-tongfengClass" data-ng-controller="page13_wenduTableCtrl">
 		<div  class="panel panel-default">
 			<div class="panel-heading">通风等级表</div>
 			<div class="panel-body" style="padding:0px;">
@@ -22,117 +22,19 @@
 						</tr>
 					</thead>
 					<tbody>
-						<tr>
-							<th>0</th>
-							<th>0</th>
-							<th>0</th>
-							<th>0</th>
-							<th>0</th>
-							<th>0</th>
-							<th>0</th>
-							<th>0</th>
-							<th>0</th>
-							<th>0</th>
-							<th>0</th>
-							<th>0</th>
-						</tr>
-						<tr>
-							<th>0</th>
-							<th>0</th>
-							<th>0</th>
-							<th>0</th>
-							<th>0</th>
-							<th>0</th>
-							<th>0</th>
-							<th>0</th>
-							<th>0</th>
-							<th>0</th>
-							<th>0</th>
-							<th>0</th>
-						</tr>
-												<tr>
-							<th>0</th>
-							<th>0</th>
-							<th>0</th>
-							<th>0</th>
-							<th>0</th>
-							<th>0</th>
-							<th>0</th>
-							<th>0</th>
-							<th>0</th>
-							<th>0</th>
-							<th>0</th>
-							<th>0</th>
-						</tr>
-												<tr>
-							<th>0</th>
-							<th>0</th>
-							<th>0</th>
-							<th>0</th>
-							<th>0</th>
-							<th>0</th>
-							<th>0</th>
-							<th>0</th>
-							<th>0</th>
-							<th>0</th>
-							<th>0</th>
-							<th>0</th>
-						</tr>
-												<tr>
-							<th>0</th>
-							<th>0</th>
-							<th>0</th>
-							<th>0</th>
-							<th>0</th>
-							<th>0</th>
-							<th>0</th>
-							<th>0</th>
-							<th>0</th>
-							<th>0</th>
-							<th>0</th>
-							<th>0</th>
-						</tr>
-												<tr>
-							<th>0</th>
-							<th>0</th>
-							<th>0</th>
-							<th>0</th>
-							<th>0</th>
-							<th>0</th>
-							<th>0</th>
-							<th>0</th>
-							<th>0</th>
-							<th>0</th>
-							<th>0</th>
-							<th>0</th>
-						</tr>
-												<tr>
-							<th>0</th>
-							<th>0</th>
-							<th>0</th>
-							<th>0</th>
-							<th>0</th>
-							<th>0</th>
-							<th>0</th>
-							<th>0</th>
-							<th>0</th>
-							<th>0</th>
-							<th>0</th>
-							<th>0</th>
-						</tr>
-												<tr>
-							<th>0</th>
-							<th>0</th>
-							<th>0</th>
-							<th>0</th>
-							<th>0</th>
-							<th>0</th>
-							<th>0</th>
-							<th>0</th>
-							<th>0</th>
-							<th>0</th>
-							<th>0</th>
-							<th>0</th>
+						<tr ng-repeat="d in data">
+							<th>{{$index+1}}</th>
+							<th>{{d.Fan}}</th>
+							<th>{{d.On}}</th>
+							<th>{{d.Off}}</th>
+							<th>{{d.DTemp}}</th>
+							<th>{{d.SideWindow}}</th>
+							<th>{{d.Curtain}}</th>
+							<th>{{d.VSFan}}</th>
+							<th>{{d.Roller1}}</th>
+							<th>{{d.Roller2}}</th>
+							<th>{{d.Roller3}}</th>
+							<th>{{d.Roller4}}</th>
 						</tr>
 					</tbody>
 				</table>
@@ -142,7 +44,7 @@
 	<!--============================================== -->
 	<!-- 第二个表温度曲线表 -->
 	<!--============================================== -->
-	<div class="my-page13-wenduquxianTab" ng-controller="page13_wenduCurveCtrl">
+	<div class="my-page13-wenduCurve" ng-controller="page13_wenduCurveCtrl">
 		<div  class="panel panel-default">
 			<div class="panel-heading">
 				<span>温度曲线图</span>
@@ -161,7 +63,7 @@
 						</tr>
 					</thead>
 					<tbody>
-						<tr data-ng-repeat="n in Days track by $index">
+						<tr ng-repeat="n in Days track by $index">
 							<th>{{$index+1}}</th>
 							<th>{{n}}</th>
 							<th>{{Targets[$index]}}</th>
@@ -199,10 +101,10 @@
 	<!--============================================== -->
 		<!-- 第三个表最小最大通风等级表 -->
 	<!--============================================== -->
-	<div class="my-page13-tongfengMaxmin" ng-controller="page13_tongfenMaxminCtrl">
+	<div class="my-page13-WindLevel" ng-controller="page13_WindLevelCtrl">
 		<div  class="panel panel-default">
 			<div class="panel-heading my-page13-panelhead">
-				<span >温度曲线图</span>
+				<span >通风等级</span>
 				<!--  -->
 				<!-- 按钮用于切换图表显示还是表格显示 -->
 				<a href=""><span class="glyphicon glyphicon-sort my-page13-changeTab" ng-click="changeTabChat()" aria-hidden="true"></span></a>
@@ -224,11 +126,11 @@
 						</tr>
 					</thead>
 					<tbody>
-						<tr ng-repeat="tongfengCurve in tongfengCurves">
-							<th>{{$index}}</th>
-							<th>{{tongfengCurve.day}}</th>
-							<th>{{tongfengCurve.minClass}}</th>
-							<th>{{tongfengCurve.maxClass}}</th>
+						<tr ng-repeat="n in Day track by $index">
+							<th>{{$index+1}}</th>
+							<th>{{n}}</th>
+							<th>{{Min[$index]}}</th>
+							<th>{{Max[$index]}}</th>
 						</tr>
 					</tbody>
 				</table>
@@ -239,9 +141,9 @@
 		          		legend="flase"
 		                click="onClick" 
 		                hover="onHover"
-		                series="tongfengdata.series"
-						data="tongfengdata.data" 
-						labels="tongfengdata.labels" 
+		                series="CurveData.series"
+						data="CurveData.data" 
+						labels="CurveData.labels" 
 
 		                options="{
 	        				scaleShowHorizontalLines: true,

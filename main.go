@@ -50,6 +50,10 @@ func main() {
 	mux_router.HandleFunc("/resetful/nm820/GetDataHistory/{type}", nm820.GetTempHistory).Methods("GET")
 	//得到温度曲线，按日龄 /resetful/nm820/sysPara/WenduCurve
 	mux_router.HandleFunc("/resetful/nm820/sysPara/WenduCurve", nm820.WenduCurve).Methods("GET")
+	//得到通风最大最小等级，按日龄 /resetful/nm820/sysPara/WindLevel
+	mux_router.HandleFunc("/resetful/nm820/sysPara/WindLevel", nm820.WindLevel).Methods("GET")
+	//得到通风等级表 /resetful/nm820/sysPara/WindTables
+	mux_router.HandleFunc("/resetful/nm820/sysPara/WindTables", nm820.WindTables).Methods("GET")
 
 	http.Handle("/", mux_router) //这一句别忘了 否则前面的mux_router是不作用的
 	fmt.Println("正在监听2234端口,main.go")

@@ -123,6 +123,13 @@ func twobyte_to_uint16(bh byte, bl byte) uint16 {
 	return uint16(bh)<<8 + uint16(bl) //bh左移8位再加上低位的bl
 }
 
+//----------------------------------------------------------------------------
+//将4个byte类型合并为一个uint32类型,组合后b1，b2排列，如果是小端请自行调换位置
+//------------------------------------------------------------------------------
+func twobyte_to_uint32(b1 byte, b2 byte, b3 byte, b4 byte) uint32 {
+	return uint32(b1)<<24 + uint32(b2)<<16 + uint32(b3)<<8 + uint32(b4) //bh左移8位再加上低位的bl
+}
+
 //--------------------------------
 //同上不过是int16
 //-----------------------------------
@@ -253,4 +260,54 @@ func WenduCurve(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "%s", b) //注意在armlinux下面不能用fmt.Fprintf(w, string(b))的方式
 	//fmt.Printf("para:%s\n", b)
 	log.Printf("结束--resetful请求获取温度曲线表数据\n")
+}
+
+/*=====================================resetful=================================================
+	请求：/resetful/nm820/sysPara/WindLevel
+	作用：获取温度曲线表
+	返回：
+	依赖的函数：
+		1.uint16_to_twobyte
+		2.NM820_sysPara.go
+=========================================================================================*/
+func WindLevel(w http.ResponseWriter, r *http.Request) {
+	log.SetFlags(log.Lshortfile | log.LstdFlags) //设置打印时添加上所在文件，行数
+	log.Printf("开始--resetful请求获取最大最小通风等级数据\n")
+
+	p := &NM820_WindLevel{}
+	err := p.addData() //用返回的串口数据更新结构体
+	checkerr(err)
+
+	//将hd转换为json
+	b, err := json.Marshal(p) //用这个函数时一定要确保字段名首位大写
+	checkerr(err)
+	//必须要string,确保没发送其他了否则解释不了为json在angular
+	fmt.Fprintf(w, "%s", b) //注意在armlinux下面不能用fmt.Fprintf(w, string(b))的方式
+	//fmt.Printf("para:%s\n", b)
+	log.Printf("结束--resetful请求获取最大最小通风等级数据\n")
+}
+
+/*=====================================resetful=================================================
+	请求：/resetful/nm820/sysPara/WindTables
+	作用：获取温度曲线表
+	返回：
+	依赖的函数：
+		1.uint16_to_twobyte
+		2.NM820_sysPara.go
+=========================================================================================*/
+func WindTables(w http.ResponseWriter, r *http.Request) {
+	log.SetFlags(log.Lshortfile | log.LstdFlags) //设置打印时添加上所在文件，行数
+	log.Printf("开始--resetful请求获取通风等级数据\n")
+
+	p := &NM820_WindTables{}
+	err := p.addData() //用返回的串口数据更新结构体
+	checkerr(err)
+
+	//将hd转换为json
+	b, err := json.Marshal(p) //用这个函数时一定要确保字段名首位大写
+	checkerr(err)
+	//必须要string,确保没发送其他了否则解释不了为json在angular
+	fmt.Fprintf(w, "%s", b) //注意在armlinux下面不能用fmt.Fprintf(w, string(b))的方式
+	//fmt.Printf("para:%s\n", b)
+	log.Printf("结束--resetful请求获取通风等级数据\n")
 }

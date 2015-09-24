@@ -1,8 +1,10 @@
 /*my-page13-mainpage*/
 /*|__my-page13-tongfengClass 第一个图表通风等级表*/
 /*   |__tbody,thead,th,table 为了固定表头，滚动显示tbody内容*/
-/*|__my-page13-wenduquxianTab 第二个图表温度曲线表*/
-/*|__my-page13-tongfengMaxmin 第三个图表温度曲线表*/
+/*|__my-page13-wenduCurve 第二个图表温度曲线表*/
+/*	 |__thead th tbody th文字对中*/
+/*|__my-page13-WindLevel 第三个图表温度曲线表*/
+/*	 |__thead th tbody th文字对中*/
 /*   |__my-page13-panelhead 公共css但在此定义，用于在表头添加一个切换图表按钮*/
 /*      |__my-page13-changeTab 切换图表显示的的图标按钮*/
 /*      |__my-page13-reflashDate 刷新数据的图标*/
@@ -68,7 +70,7 @@
 /*****************第二个表温度曲线表*******在第一个分页上****************************
 /*************************************************************************/
 
-.my-page13-wenduquxianTab{
+.my-page13-wenduCurve{
 	width: 36%;
 	height: 40%;
 	position: absolute;
@@ -77,16 +79,24 @@
 	/*overflow-y: auto;/*如果内容溢出就提供滚动机制*/
 }
 
+/*文字对中*/
+.my-page13-wenduCurve thead th,.my-page13-wenduCurve tbody th{
+	text-align: center;
+}
 /***********************************************************************
 /*****************第三个表温度曲线表*******在第一个分页上****************************
 /*************************************************************************/
-.my-page13-tongfengMaxmin{
+.my-page13-WindLevel{
 	width: 36%;
 	height: 40%;
 	position: absolute;
 	left: 44%;
 	top: 45%;
 	/*overflow-y: auto;/*如果内容溢出就提供滚动机制*/
+}
+/*文字对中*/
+.my-page13-WindLevel thead th,.my-page13-WindLevel tbody th{
+	text-align: center;
 }
 /*   |__my-page13-panel 公共css但在此定义，用于在表头添加一个切换图表按钮*/
 .my-page13-panelhead{
