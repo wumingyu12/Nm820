@@ -24,7 +24,7 @@
 					<tbody>
 						<tr ng-repeat="d in data">
 							<th>{{$index+1}}</th>
-							<th>{{d.Fan}}</th>
+							<th>{{d.Fan | page13_FanIntToString_Filt}}</th>
 							<th>{{d.On}}</th>
 							<th>{{d.Off}}</th>
 							<th>{{d.DTemp}}</th>
