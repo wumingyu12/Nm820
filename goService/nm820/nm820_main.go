@@ -12,8 +12,11 @@ import (
 	"github.com/gorilla/mux"   //路由库
 	"github.com/huin/goserial" //引入串口库
 	"io"
+	"io/ioutil"
 	"log"
 	"net/http"
+	"os"
+	"time"
 )
 
 //用到的常量
@@ -31,7 +34,7 @@ var chanRb = make(chan []byte, 1)      //接收的比特,缓冲0个
 var chanRbNum = make(chan int, 1)      //无缓冲表面是互斥锁，只有这个有值才会让串口发送命令
 var chanSerialBusy = make(chan int, 1) //有东西在里面代表busy，其他程序不要写上面的3个东西
 
-/*=======================线程函数====================
+/*=======================线程函数 init====================
 	依赖：1.chekerr()函数
 		  2.var chanSerialRecvice = make(chan []byte, 10) //接收的比特数组
 		  3.
@@ -70,10 +73,98 @@ func goSendSerial(wb <-chan []byte, rb chan<- []byte, rbnum <-chan int, io io.Re
 	}
 }
 
-/*==========================包初始化函数==================================
+/*=======================线程函数 init====================
+	作用：开启一个线程，每隔15分钟读一次数据作为24小时温度
+	依赖：1串口发送通道
+		  2.NM820_StatePara结构体
+		  3.time包,iotil包，os包
+	使用：需要在init中启动
+	生成的东西：resetful/nm820Json/Get24TemHumi.json
+========================================================================*/
+func goGet24TemHumi() {
+	log.SetFlags(log.Lshortfile | log.LstdFlags)
+	log.Println("线程goGet24Tem启动,每隔15分钟取一次温度。")
+
+	type TemHumi24Hour struct {
+		Time []uint16
+		Tavg []float32
+		Havg []float32
+	}
+	var mytime uint16 = 0 //一开始的时间点为0时
+	var temSum int16 = 0
+	var humiSum uint16 = 0
+	var sum uint16 = 0 //计数每次时间点的数据个数,不赋值为0，是为了避免第一次sum=0作为分母
+	para := NM820_StatePara{}
+	data := TemHumi24Hour{}
+	var tAvg, hAvg float32
+
+	//判断之前的存放历史数据的json文件是否存在
+	_, err := os.Stat("./resetful/nm820Json/Get24TemHumi.json")
+	if err != nil { //如果不存在,初始化一个json
+		os.MkdirAll("./resetful/nm820Json", 0777)
+		os.Create("./resetful/nm820Json/Get24TemHumi.json")
+		//初始化一个json
+		p := &TemHumi24Hour{}
+		p.Time = []uint16{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23}
+		p.Tavg = []float32{20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20}
+		p.Havg = []float32{80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80}
+		//将p转换为json
+		b, err := json.Marshal(p) //用这个函数时一定要确保字段名首位大写
+		checkerr(err)
+		ioutil.WriteFile("./resetful/nm820Json/Get24TemHumi.json", b, 0777) //写入到指定位置
+	}
+	for {
+		log.Println("每隔6分钟取一次温度。")
+		//发送数据并获取，前提func init()的运行,g_statepara在另一个go中
+		chanSerialBusy <- 1 //为了其他地方使用串口时发送接受流程不被打断
+		chanWb <- append(g_statepara, sumCheck(g_statepara))
+		chanRbNum <- 100 //开启一次锁让进程发送一次命令,接收一次命令，接收字节数为100
+		rec := <-chanRb  //类型byte[100]
+		<-chanSerialBusy
+		para.reflashValue(rec) //当前的状态
+
+		if mytime == para.Hour { //如果当前时间点为要记录的时间点
+			temSum = temSum + para.TemAvg    //温度的总和
+			humiSum = humiSum + para.HumiAvg //湿度的总和
+			sum++                            //这个时间点的数据量加1
+		} else { //记录时间点已经过去了，放到json文件中
+			//先读出原纪录的json
+
+			js, _ := ioutil.ReadFile("./resetful/nm820Json/Get24TemHumi.json")
+			json.Unmarshal([]byte(js), &data) //将json解码为struct
+
+			tAvg = float32(temSum) / (float32(sum) + 0.00000000001) / 10  //平均温度，这里还是存在bug假设程序运行的下一条命令恰好是从前一个小时数到后一个小时数，sum就会以0进入这里
+			hAvg = float32(humiSum) / (float32(sum) + 0.00000000001) / 10 //避免出现除0的情况
+
+			tFl := float32(int32(tAvg*10)) / 10 //保留1位小数
+			hFl := float32(int32(hAvg*10)) / 10
+
+			data.Tavg[mytime] = tFl
+			data.Havg[mytime] = hFl
+			b, err := json.Marshal(data) //用这个函数时一定要确保字段名首位大写
+			checkerr(err)
+			ioutil.WriteFile("./resetful/nm820Json/Get24TemHumi.json", b, 0777) //将结果写回到json中
+
+			//累加清零
+			temSum = 0
+			humiSum = 0
+			sum = 0
+
+			mytime = para.Hour //等于新的时间
+		}
+
+		//<-time.After(5 * time.Second)
+		//隔10秒后继续
+		time.Sleep(6 * time.Minute) //6分钟采样一次一小时采样10次
+
+	}
+}
+
+/*==========================包初始化函数===init===============================
 	在包引入时会被调用，隐式调用
 	作用：
 		1.开启一个go fuc 用来一直保持串口的打开
+		2.开启一个线程，每隔15分钟读一次数据作为24小时温度
 	使用示范：
 			go goSendSerial(chanWb, chanRb, chanRbNum, s)
 			chanWb <- append(g_cmd, sumCheck(g_cmd))
@@ -93,7 +184,8 @@ func init() {
 	s, err := goserial.OpenPort(c) //打开串口
 	checkerr(err)
 
-	go goSendSerial(chanWb, chanRb, chanRbNum, s)
+	go goSendSerial(chanWb, chanRb, chanRbNum, s) //串口收发线程
+	go goGet24TemHumi()                           //24小时温湿度读取
 }
 
 //-------------------------------------------------

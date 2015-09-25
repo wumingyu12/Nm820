@@ -54,6 +54,8 @@ func main() {
 	mux_router.HandleFunc("/resetful/nm820/sysPara/WindLevel", nm820.WindLevel).Methods("GET")
 	//得到通风等级表 /resetful/nm820/sysPara/WindTables
 	mux_router.HandleFunc("/resetful/nm820/sysPara/WindTables", nm820.WindTables).Methods("GET")
+	//resetful/nm820Json/Get24TemHumi.json
+	http.Handle("/resetful/nm820Json/Get24TemHumi.json", http.FileServer(http.Dir("./")))
 
 	http.Handle("/", mux_router) //这一句别忘了 否则前面的mux_router是不作用的
 	fmt.Println("正在监听2234端口,main.go")
