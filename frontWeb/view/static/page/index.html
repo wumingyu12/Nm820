@@ -1,0 +1,29 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<link rel="stylesheet" href="/view/static/page/index.css">
+	<link rel="stylesheet" href="/frame/font-awesome-4.3.0/css/font-awesome.css">
+	<script>
+		var page_index_goState=function(){ //跳转到页面
+			window.location.href="/view/index1.html"
+		};
+	</script>
+</head>
+<body>
+	<img class="page_index_img" src="/view/static/page/outlook.jpg" alt="">
+	<!-- 右边的显示标题 -->
+	<div class="page_index_title">
+		<span>南牧物联网智能养殖系统演示</span>
+	</div>
+	<!-- 南牧logo -->
+	<img class="page_index_logo" src="/view/static/page/nmlogo.png" alt="">
+	<!-- 左手边跳转按钮 -->
+	<div class="page_index_jump">
+		<button onclick="page_index_goState()"><i class="fa fa-skyatlas fa-2x"></i><span> 环境通风</span></button>
+		<button onclick="page_index_goState()"><i class="fa fa-chain fa-2x"></i><span> 料线输送</span></button> 
+		<button onclick="page_index_goState()"><i class="fa fa-spoon fa-2x"></i><span> &nbsp;精准饲喂</span></button>
+		<button onclick="page_index_goState()"><i class="fa fa-tachometer fa-2x"></i><span> 料塔称重</span></button>
+	</div>
+</body>
+</html>

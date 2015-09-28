@@ -1,0 +1,83 @@
+/*body*/
+/*  |__page_index_img */
+/*     |__page_index_logo 南牧logo*/
+/*     |__page_index_title 右手边的标题南牧物联网演示平台*/
+/*        |__span 文字内容*/
+/*     |__page_index_jump 跳转到各个系统的按钮集合*/
+/*        |__button 进入各系统的按钮*/
+/*           |__hover 点击手势*/
+
+html,body{
+	width: 100%;
+	height: 100%;
+	margin: 0px;
+}
+
+@media all and (min-width: 1700px){/*当宽度大于800px的所有情况*/
+	body{
+		font-size:16px;
+	}
+}
+@media (min-width: 900px) and (max-width: 1700px){/*当宽度小于500-800px的所有情况*/
+	body{
+		font-size:10px;
+	}
+}
+@media (min-width: 500px) and (max-width: 900px){/*当宽度小于500-800px的所有情况*/
+	body{
+		font-size:7px;
+	}
+}
+
+.page_index_img{
+	width: 100%;
+	height: 100%;
+	position: relative;
+}
+.page_index_logo{
+	bottom:10px;
+	right: 10px;
+	width:13%;
+	position: absolute;
+}
+/*===============================================*/
+.page_index_title{
+	position: absolute;
+	top:0px;
+	left: 0px;
+	width: 100%;
+	margin-top: 20px;
+	display: inline-block;
+	text-align: center;
+}
+/*标题*/
+.page_index_title span{
+	font-size: 4.5em;
+	color: white;
+	font-weight: bold;
+	text-shadow:6px 6px 6px black;
+}
+/*===============================================*/
+.page_index_jump{
+	position: absolute;
+	left: 20px;
+	bottom: 2%;
+	width: 15%;
+	height: 50%;
+}
+.page_index_jump button{
+	display: block;
+	margin: 15px;
+	width: 100%;
+	font-size: 2.5em;
+	font-weight: bold;
+	background-color: rgb(244,244,220);
+	opacity: 0.7;
+	color: black;
+	border-radius: 5px;
+	box-shadow:10px 10px 10px;
+}
+/*点击手势*/
+.page_index_jump button:hover{
+	cursor: pointer;
+}

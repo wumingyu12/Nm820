@@ -14,7 +14,7 @@ import (
 //=====================
 func NotFoundHandler(w http.ResponseWriter, r *http.Request) { //如果路由规则不符合没有注册的如/2333,/22ww等
 	if r.URL.Path == "/" {
-		http.Redirect(w, r, "/view/index.html", http.StatusFound) //地址重定向
+		http.Redirect(w, r, "/view/static/page/index.html", http.StatusFound) //地址重定向
 	}
 
 	t, err := template.ParseFiles("frontWeb/view/static/404/404.html")
