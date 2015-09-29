@@ -1,158 +1,153 @@
 <div class="my-page13-mainpage">
 	<!-- 第一个表通风等级表 -->
-	<div class="my-page13-tongfengClass" data-ng-controller="page13_wenduTableCtrl">
-		<div  class="panel panel-default">
-			<div class="panel-heading">通风等级表</div>
-			<div class="panel-body" style="padding:0px;">
-				<table class="table table-bordered table-condensed table-striped ">
-					<thead>
-						<tr>
-							<th>级别</th>
-							<th>风机组</th>
-							<th>开(分钟)</th>
-							<th>关(分钟)</th>
-							<th>温差℃</th>
-							<th>侧风窗(%)</th>
-							<th>幕帘(%)</th>
-							<th>变频风机(%)</th>
-							<th>卷帘1(%)</th>
-							<th>卷帘2(%)</th>
-							<th>卷帘3(%)</th>
-							<th>卷帘4(%)</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr ng-repeat="d in data">
-							<th>{{$index+1}}</th>
-							<th>{{d.Fan | page13_FanIntToString_Filt}}</th>
-							<th>{{d.On}}</th>
-							<th>{{d.Off}}</th>
-							<th>{{d.DTemp}}</th>
-							<th>{{d.SideWindow}}</th>
-							<th>{{d.Curtain}}</th>
-							<th>{{d.VSFan}}</th>
-							<th>{{d.Roller1}}</th>
-							<th>{{d.Roller2}}</th>
-							<th>{{d.Roller3}}</th>
-							<th>{{d.Roller4}}</th>
-						</tr>
-					</tbody>
-				</table>
-			</div>
+	<div  class="panel panel-default my-page13-tongfengClass" ng-controller="page13_wenduTableCtrl">
+		<div class="panel-heading">通风等级表</div>
+		<div class="panel-body" style="padding:0px;">
+			<table class="table table-bordered table-condensed table-striped ">
+				<thead>
+					<tr>
+						<th>级别</th>
+						<th>风机组</th>
+						<th>开(分钟)</th>
+						<th>关(分钟)</th>
+						<th>温差℃</th>
+						<th>侧风窗(%)</th>
+						<th>幕帘(%)</th>
+						<th>变频风机(%)</th>
+						<th>卷帘1(%)</th>
+						<th>卷帘2(%)</th>
+						<th>卷帘3(%)</th>
+						<th>卷帘4(%)</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="d in data">
+						<th>{{$index+1}}</th>
+						<th>{{d.Fan | page13_FanIntToString_Filt}}</th>
+						<th>{{d.On}}</th>
+						<th>{{d.Off}}</th>
+						<th>{{d.DTemp}}</th>
+						<th>{{d.SideWindow}}</th>
+						<th>{{d.Curtain}}</th>
+						<th>{{d.VSFan}}</th>
+						<th>{{d.Roller1}}</th>
+						<th>{{d.Roller2}}</th>
+						<th>{{d.Roller3}}</th>
+						<th>{{d.Roller4}}</th>
+					</tr>
+				</tbody>
+			</table>
 		</div>
 	</div>
+
 	<!--============================================== -->
 	<!-- 第二个表温度曲线表 -->
 	<!--============================================== -->
-	<div class="my-page13-wenduCurve" ng-controller="page13_wenduCurveCtrl">
-		<div  class="panel panel-default">
-			<div class="panel-heading">
-				<span>温度曲线图</span>
-				<!-- 按钮用于切换图表显示还是表格显示 -->
-				<a href=""><span class="glyphicon glyphicon-sort my-page13-changeTab" ng-click="changeTabChat()" aria-hidden="true"></span></a>
-			</div>
-			<div class="panel-body" style="padding:0px;">
-				<table ng-if="ifShowTab" class="table table-bordered table-condensed table-striped ">
-					<thead>
-						<tr>
-							<th>序号</th>
-							<th>日龄</th>
-							<th>目标温度</th>
-							<th>加热温度</th>
-							<th>制冷温度</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr ng-repeat="n in Days track by $index">
-							<th>{{$index+1}}</th>
-							<th>{{n}}</th>
-							<th>{{Targets[$index]}}</th>
-							<th>{{Heats[$index]}}</th>
-							<th>{{Cools[$index]}}</th>
+	<div  class="panel panel-default my-page13-wenduCurve" ng-controller="page13_wenduCurveCtrl">
+		<div class="panel-heading my-page13-panelhead">
+			<span>温度曲线图</span>
+			<!-- 按钮用于切换图表显示还是表格显示 -->
+			<a href=""><span class="glyphicon glyphicon-sort my-page13-changeTab" ng-click="changeTabChat()" aria-hidden="true"></span></a>
+		</div>
+		<div class="panel-body" style="padding:0px;">
+			<table ng-if="ifShowTab" class="table table-bordered table-condensed table-striped ">
+				<thead>
+					<tr>
+						<th>序号</th>
+						<th>日龄</th>
+						<th>目标温度</th>
+						<th>加热温度</th>
+						<th>制冷温度</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="n in Days track by $index">
+						<th>{{$index+1}}</th>
+						<th>{{n}}</th>
+						<th>{{Targets[$index]}}</th>
+						<th>{{Heats[$index]}}</th>
+						<th>{{Cools[$index]}}</th>
 
-						</tr>
-					</tbody>
-				</table>
+					</tr>
+				</tbody>
+			</table>
 
-				<!-- 图表显示通风等级曲线图 一开始是不显示-->
-				<div class="my-page13-tongfengCurve" ng-if="ifShowCurve">
-					<canvas id="line" 
-		          		class="chart chart-line" 
-		          		legend="flase"
-		                click="onClick" 
-		                hover="onHover"
-		                series="CurveData.series"
-						data="CurveData.data" 
-						labels="CurveData.labels" 
+			<!-- 图表显示通风等级曲线图 一开始是不显示-->
+			<div class="my-page13-tongfengCurve" ng-if="ifShowCurve">
+				<canvas id="line" 
+	          		class="chart chart-line" 
+	          		legend="flase"
+	                click="onClick" 
+	                hover="onHover"
+	                series="CurveData.series"
+					data="CurveData.data" 
+					labels="CurveData.labels" 
 
-		                options="{
-	        				scaleShowHorizontalLines: true,
-	        				scaleShowVerticalLines: true,
-	        				tooltipTemplate: '<%= value %> $',
-	        				responsive: true,
-	        				datasetFill: false
-	    				}"
-						>
-		            </canvas>
-				</div>
+	                options="{
+        				scaleShowHorizontalLines: true,
+        				scaleShowVerticalLines: true,
+        				tooltipTemplate: '<%= value %> $',
+        				responsive: true,
+        				datasetFill: false
+    				}"
+					>
+	            </canvas>
 			</div>
 		</div>
 	</div>
 	<!--============================================== -->
 		<!-- 第三个表最小最大通风等级表 -->
 	<!--============================================== -->
-	<div class="my-page13-WindLevel" ng-controller="page13_WindLevelCtrl">
-		<div  class="panel panel-default">
-			<div class="panel-heading my-page13-panelhead">
-				<span >通风等级</span>
-				<!--  -->
-				<!-- 按钮用于切换图表显示还是表格显示 -->
-				<a href=""><span class="glyphicon glyphicon-sort my-page13-changeTab" ng-click="changeTabChat()" aria-hidden="true"></span></a>
-				
-				 
-			</div>
-			<div class="panel-body" style="padding:0px;">
-				<!-- 表格显示温度曲线图 -->
-				<table ng-if="ifShowTab" class="table table-bordered table-condensed table-striped ">
-					<thead>
-						<tr>
-							<th>序号</th>
-							<th>日龄</th>
-							<th>最小通风级别</th>
-							<th>最大通风级别</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr ng-repeat="n in Day track by $index">
-							<th>{{$index+1}}</th>
-							<th>{{n}}</th>
-							<th>{{Min[$index]}}</th>
-							<th>{{Max[$index]}}</th>
-						</tr>
-					</tbody>
-				</table>
-				<!-- 图表显示通风等级曲线图 一开始是不显示-->
-				<div class="my-page13-tongfengCurve" ng-if="ifShowCurve">
-					<canvas id="line" 
-		          		class="chart chart-line" 
-		          		legend="flase"
-		                click="onClick" 
-		                hover="onHover"
-		                series="CurveData.series"
-						data="CurveData.data" 
-						labels="CurveData.labels" 
+	<div  class="panel panel-default my-page13-WindLevel" ng-controller="page13_WindLevelCtrl">
+		<div class="panel-heading my-page13-panelhead">
+			<span >通风等级</span>
+			<!--  -->
+			<!-- 按钮用于切换图表显示还是表格显示 -->
+			<a href=""><span class="glyphicon glyphicon-sort my-page13-changeTab" ng-click="changeTabChat()" aria-hidden="true"></span></a>
+			
+			 
+		</div>
+		<div class="panel-body" style="padding:0px;">
+			<!-- 表格显示温度曲线图 -->
+			<table ng-if="ifShowTab" class="table table-bordered table-condensed table-striped ">
+				<thead>
+					<tr>
+						<th>序号</th>
+						<th>日龄</th>
+						<th>最小通风级别</th>
+						<th>最大通风级别</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="n in Day track by $index">
+						<th>{{$index+1}}</th>
+						<th>{{n}}</th>
+						<th>{{Min[$index]}}</th>
+						<th>{{Max[$index]}}</th>
+					</tr>
+				</tbody>
+			</table>
+			<!-- 图表显示通风等级曲线图 一开始是不显示-->
+			<div class="my-page13-tongfengCurve" ng-if="ifShowCurve">
+				<canvas id="line" 
+	          		class="chart chart-line" 
+	          		legend="flase"
+	                click="onClick" 
+	                hover="onHover"
+	                series="CurveData.series"
+					data="CurveData.data" 
+					labels="CurveData.labels" 
 
-		                options="{
-	        				scaleShowHorizontalLines: true,
-	        				scaleShowVerticalLines: true,
-	        				tooltipTemplate: '<%= value %> $',
-	        				responsive: true
-	    				}"
-						>
-		            </canvas>
-				</div>
-
+	                options="{
+        				scaleShowHorizontalLines: true,
+        				scaleShowVerticalLines: true,
+        				tooltipTemplate: '<%= value %> $',
+        				responsive: true
+    				}"
+					>
+	            </canvas>
 			</div>
+
 		</div>
 	</div>
 </div>

@@ -21,10 +21,8 @@
 /***********************************************************************/
 .my-page13-tongfengClass{
 	width: 80%;
-	height: 40%;
-	position: absolute;
-	left: 4%;
-	top: 4%;
+	float: left;
+	margin: 30px;
 	/*overflow-y: auto;/*如果内容溢出就提供滚动机制*/
 }
 
@@ -72,10 +70,9 @@
 
 .my-page13-wenduCurve{
 	width: 36%;
-	height: 40%;
-	position: absolute;
-	left: 4%;
-	top: 45%;
+	float: left;
+	margin-top: 10px;
+	margin-left:30px;
 	/*overflow-y: auto;/*如果内容溢出就提供滚动机制*/
 }
 
@@ -88,10 +85,9 @@
 /*************************************************************************/
 .my-page13-WindLevel{
 	width: 36%;
-	height: 40%;
-	position: absolute;
-	left: 44%;
-	top: 45%;
+	float: left;
+	margin-top: 10px;
+	margin-left:30px;
 	/*overflow-y: auto;/*如果内容溢出就提供滚动机制*/
 }
 /*文字对中*/
