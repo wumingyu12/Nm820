@@ -1,4 +1,54 @@
-var page13_model=angular.module('MyApp.page13',[]);
+var page13_model=angular.module('MyApp.page13',["xeditable"]);
+
+page13_model.run(function(editableOptions) {
+  editableOptions.theme = 'bs3'; // bootstrap3 theme. Can be also 'bs2', 'default'
+});
+
+/*==================================指令 让表格tr可以编辑=========================================
+	作用：用于编辑参数表
+		1.双击会进入编辑模式
+		2.悬停会改变背景颜色
+	依赖：1.jquery库
+		  2.
+================================================================================================*/
+page13_model.directive('page13EditGrid', function(){
+	// Runs during compile
+	return {
+		// name: '',
+		// priority: 1,
+		// terminal: true,
+		// scope: {}, // {} = isolate, true = child, false/undefined = no change
+		// controller: function($scope, $element, $attrs, $transclude) {},
+		// require: 'ngModel', // Array = multiple requires, ? = optional, ^ = check parent elements
+		restrict: 'EA', // E = Element, A = Attribute, C = Class, M = Comment
+		template: '<input type="text" class="input-medium" size="5">',
+		// templateUrl: '',
+		// replace: true,
+		// transclude: true,
+		// compile: function(tElement, tAttrs, function transclude(function(scope, cloneLinkingFn){ return function linking(scope, elm, attrs){}})),
+		link: function(scope, elem, attrs, controller) {
+			elem.bind("click",function(){
+				alert("11111111");
+			});
+
+			//先保存原来的背景颜色
+			var origenback=null;
+			//悬停改变背景颜色
+			elem.hover(	
+				//进入函数
+				function(){
+					origenback=elem.css("background-color");//先保存原来的背景色
+					elem.css("background-color","#cceeff");
+				},
+				//退出函数
+				function(){
+					elem.css("background-color",origenback);
+				}
+			);
+		}
+	};
+});
+
 /*================================通风等级表============================================
 ==============================================================================*/
 page13_model.controller('page13_wenduTableCtrl', [
@@ -152,6 +202,10 @@ page13_model.controller('page13_WindLevelCtrl', [
 		$scope.changeTabChat = function(){
 	    	$scope.ifShowTab=!$scope.ifShowTab;
 	    	$scope.ifShowCurve=!$scope.ifShowCurve;
+		};
+
+		$scope.test=function(){
+			 return "Username should be `awesome` or `error`";
 		};
 	}
 ]);

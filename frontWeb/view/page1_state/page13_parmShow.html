@@ -23,7 +23,7 @@
 				<tbody>
 					<tr ng-repeat="d in data">
 						<th>{{$index+1}}</th>
-						<th>{{d.Fan | page13_FanIntToString_Filt}}</th>
+						<th page13-edit-grid>{{d.Fan | page13_FanIntToString_Filt}}</th>
 						<th>{{d.On}}</th>
 						<th>{{d.Off}}</th>
 						<th>{{d.DTemp}}</th>
@@ -120,10 +120,10 @@
 				</thead>
 				<tbody>
 					<tr ng-repeat="n in Day track by $index">
-						<th>{{$index+1}}</th>
-						<th>{{n}}</th>
-						<th>{{Min[$index]}}</th>
-						<th>{{Max[$index]}}</th>
+						<th >{{$index+1}}</th>
+						<th editable-text="Day[$index]" onaftersave="test()" e-style="width:100px">{{n}}</th>
+						<th editable-text="Min[$index]" onaftersave="test()" e-style="width:100px">{{Min[$index]}}</th>
+						<th editable-text="Max[$index]">{{Max[$index]}}</th>
 					</tr>
 				</tbody>
 			</table>
@@ -151,3 +151,4 @@
 		</div>
 	</div>
 </div>
+
