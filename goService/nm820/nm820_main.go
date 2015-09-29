@@ -139,12 +139,14 @@ func goGet24TemHumi() {
 			tFl := float32(int32(tAvg*10)) / 10 //保留1位小数
 			hFl := float32(int32(hAvg*10)) / 10
 
-			data.Tavg[mytime] = tFl
-			data.Havg[mytime] = hFl
-			b, err := json.Marshal(data) //用这个函数时一定要确保字段名首位大写
-			checkerr(err)
-			ioutil.WriteFile("./resetful/nm820Json/Get24TemHumi.json", b, 0777) //将结果写回到json中
-
+			//刚运行那会mytime为0并且sum也为0的的第一次就不修改json
+			if mytime != 0 && sum != 0 {
+				data.Tavg[mytime] = tFl
+				data.Havg[mytime] = hFl
+				b, err := json.Marshal(data) //用这个函数时一定要确保字段名首位大写
+				checkerr(err)
+				ioutil.WriteFile("./resetful/nm820Json/Get24TemHumi.json", b, 0777) //将结果写回到json中
+			}
 			//累加清零
 			temSum = 0
 			humiSum = 0
