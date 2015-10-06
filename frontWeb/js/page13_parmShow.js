@@ -1,64 +1,80 @@
-var page13_model=angular.module('MyApp.page13',["xeditable"]);
+var page13_model=angular.module('MyApp.page13',["xeditable","checklist-model"]);
 
 page13_model.run(function(editableOptions) {
   editableOptions.theme = 'bs3'; // bootstrap3 theme. Can be also 'bs2', 'default'
 });
 
-/*==================================指令 让表格tr可以编辑=========================================
-	作用：用于编辑参数表
-		1.双击会进入编辑模式
-		2.悬停会改变背景颜色
-	依赖：1.jquery库
-		  2.
-================================================================================================*/
-page13_model.directive('page13EditGrid', function(){
-	// Runs during compile
-	return {
-		// name: '',
-		// priority: 1,
-		// terminal: true,
-		// scope: {}, // {} = isolate, true = child, false/undefined = no change
-		// controller: function($scope, $element, $attrs, $transclude) {},
-		// require: 'ngModel', // Array = multiple requires, ? = optional, ^ = check parent elements
-		restrict: 'EA', // E = Element, A = Attribute, C = Class, M = Comment
-		template: '<input type="text" class="input-medium" size="5">',
-		// templateUrl: '',
-		// replace: true,
-		// transclude: true,
-		// compile: function(tElement, tAttrs, function transclude(function(scope, cloneLinkingFn){ return function linking(scope, elm, attrs){}})),
-		link: function(scope, elem, attrs, controller) {
-			elem.bind("click",function(){
-				alert("11111111");
-			});
 
-			//先保存原来的背景颜色
-			var origenback=null;
-			//悬停改变背景颜色
-			elem.hover(	
-				//进入函数
-				function(){
-					origenback=elem.css("background-color");//先保存原来的背景色
-					elem.css("background-color","#cceeff");
-				},
-				//退出函数
-				function(){
-					elem.css("background-color",origenback);
-				}
-			);
-		}
-	};
-});
 
 /*================================通风等级表============================================
+	作用：1.当http请求数据后，马上更新以checklist显示的风机组模型，同时也作为显示在表格的模型
+		  2.uploadData()上传当前的data数据，保存参数设置
 ==============================================================================*/
 page13_model.controller('page13_wenduTableCtrl', [
 	'$scope',
 	'$http',
-	function ($scope,$http){
-		$http.get('/resetful/nm820/sysPara/WindTables').success(function(data){
+	'$filter',
+	function ($scope,$http,$filter){
+		$http.get('/testjson/page13/WindTables.json').success(function(data){ //测试用json
+		//$http.get('/resetful/nm820/sysPara/WindTables').success(function(data){
 			$scope.data=data.WindTables;
-			console.log($scope.data);
+
+			//同步风机组checklist,20个通风等级，循环0-19
+			for (var i = 0; i <= 19; i++) {
+				var fan=$scope.data[i].Fan;
+				$scope.fenjistat[i]=[];//显示的checklist全部不勾选,按照所勾选的风机等级
+	  			//如果低位有值 如100111&000001 =0000001 //返回的是1号风机在，那么显示checklist时也要打勾
+	  			if((fan&1)==1){$scope.fenjistat[i].push(1);};
+	  			if((fan&2)==2){$scope.fenjistat[i].push(2);};
+	  			if((fan&4)==4){$scope.fenjistat[i].push(3);};
+	  			if((fan&8)==8){$scope.fenjistat[i].push(4);};
+	  			if((fan&16)==16){$scope.fenjistat[i].push(5);};
+	  			if((fan&32)==32){$scope.fenjistat[i].push(6);};
+	  			if((fan&64)==64){$scope.fenjistat[i].push(7);};
+	  			if((fan&128)==128){$scope.fenjistat[i].push(8);};
+			};
 		});
+		//风机选择后的状态,因为有20个等级所以有20个组，会在得到json的get请求中进行同步
+		$scope.fenjistat = [
+			[],[],[],[],[],
+			[],[],[],[],[],
+			[],[],[],[],[],
+			[],[],[],[],[]
+		];
+		//风机选择checklist的模型	
+		$scope.fenjistats = [
+    		{value: 1, text: '1'},
+    		{value: 2, text: '2'},
+    		{value: 3, text: '3'},
+    		{value: 4, text: '4'},
+    		{value: 5, text: '5'},
+    		{value: 6, text: '6'},
+    		{value: 7, text: '7'},
+    		{value: 8, text: '8'}
+  		];
+
+  		//用xeditable修改完Fan的值后，每个通风等级的风机，反向更新会data[i].Fan
+  		//将checklist模型转化为更新原来的原始fan二进制表示，$scope.fenjistat变回data[i].Fan
+  		$scope.onafterSetFan=function(index){
+  			$scope.data[index].Fan=0;//先清空
+  			for (var j = 0; j < $scope.fenjistat[index].length; j++) {//每个checklist进行循环，j代表每个通风等级里面的风机索引
+  		 		if($scope.fenjistat[index][j]==1){$scope.data[index].Fan+=1;}
+  		 		if($scope.fenjistat[index][j]==2){$scope.data[index].Fan+=2;}
+  		 		if($scope.fenjistat[index][j]==3){$scope.data[index].Fan+=4;}
+  		 		if($scope.fenjistat[index][j]==4){$scope.data[index].Fan+=8;}
+  		 		if($scope.fenjistat[index][j]==5){$scope.data[index].Fan+=16;}
+  		 		if($scope.fenjistat[index][j]==6){$scope.data[index].Fan+=32;}
+  		 		if($scope.fenjistat[index][j]==7){$scope.data[index].Fan+= 64;}
+  		 		if($scope.fenjistat[index][j]==8){$scope.data[index].Fan+= 128;}
+  		 	};
+  		 	//console.log($scope.data[index].Fan);
+  		};
+
+  		//====================保存修改后的参数设置,但要注意经过xeditable后数值是字符型的不是数值型的================
+  		$scope.uploadData=function(){	
+  			console.log($scope.data);
+  		}
+
 	}
 ]);
 /*===================================过滤器 通风等级表的fan属性的显示用========================================================
@@ -67,8 +83,9 @@ page13_model.controller('page13_wenduTableCtrl', [
 		  3 转换为 12000000
 		  127      12345670
 		  255      12345678
+		备注：20151008放弃不用
 ===============================================================================================*/
-page13_model.filter('page13_FanIntToString_Filt',function(){
+/*page13_model.filter('page13_FanIntToString_Filt',function(){
 	return function(input){
 		var str="";
 		if((input&1)==1){//如果低位有值 如100111&000001 =0000001
@@ -125,6 +142,7 @@ page13_model.filter('page13_FanIntToString_Filt',function(){
 		return str;
 	};
 });
+*/
 /*============================控制器 温度曲线======================================
 	1.图表切换
 	2.请求温度曲线数据

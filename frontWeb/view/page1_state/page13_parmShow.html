@@ -1,9 +1,13 @@
 <div class="my-page13-mainpage">
 	<!-- 第一个表通风等级表 -->
 	<div  class="panel panel-default my-page13-tongfengClass" ng-controller="page13_wenduTableCtrl">
-		<div class="panel-heading">通风等级表</div>
+		<div class="panel-heading my-page13-panelhead" >
+			<span>通风等级表</span>
+			<button type="button" class="btn btn-primary btn-sm my-page13-floatright" ng-click="uploadData()">保存设置</button>
+		</div>
 		<div class="panel-body" style="padding:0px;">
-			<table class="table table-bordered table-condensed table-striped ">
+		<div class="my-page13-scroll">
+			<table class="table table-bordered table-striped ">
 				<thead>
 					<tr>
 						<th>级别</th>
@@ -23,20 +27,22 @@
 				<tbody>
 					<tr ng-repeat="d in data">
 						<th>{{$index+1}}</th>
-						<th page13-edit-grid>{{d.Fan | page13_FanIntToString_Filt}}</th>
-						<th>{{d.On}}</th>
-						<th>{{d.Off}}</th>
-						<th>{{d.DTemp}}</th>
-						<th>{{d.SideWindow}}</th>
-						<th>{{d.Curtain}}</th>
-						<th>{{d.VSFan}}</th>
-						<th>{{d.Roller1}}</th>
-						<th>{{d.Roller2}}</th>
-						<th>{{d.Roller3}}</th>
-						<th>{{d.Roller4}}</th>
+						<!-- 用勾选的的方式选择风机组 -->
+						<th editable-checklist="fenjistat[$index]" e-ng-options="s.value as s.text for s in fenjistats" onaftersave="onafterSetFan($index)">{{fenjistat[$index]}}</th>
+						<th editable-text="data[$index].On" e-style="width:100px">{{d.On}}</th>
+						<th editable-text="data[$index].Off" e-style="width:100px">{{d.Off}}</th>
+						<th editable-text="data[$index].DTemp" e-style="width:100px">{{d.DTemp}}</th>
+						<th editable-range="data[$index].SideWindow" e-step="1" e-style="width:100px">{{d.SideWindow}}</th>
+						<th editable-range="data[$index].Curtain" e-style="width:100px">{{d.Curtain}}</th>
+						<th editable-range="data[$index].VSFan" e-style="width:100px">{{d.VSFan}}</th>
+						<th editable-range="data[$index].Roller1" e-style="width:100px">{{d.Roller1}}</th>
+						<th editable-range="data[$index].Roller2" e-style="width:100px">{{d.Roller2}}</th>
+						<th editable-range="data[$index].Roller3" e-style="width:100px">{{d.Roller3}}</th>
+						<th editable-range="data[$index].Roller4" e-style="width:100px">{{d.Roller4}}</th>
 					</tr>
 				</tbody>
 			</table>
+		</div>	
 		</div>
 	</div>
 
@@ -50,7 +56,7 @@
 			<a href=""><span class="glyphicon glyphicon-sort my-page13-changeTab" ng-click="changeTabChat()" aria-hidden="true"></span></a>
 		</div>
 		<div class="panel-body" style="padding:0px;">
-			<table ng-if="ifShowTab" class="table table-bordered table-condensed table-striped ">
+			<table ng-if="ifShowTab" class="table table-bordered table-condensed table-striped " >
 				<thead>
 					<tr>
 						<th>序号</th>
@@ -60,18 +66,16 @@
 						<th>制冷温度</th>
 					</tr>
 				</thead>
-				<tbody>
+				<tbody >
 					<tr ng-repeat="n in Days track by $index">
 						<th>{{$index+1}}</th>
 						<th>{{n}}</th>
 						<th>{{Targets[$index]}}</th>
 						<th>{{Heats[$index]}}</th>
 						<th>{{Cools[$index]}}</th>
-
 					</tr>
 				</tbody>
 			</table>
-
 			<!-- 图表显示通风等级曲线图 一开始是不显示-->
 			<div class="my-page13-tongfengCurve" ng-if="ifShowCurve">
 				<canvas id="line" 
