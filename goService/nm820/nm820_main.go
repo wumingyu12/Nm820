@@ -240,6 +240,15 @@ func uint16_to_twobyte(i uint16) (byte, byte) {
 	return bh, bl
 }
 
+//------------------------------------
+//--int16转换为2个byte
+//----------------------------------
+func int16_to_twobyte(i int16) (byte, byte) {
+	bh := byte(i >> 8)   //高位
+	bl := byte(i & 0xff) //低位
+	return bh, bl
+}
+
 /**************************************************************************
 给resetful调用的函数，外部可访问,resetful
 ***************************************************************************/
@@ -316,10 +325,12 @@ func GetTempHistory(w http.ResponseWriter, r *http.Request) {
 	err := p.reflashValue(rec) //用返回的数据更新结构体
 	checkerr(err)
 	day := p.GDay //得到当前日龄uint16格式
+	log.Printf("当前日龄：%d", day)
 
+	day1 := int16(day) //将uint16转换为int16 避免出现负数的情况时无法处理
 	hd := &NM820_History30{}
 	//注意如果day为当前日的话是返回错误的,所以从day-1日开始
-	hd.addData(day-1, datatype) //可选类型"Tem"---温度"Humi"---湿度"NH3"---氨气"Light"--光照
+	hd.addData(day1-1, datatype) //可选类型"Tem"---温度"Humi"---湿度"NH3"---氨气"Light"--光照
 	//log.Println(hd)
 
 	//将hd转换为json

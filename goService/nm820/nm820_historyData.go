@@ -38,15 +38,20 @@ type NM820_History30 struct {
 			"Light"--光照
 	注意：1.如要读日龄无记录，返回当日的记录 ，日龄为0
 		  2.如果日龄恰好是当前日，也会返回日龄0
+		  3.如果当前天数为0，那么其-29为一个负数，但定义baseDay为uint16就会有问题
+
 	遗留问题：
 		  1.每次要请求历史数据都需要
 	返回的包：
 		8A 9B 00 01 0F 82 00 02 0A 00 20 【Days 20 00】【Maxs 45 01】【Mins FA 00】【Avgs FA 00】 3D
 ================================================================*/
-func (hs *NM820_History30) addData(baseDay uint16, sensorType string) {
+func (hs *NM820_History30) addData(baseDay int16, sensorType string) {
 	log.SetFlags(log.Lshortfile | log.LstdFlags) //设置打印时添加上所在文件，行数
 	var cmd1 []byte
-
+	if baseDay < 0 { //she
+		log.Println("基础天数小于0")
+		baseDay = 0 //设置为0是为了避免当基准天数为负数时，没有一个数据返回，在图表上就显示空白
+	}
 	//当要存储不同数据，要发送的头是不同的
 	switch sensorType {
 	case "Tem":
@@ -60,11 +65,13 @@ func (hs *NM820_History30) addData(baseDay uint16, sensorType string) {
 		cmd1 = []byte{0x8A, 0x9B, 0x00, 0x01, 0x07, 0x02, 0x00, 0x04, 0x02}
 	}
 	//循环读取以基准日期前30日的数据
+
 	for day := baseDay - 29; day <= baseDay; day++ {
+		log.Printf("读取的天数：%d,基准天数：%d\n", day, baseDay)
 		if day < 0 { //如果baseday小于0，不动作
 			continue
 		}
-		bh, bl := uint16_to_twobyte(day)
+		bh, bl := int16_to_twobyte(day)
 		cmd2 := append(cmd1, bh, bl) //将日龄添加到发送命令行中
 		cmd3 := append(cmd2, sumCheck(cmd2))
 
@@ -81,4 +88,5 @@ func (hs *NM820_History30) addData(baseDay uint16, sensorType string) {
 		hs.Avgs = append(hs.Avgs, float32(twobyte_to_uint16(rec[18], rec[17]))/10)
 		//log.Printf("days:%d-%d-%d-%d", days_buf, maxs_buf, mins_buf, avgs_buf)
 	}
+
 }
