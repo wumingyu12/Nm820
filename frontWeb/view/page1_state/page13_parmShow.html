@@ -25,20 +25,20 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr ng-repeat="d in data">
+					<tr ng-repeat="d in data.WindTables">
 						<th>{{$index+1}}</th>
 						<!-- 用勾选的的方式选择风机组 -->
 						<th editable-checklist="fenjistat[$index]" e-ng-options="s.value as s.text for s in fenjistats" onaftersave="onafterSetFan($index)">{{fenjistat[$index]}}</th>
-						<th editable-text="data[$index].On" e-style="width:100px">{{d.On}}</th>
-						<th editable-text="data[$index].Off" e-style="width:100px">{{d.Off}}</th>
-						<th editable-text="data[$index].DTemp" e-style="width:100px">{{d.DTemp}}</th>
-						<th editable-range="data[$index].SideWindow" e-step="1" e-style="width:100px">{{d.SideWindow}}</th>
-						<th editable-range="data[$index].Curtain" e-style="width:100px">{{d.Curtain}}</th>
-						<th editable-range="data[$index].VSFan" e-style="width:100px">{{d.VSFan}}</th>
-						<th editable-range="data[$index].Roller1" e-style="width:100px">{{d.Roller1}}</th>
-						<th editable-range="data[$index].Roller2" e-style="width:100px">{{d.Roller2}}</th>
-						<th editable-range="data[$index].Roller3" e-style="width:100px">{{d.Roller3}}</th>
-						<th editable-range="data[$index].Roller4" e-style="width:100px">{{d.Roller4}}</th>
+						<th editable-text="data.WindTables[$index].On" e-style="width:100px">{{d.On}}</th>
+						<th editable-text="data.WindTables[$index].Off" e-style="width:100px">{{d.Off}}</th>
+						<th editable-text="data.WindTables[$index].DTemp" e-style="width:100px">{{d.DTemp}}</th>
+						<th editable-range="data.WindTables[$index].SideWindow" e-step="1" e-style="width:100px">{{d.SideWindow}}</th>
+						<th editable-range="data.WindTables[$index].Curtain" e-style="width:100px">{{d.Curtain}}</th>
+						<th editable-range="data.WindTables[$index].VSFan" e-style="width:100px">{{d.VSFan}}</th>
+						<th editable-range="data.WindTables[$index].Roller1" e-style="width:100px">{{d.Roller1}}</th>
+						<th editable-range="data.WindTables[$index].Roller2" e-style="width:100px">{{d.Roller2}}</th>
+						<th editable-range="data.WindTables[$index].Roller3" e-style="width:100px">{{d.Roller3}}</th>
+						<th editable-range="data.WindTables[$index].Roller4" e-style="width:100px">{{d.Roller4}}</th>
 					</tr>
 				</tbody>
 			</table>

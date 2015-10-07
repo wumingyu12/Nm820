@@ -83,20 +83,21 @@ func (nm *NM820_WindLevel) addData() error {
 		因为长度480超出了数据位的长度1byte所以我们分成两条命令来读取，每条读取10条数据
 		返回：每条命令返回252个字节，从第10个数起来
 		依赖：1.nm820_main.go中的串口发送
+
 ==================================================================================*/
 
 type NM820_WindTable struct {
-	On         float32 //开时间x10
-	Off        float32 //关时间x10
-	DTemp      float32 //温差x10
-	SideWindow uint16  //侧风窗 0-100
-	Curtain    uint16  //幕帘 0-100
-	VSFan      uint16  //变速风机 0-100
-	Roller1    uint16  //卷帘1-4
-	Roller2    uint16
-	Roller3    uint16
-	Roller4    uint16
-	Fan        uint32 //如1234 表示风机1234
+	On         float32 `json:",string"` //开时间x10 `json:",string"`是因为在前端会用xeditable来修改值，修改后为string类型
+	Off        float32 `json:",string"` //关时间x10
+	DTemp      float32 `json:",string"` //温差x10
+	SideWindow uint16  `json:",string"` //侧风窗 0-100
+	Curtain    uint16  `json:",string"` //幕帘 0-100
+	VSFan      uint16  `json:",string"` //变速风机 0-100
+	Roller1    uint16  `json:",string"` //卷帘1-4
+	Roller2    uint16  `json:",string"`
+	Roller3    uint16  `json:",string"`
+	Roller4    uint16  `json:",string"`
+	Fan        uint32  //如1234 表示风机1234
 
 }
 

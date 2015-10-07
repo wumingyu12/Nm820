@@ -54,7 +54,10 @@ func main() {
 	mux_router.HandleFunc("/resetful/nm820/sysPara/WindLevel", nm820.WindLevel).Methods("GET")
 	//得到通风等级表 /resetful/nm820/sysPara/WindTables
 	mux_router.HandleFunc("/resetful/nm820/sysPara/WindTables", nm820.WindTables).Methods("GET")
-	//resetful/nm820Json/Get24TemHumi.json
+	//用post更新通风等级表 /resetful/nm820/sysPara/WindTables
+	mux_router.HandleFunc("/resetful/nm820/sysPara/WindTables", nm820.ReflashWindTables).Methods("POST")
+
+	//测试用json---resetful/nm820Json/Get24TemHumi.json
 	http.Handle("/resetful/nm820Json/Get24TemHumi.json", http.FileServer(http.Dir("./")))
 
 	http.Handle("/", mux_router) //这一句别忘了 否则前面的mux_router是不作用的

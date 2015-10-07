@@ -15,9 +15,9 @@ page13_model.controller('page13_wenduTableCtrl', [
 	'$http',
 	'$filter',
 	function ($scope,$http,$filter){
-		$http.get('/testjson/page13/WindTables.json').success(function(data){ //测试用json
-		//$http.get('/resetful/nm820/sysPara/WindTables').success(function(data){
-			$scope.data=data.WindTables;
+		//$http.get('/testjson/page13/WindTables.json').success(function(data){ //测试用json
+		$http.get('/resetful/nm820/sysPara/WindTables').success(function(data){
+			$scope.data=data;
 
 			//同步风机组checklist,20个通风等级，循环0-19
 			for (var i = 0; i <= 19; i++) {
@@ -56,22 +56,23 @@ page13_model.controller('page13_wenduTableCtrl', [
   		//用xeditable修改完Fan的值后，每个通风等级的风机，反向更新会data[i].Fan
   		//将checklist模型转化为更新原来的原始fan二进制表示，$scope.fenjistat变回data[i].Fan
   		$scope.onafterSetFan=function(index){
-  			$scope.data[index].Fan=0;//先清空
+  			$scope.data.WindTables[index].Fan=0;//先清空
   			for (var j = 0; j < $scope.fenjistat[index].length; j++) {//每个checklist进行循环，j代表每个通风等级里面的风机索引
-  		 		if($scope.fenjistat[index][j]==1){$scope.data[index].Fan+=1;}
-  		 		if($scope.fenjistat[index][j]==2){$scope.data[index].Fan+=2;}
-  		 		if($scope.fenjistat[index][j]==3){$scope.data[index].Fan+=4;}
-  		 		if($scope.fenjistat[index][j]==4){$scope.data[index].Fan+=8;}
-  		 		if($scope.fenjistat[index][j]==5){$scope.data[index].Fan+=16;}
-  		 		if($scope.fenjistat[index][j]==6){$scope.data[index].Fan+=32;}
-  		 		if($scope.fenjistat[index][j]==7){$scope.data[index].Fan+= 64;}
-  		 		if($scope.fenjistat[index][j]==8){$scope.data[index].Fan+= 128;}
+  		 		if($scope.fenjistat[index][j]==1){$scope.data.WindTables[index].Fan+=1;}
+  		 		if($scope.fenjistat[index][j]==2){$scope.data.WindTables[index].Fan+=2;}
+  		 		if($scope.fenjistat[index][j]==3){$scope.data.WindTables[index].Fan+=4;}
+  		 		if($scope.fenjistat[index][j]==4){$scope.data.WindTables[index].Fan+=8;}
+  		 		if($scope.fenjistat[index][j]==5){$scope.data.WindTables[index].Fan+=16;}
+  		 		if($scope.fenjistat[index][j]==6){$scope.data.WindTables[index].Fan+=32;}
+  		 		if($scope.fenjistat[index][j]==7){$scope.data.WindTables[index].Fan+= 64;}
+  		 		if($scope.fenjistat[index][j]==8){$scope.data.WindTables[index].Fan+= 128;}
   		 	};
   		 	//console.log($scope.data[index].Fan);
   		};
 
   		//====================保存修改后的参数设置,但要注意经过xeditable后数值是字符型的不是数值型的================
-  		$scope.uploadData=function(){	
+  		$scope.uploadData=function(){
+  			$http.post('/resetful/nm820/sysPara/WindTables',$scope.data)
   			console.log($scope.data);
   		}
 

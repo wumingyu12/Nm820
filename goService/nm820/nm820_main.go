@@ -405,3 +405,30 @@ func WindTables(w http.ResponseWriter, r *http.Request) {
 	//fmt.Printf("para:%s\n", b)
 	log.Printf("结束--resetful请求获取通风等级数据\n")
 }
+
+/*=====================================resetful=================================================
+	请求：POST：/resetful/nm820/sysPara/WindTables
+	作用：更新获取温度曲线表,post的数据实例
+	返回：
+	依赖的函数：
+		1.uint16_to_twobyte
+		2.NM820_sysPara.go
+=========================================================================================*/
+func ReflashWindTables(w http.ResponseWriter, r *http.Request) {
+	log.SetFlags(log.Lshortfile | log.LstdFlags) //设置打印时添加上所在文件，行数
+	log.Printf("开始--resetful:POST请求更新通风等级数据\n")
+
+	postData, _ := ioutil.ReadAll(r.Body) //读出发送的的post数据
+	log.Println(string(postData))
+	r.Body.Close()
+	//初始化化一个20个等级的结构体
+	p := &NM820_WindTables{}
+	//p := &NM820_WindTables{}
+	//n := &NM820_WindTable{}
+	//for i := 0; i < 20; i++ {
+	//	p.WindTables = append(p.WindTables, n)
+	//}
+	json.Unmarshal([]byte(postData), p) //将post的数据解析为结构体
+	log.Println(p)
+	log.Printf("结束--resetful请求获取通风等级数据\n")
+}
