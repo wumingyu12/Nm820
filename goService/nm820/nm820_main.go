@@ -249,6 +249,17 @@ func int16_to_twobyte(i int16) (byte, byte) {
 	return bh, bl
 }
 
+//------------------------------------
+//--uint32转换为4个byte
+//----------------------------------
+func uint32_to_fourbyte(i uint32) (byte, byte, byte, byte) {
+	bhh := byte(i >> 24) //高位
+	bh := byte(i >> 16)  //低位
+	bl := byte(i >> 8)
+	bll := byte(i & 0xff) //低位
+	return bhh, bh, bl, bll
+}
+
 /**************************************************************************
 给resetful调用的函数，外部可访问,resetful
 ***************************************************************************/
@@ -440,6 +451,7 @@ func ReflashWindTables(w http.ResponseWriter, r *http.Request) {
 	//	p.WindTables = append(p.WindTables, n)
 	//}
 	json.Unmarshal([]byte(postData), p) //将post的数据解析为结构体
+	p.uploadData()
 	log.Println(p)
 	log.Printf("结束--resetful请求获取通风等级数据\n")
 }

@@ -2,6 +2,7 @@ package nm820
 
 import (
 	"errors"
+	"log"
 )
 
 /*==================温度曲线===========================
@@ -76,19 +77,26 @@ func (nm *NM820_WindLevel) addData() error {
 	return nil
 }
 
-/*==================通风等级===================================================
+/*==================通风等级 ===================================================
+		函数：addData
 		发送命令：8A 9B 00 01 05 00 【01 2a】地址 3c 长度  1120 480十进制
-		命令1：8A 9B 00 01 05 00 【04 60】地址 f0 长度  1120 240
+		命令1：8A 9B 00 01 05 00 【04 60】地址 f0 长度  1120 240 地址04为高位
 		命令2: 8A 9B 00 01 05 00 【05 50】地址 f0 长度  1360 240
 		因为长度480超出了数据位的长度1byte所以我们分成两条命令来读取，每条读取10条数据
 		返回：每条命令返回252个字节，从第10个数起来
 		依赖：1.nm820_main.go中的串口发送
 
+		函数：uploadData 将数据更新到nm820
+		发送命令：8a 9b 00 01 【05+data的长度】【01 写控制码 】【04 60 起始地址】【len(data)】【data】【CS】校验和
+		示范      8a 9b 00 01   07               01              04 60             02           07 01
+		更新1-10号通风等级：    5+240=245
+		          8a 9b 00 01   f5               01              04 60             f0           data
 ==================================================================================*/
 
 type NM820_WindTable struct {
+	//注意On到DTemp事实上得到的是2位byte，但为了转换所以才用了float32
 	On         float32 `json:",string"` //开时间x10 `json:",string"`是因为在前端会用xeditable来修改值，修改后为string类型
-	Off        float32 `json:",string"` //关时间x10
+	Off        float32 `json:",string"` //关时间x10 时间分钟 如十进制110 代表11分钟
 	DTemp      float32 `json:",string"` //温差x10
 	SideWindow uint16  `json:",string"` //侧风窗 0-100
 	Curtain    uint16  `json:",string"` //幕帘 0-100
@@ -105,10 +113,11 @@ type NM820_WindTables struct {
 	WindTables []NM820_WindTable
 }
 
+//从820得到数据
 func (nm *NM820_WindTables) addData() error {
 
 	//----------------------------------------------------------------
-	//------------------获取1-5号数组-------------------------------
+	//------------------获取1-10号数组-------------------------------
 	//-----------------------------------------------------------------
 	cmd1 := []byte{0x8A, 0x9B, 0x00, 0x01, 0x05, 0x00, 0x04, 0x60, 0xf0}
 	cmd2 := append(cmd1, sumCheck(cmd1))
@@ -129,7 +138,7 @@ func (nm *NM820_WindTables) addData() error {
 	tem = b[9:249]
 
 	//----------------------------------------------------------------
-	//------------------获取6-10号数组-------------------------------
+	//------------------获取11-20号数组-------------------------------
 	//-----------------------------------------------------------------
 	cmd1 = []byte{0x8A, 0x9B, 0x00, 0x01, 0x05, 0x00, 0x05, 0x50, 0xf0}
 	cmd2 = append(cmd1, sumCheck(cmd1))
@@ -164,5 +173,74 @@ func (nm *NM820_WindTables) addData() error {
 		n.Fan = twobyte_to_uint32(tem[23+i*24], tem[22+i*24], tem[21+i*24], tem[20+i*24])
 		nm.WindTables = append(nm.WindTables, n)
 	}
+	return nil
+}
+
+//将数据组包上传到nm820中
+func (nm *NM820_WindTables) uploadData() error {
+	databyte1 := []byte{} //用来得到要发送的字节，注意是小端
+	//先将结构体序列化为byte，长度为480
+	for i := 0; i < 20; i++ {
+		bh, bl := uint16_to_twobyte(uint16(nm.WindTables[i].On * 10))
+		databyte1 = append(databyte1, bl) //先低位
+		databyte1 = append(databyte1, bh)
+		bh, bl = uint16_to_twobyte(uint16(nm.WindTables[i].Off * 10))
+		databyte1 = append(databyte1, bl) //先低位
+		databyte1 = append(databyte1, bh)
+		bh, bl = uint16_to_twobyte(uint16(nm.WindTables[i].DTemp * 10))
+		databyte1 = append(databyte1, bl) //先低位
+		databyte1 = append(databyte1, bh)
+		bh, bl = uint16_to_twobyte(uint16(nm.WindTables[i].SideWindow * 10))
+		databyte1 = append(databyte1, bl) //先低位
+		databyte1 = append(databyte1, bh)
+		bh, bl = uint16_to_twobyte(nm.WindTables[i].Curtain)
+		databyte1 = append(databyte1, bl) //先低位
+		databyte1 = append(databyte1, bh)
+		bh, bl = uint16_to_twobyte(nm.WindTables[i].VSFan)
+		databyte1 = append(databyte1, bl) //先低位
+		databyte1 = append(databyte1, bh)
+		bh, bl = uint16_to_twobyte(nm.WindTables[i].Roller1)
+		databyte1 = append(databyte1, bl) //先低位
+		databyte1 = append(databyte1, bh)
+		bh, bl = uint16_to_twobyte(nm.WindTables[i].Roller2)
+		databyte1 = append(databyte1, bl) //先低位
+		databyte1 = append(databyte1, bh)
+		bh, bl = uint16_to_twobyte(nm.WindTables[i].Roller3)
+		databyte1 = append(databyte1, bl) //先低位
+		databyte1 = append(databyte1, bh)
+		bh, bl = uint16_to_twobyte(nm.WindTables[i].Roller4)
+		databyte1 = append(databyte1, bl) //先低位
+		databyte1 = append(databyte1, bh)
+		bhh, bh, bl, bll := uint32_to_fourbyte(nm.WindTables[i].Fan)
+		databyte1 = append(databyte1, bll) //先低位
+		databyte1 = append(databyte1, bl)
+		databyte1 = append(databyte1, bh) //先低位
+		databyte1 = append(databyte1, bhh)
+	}
+	log.Printf("数据：%x\n", databyte1)
+	//组包发送更新1-10号
+	cmd1 := []byte{0x8a, 0x9b, 0x00, 0x01, 0xf5, 0x01, 0x04, 0x60, 0xf0}
+	cmd2 := append(cmd1, databyte1[0:240]...)
+	cmd3 := append(cmd2, sumCheck(cmd2))
+
+	//发送命令，接收到的回复为
+	chanSerialBusy <- 1 //为了其他地方使用串口时发送接受流程不被打断
+	chanWb <- cmd3
+	chanRbNum <- 11 //开启一次锁让进程发送一次命令,接收一次命令，接收字节数为100
+	<-chanRb        //类型byte[11] 8a 9b 00 01 06 81 00 00 01 00 ae
+	<-chanSerialBusy
+
+	//组包发送更新10-20号
+	cmd1 = []byte{0x8a, 0x9b, 0x00, 0x01, 0xf5, 0x01, 0x05, 0x50, 0xf0}
+	cmd2 = append(cmd1, databyte1[240:480]...)
+	cmd3 = append(cmd2, sumCheck(cmd2))
+
+	//发送命令，接收到的回复为
+	chanSerialBusy <- 1 //为了其他地方使用串口时发送接受流程不被打断
+	chanWb <- cmd3
+	chanRbNum <- 11 //开启一次锁让进程发送一次命令,接收一次命令，接收字节数为100
+	<-chanRb        //类型byte[11] 8a 9b 00 01 06 81 00 00 01 00 ae
+	<-chanSerialBusy
+
 	return nil
 }

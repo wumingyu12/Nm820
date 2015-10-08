@@ -15,13 +15,20 @@ page13_model.controller('page13_wenduTableCtrl', [
 	'$http',
 	'$filter',
 	function ($scope,$http,$filter){
+		//风机选择后的状态,因为有20个等级所以有20个组，会在得到json的get请求中进行同步
+		$scope.fenjistat = [
+			[],[],[],[],[],
+			[],[],[],[],[],
+			[],[],[],[],[],
+			[],[],[],[],[]
+		];
 		//$http.get('/testjson/page13/WindTables.json').success(function(data){ //测试用json
 		$http.get('/resetful/nm820/sysPara/WindTables').success(function(data){
 			$scope.data=data;
 
 			//同步风机组checklist,20个通风等级，循环0-19
 			for (var i = 0; i <= 19; i++) {
-				var fan=$scope.data[i].Fan;
+				var fan=$scope.data.WindTables[i].Fan;
 				$scope.fenjistat[i]=[];//显示的checklist全部不勾选,按照所勾选的风机等级
 	  			//如果低位有值 如100111&000001 =0000001 //返回的是1号风机在，那么显示checklist时也要打勾
 	  			if((fan&1)==1){$scope.fenjistat[i].push(1);};
@@ -34,13 +41,6 @@ page13_model.controller('page13_wenduTableCtrl', [
 	  			if((fan&128)==128){$scope.fenjistat[i].push(8);};
 			};
 		});
-		//风机选择后的状态,因为有20个等级所以有20个组，会在得到json的get请求中进行同步
-		$scope.fenjistat = [
-			[],[],[],[],[],
-			[],[],[],[],[],
-			[],[],[],[],[],
-			[],[],[],[],[]
-		];
 		//风机选择checklist的模型	
 		$scope.fenjistats = [
     		{value: 1, text: '1'},
@@ -73,7 +73,9 @@ page13_model.controller('page13_wenduTableCtrl', [
   		//====================保存修改后的参数设置,但要注意经过xeditable后数值是字符型的不是数值型的================
   		$scope.uploadData=function(){
   			$http.post('/resetful/nm820/sysPara/WindTables',$scope.data)
-  			console.log($scope.data);
+  			.success(function(){
+  				alert("保存修改成功");
+  			})
   		}
 
 	}
