@@ -16,10 +16,10 @@
 	position: absolute;
 }
 .my-page11-statepan{
-	width: 15%;
+	width: 20%;
 	height: 30%;
 	top: 60%;
-	left: 80%;
+	right: 3%;
 	background-color: blue;
 	position: absolute;
 	opacity: 0.7;
@@ -33,7 +33,7 @@
 	margin-left: 10px;
 }
 .my-page11-wenshidu{
-	font-size: 40px;
+	font-size: 2em;
 	color: white;
 }
 /*实时温度的自走曲线

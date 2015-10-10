@@ -48,14 +48,16 @@ func main() {
 	mux_router.HandleFunc("/resetful/nm820/GetState", nm820.GetState).Methods("GET")
 	//得到历史温度
 	mux_router.HandleFunc("/resetful/nm820/GetDataHistory/{type}", nm820.GetTempHistory).Methods("GET")
+
+	//得到通风等级表 /resetful/nm820/sysPara/WindTables
+	mux_router.HandleFunc("/resetful/nm820/sysPara/WindTables", nm820.WindTables).Methods("GET")         //取值
+	mux_router.HandleFunc("/resetful/nm820/sysPara/WindTables", nm820.ReflashWindTables).Methods("POST") //修改
 	//得到温度曲线，按日龄 /resetful/nm820/sysPara/WenduCurve
 	mux_router.HandleFunc("/resetful/nm820/sysPara/WenduCurve", nm820.WenduCurve).Methods("GET")
+	mux_router.HandleFunc("/resetful/nm820/sysPara/WenduCurve", nm820.ReflashWenduCurve).Methods("POST") //修改
 	//得到通风最大最小等级，按日龄 /resetful/nm820/sysPara/WindLevel
 	mux_router.HandleFunc("/resetful/nm820/sysPara/WindLevel", nm820.WindLevel).Methods("GET")
-	//得到通风等级表 /resetful/nm820/sysPara/WindTables
-	mux_router.HandleFunc("/resetful/nm820/sysPara/WindTables", nm820.WindTables).Methods("GET")
-	//用post更新通风等级表 /resetful/nm820/sysPara/WindTables
-	mux_router.HandleFunc("/resetful/nm820/sysPara/WindTables", nm820.ReflashWindTables).Methods("POST")
+	mux_router.HandleFunc("/resetful/nm820/sysPara/WindLevel", nm820.ReflashWindLevel).Methods("POST")
 
 	//测试用json---resetful/nm820Json/Get24TemHumi.json
 	http.Handle("/resetful/nm820Json/Get24TemHumi.json", http.FileServer(http.Dir("./")))

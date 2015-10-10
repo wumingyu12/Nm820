@@ -3,6 +3,7 @@
 /*   |__my-page13-scroll 让表可以有滚动条*/
 /*   |__my-page13-floatright 让按钮可以右浮动*/
 /*|__my-page13-wenduCurve 第二个图表温度曲线表*/
+/*   |__my-page13-floatright-marginRight 保存设置的按钮右浮动并且有一定的margin-right来保证不覆盖切换按钮*/
 /*	 |__thead th tbody th文字对中*/
 /*|__my-page13-WindLevel 第三个图表温度曲线表*/
 /*	 |__thead th tbody th文字对中*/
@@ -85,7 +86,10 @@
 	margin-left:30px;
 	/*overflow-y: auto;/*如果内容溢出就提供滚动机制*/
 }
-
+.my-page13-floatright-marginRight{
+	float: right;
+	margin-right: 50px;
+}
 /*文字对中*/
 .my-page13-wenduCurve thead th,.my-page13-wenduCurve tbody th{
 	text-align: center;

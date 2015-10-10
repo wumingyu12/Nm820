@@ -52,6 +52,7 @@
 	<div  class="panel panel-default my-page13-wenduCurve" ng-controller="page13_wenduCurveCtrl">
 		<div class="panel-heading my-page13-panelhead">
 			<span>温度曲线图</span>
+			<button type="button" class="btn btn-primary btn-sm my-page13-floatright-marginRight" ng-click="uploadData()">保存设置</button>
 			<!-- 按钮用于切换图表显示还是表格显示 -->
 			<a href=""><span class="glyphicon glyphicon-sort my-page13-changeTab" ng-click="changeTabChat()" aria-hidden="true"></span></a>
 		</div>
@@ -67,12 +68,12 @@
 					</tr>
 				</thead>
 				<tbody >
-					<tr ng-repeat="n in Days track by $index">
+					<tr ng-repeat="n in data.Day track by $index">
 						<th>{{$index+1}}</th>
-						<th>{{n}}</th>
-						<th>{{Targets[$index]}}</th>
-						<th>{{Heats[$index]}}</th>
-						<th>{{Cools[$index]}}</th>
+						<th editable-number="data.Day[$index]">{{n}}</th>
+						<th editable-number="data.Target[$index]">{{data.Target[$index]}}</th>
+						<th editable-number="data.Heat[$index]">{{data.Heat[$index]}}</th>
+						<th editable-number="data.Cool[$index]">{{data.Cool[$index]}}</th>
 					</tr>
 				</tbody>
 			</table>
@@ -105,7 +106,9 @@
 	<div  class="panel panel-default my-page13-WindLevel" ng-controller="page13_WindLevelCtrl">
 		<div class="panel-heading my-page13-panelhead">
 			<span >通风等级</span>
+
 			<!--  -->
+			<button type="button" class="btn btn-primary btn-sm my-page13-floatright-marginRight" ng-click="uploadData()">保存设置</button>
 			<!-- 按钮用于切换图表显示还是表格显示 -->
 			<a href=""><span class="glyphicon glyphicon-sort my-page13-changeTab" ng-click="changeTabChat()" aria-hidden="true"></span></a>
 			
@@ -123,11 +126,11 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr ng-repeat="n in Day track by $index">
+					<tr ng-repeat="n in data.Day track by $index">
 						<th >{{$index+1}}</th>
-						<th editable-text="Day[$index]" onaftersave="test()" e-style="width:100px">{{n}}</th>
-						<th editable-text="Min[$index]" onaftersave="test()" e-style="width:100px">{{Min[$index]}}</th>
-						<th editable-text="Max[$index]">{{Max[$index]}}</th>
+						<th editable-number="data.Day[$index]" onaftersave="" e-style="width:100px">{{n}}</th>
+						<th editable-number="data.Min[$index]" onaftersave="" e-style="width:100px">{{data.Min[$index]}}</th>
+						<th editable-number="data.Max[$index]">{{data.Max[$index]}}</th>
 					</tr>
 				</tbody>
 			</table>

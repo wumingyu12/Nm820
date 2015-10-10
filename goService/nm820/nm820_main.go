@@ -378,9 +378,9 @@ func WenduCurve(w http.ResponseWriter, r *http.Request) {
 	log.Printf("结束--resetful请求获取温度曲线表数据\n")
 }
 
-/*=====================================resetful=================================================
+/*=====================================resetful 获取最大最小通风等级=================================================
 	请求：/resetful/nm820/sysPara/WindLevel
-	作用：获取温度曲线表
+	作用：获取最大最小通风等级
 	返回：
 	依赖的函数：
 		1.uint16_to_twobyte
@@ -403,9 +403,9 @@ func WindLevel(w http.ResponseWriter, r *http.Request) {
 	log.Printf("结束--resetful请求获取最大最小通风等级数据\n")
 }
 
-/*=====================================resetful=================================================
+/*=====================================resetful 获取温度曲线表=================================================
 	请求：/resetful/nm820/sysPara/WindTables
-	作用：获取温度曲线表
+	作用： 获取温度曲线表
 	返回：
 	依赖的函数：
 		1.uint16_to_twobyte
@@ -428,7 +428,7 @@ func WindTables(w http.ResponseWriter, r *http.Request) {
 	log.Printf("结束--resetful请求获取通风等级数据\n")
 }
 
-/*=====================================resetful=================================================
+/*=====================================resetful=  POST================================================
 	请求：POST：/resetful/nm820/sysPara/WindTables
 	作用：更新获取温度曲线表,post的数据实例
 	返回：
@@ -454,4 +454,52 @@ func ReflashWindTables(w http.ResponseWriter, r *http.Request) {
 	p.uploadData()
 	log.Println(p)
 	log.Printf("结束--resetful请求获取通风等级数据\n")
+}
+
+/*=====================================resetful  POST=================================================
+	请求：POST：/resetful/nm820/sysPara/WenduCurve
+	作用：修改温度曲线表
+	返回：
+	依赖的函数：
+		1.uint16_to_twobyte
+		2.NM820_sysPara.go
+	注意：1.前端经过xeditable的使用后是string类型的，用`json:",string"`是不适用于数组，所以要在前端进行将string转int
+		  2.
+=========================================================================================*/
+func ReflashWenduCurve(w http.ResponseWriter, r *http.Request) {
+	log.SetFlags(log.Lshortfile | log.LstdFlags) //设置打印时添加上所在文件，行数
+	log.Printf("开始--Post请求修改温度曲线表数据\n")
+
+	postData, _ := ioutil.ReadAll(r.Body) //读出发送的的post数据
+	log.Println(string(postData))
+	r.Body.Close()
+	p := &NM820_WenduCurve{}
+	json.Unmarshal([]byte(postData), p) //将post的数据解析为结构体
+	p.uploadData()
+	log.Println(p)
+	log.Printf("结束--Post请求修改温度曲线表数据\n")
+}
+
+/*=====================================resetful POST修改最大最小通风等级表=================================================
+	请求：POST：/resetful/nm820/sysPara/WindLevel
+	作用：修改温度曲线表
+	返回：
+	依赖的函数：
+		1.uint16_to_twobyte
+		2.NM820_sysPara.go
+	注意：1.前端经过xeditable的使用后是string类型的，用`json:",string"`是不适用于数组，所以要在前端进行将string转int
+		  2.
+=========================================================================================*/
+func ReflashWindLevel(w http.ResponseWriter, r *http.Request) {
+	log.SetFlags(log.Lshortfile | log.LstdFlags) //设置打印时添加上所在文件，行数
+	log.Printf("开始--Post请求最大最小通风等级数据\n")
+
+	postData, _ := ioutil.ReadAll(r.Body) //读出发送的的post数据
+	log.Println(string(postData))
+	r.Body.Close()
+	p := &NM820_WindLevel{}
+	json.Unmarshal([]byte(postData), p) //将post的数据解析为结构体
+	p.uploadData()
+	log.Println(p)
+	log.Printf("结束--Post请求最大最小通风等级数据\n")
 }

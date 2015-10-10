@@ -80,72 +80,7 @@ page13_model.controller('page13_wenduTableCtrl', [
 
 	}
 ]);
-/*===================================过滤器 通风等级表的fan属性的显示用========================================================
-		将 int转换为byte
-		如1 转换为 10000000
-		  3 转换为 12000000
-		  127      12345670
-		  255      12345678
-		备注：20151008放弃不用
-===============================================================================================*/
-/*page13_model.filter('page13_FanIntToString_Filt',function(){
-	return function(input){
-		var str="";
-		if((input&1)==1){//如果低位有值 如100111&000001 =0000001
-			str=str+'1';
-		}else{
-			str=str+'0';
-		};
 
-		if((input&2)==2){//如果第二位有值 
-			str=str+'2';
-		}else{
-			str=str+'0';
-		};
-
-		if((input&4)==4){//第三位
-			str=str+'3';
-		}else{
-			str=str+'0';
-		};
-
-		if((input&8)==8){//第三位
-			str=str+'4';
-		}else{
-			str=str+'0';
-		};
-
-
-		if((input&16)==16){//第三位
-			str=str+'5';
-		}else{
-			str=str+'0';
-		};
-
-
-		if((input&32)==32){//第三位
-			str=str+'6';
-		}else{
-			str=str+'0';
-		};
-
-
-		if((input&64)==64){//第三位
-			str=str+'7';
-		}else{
-			str=str+'0';
-		};
-
-
-		if((input&128)==128){//第三位
-			str=str+'8';
-		}else{
-			str=str+'0';
-		};
-		return str;
-	};
-});
-*/
 /*============================控制器 温度曲线======================================
 	1.图表切换
 	2.请求温度曲线数据
@@ -168,11 +103,7 @@ page13_model.controller('page13_wenduCurveCtrl', [
 		};
 
 		$http.get('/resetful/nm820/sysPara/WenduCurve').success(function(data){
-			$scope.Days=data.Day;
-			$scope.Targets=data.Target;
-			$scope.Heats=data.Heat;
-			$scope.Cools=data.Cool;
-
+			$scope.data=data;
 			//温度曲线图表的样子
 			$scope.CurveData.labels=data.Day;
 			$scope.CurveData.data[0]=data.Target;
@@ -186,6 +117,18 @@ page13_model.controller('page13_wenduCurveCtrl', [
 	    	$scope.ifShowTab=!$scope.ifShowTab;
 	    	$scope.ifShowCurve=!$scope.ifShowCurve;
 		};
+
+		 //====================保存修改后的参数设置,但要注意经过xeditable后数值是字符型的不是数值型的================
+  		$scope.uploadData=function(){
+  			$http.post('/resetful/nm820/sysPara/WenduCurve',$scope.data)
+  			.success(function(){
+  				alert("保存修改成功");
+  			})
+  		}
+
+  		$scope.string2int=function(){
+
+  		}
 	}
 ]);
 /*===========================控制器 最大最小通风等级===============================================
@@ -208,9 +151,7 @@ page13_model.controller('page13_WindLevelCtrl', [
 		};
 
 		$http.get('/resetful/nm820/sysPara/WindLevel').success(function(data){
-			$scope.Day=data.Day;
-			$scope.Min=data.Min;
-			$scope.Max=data.Max;
+			$scope.data=data;
 
 			//温度曲线图表的样子
 			$scope.CurveData.labels=data.Day;
@@ -224,6 +165,14 @@ page13_model.controller('page13_WindLevelCtrl', [
 	    	$scope.ifShowTab=!$scope.ifShowTab;
 	    	$scope.ifShowCurve=!$scope.ifShowCurve;
 		};
+
+		//====================保存修改后的参数设置,但要注意经过xeditable后数值是字符型的不是数值型的================
+  		$scope.uploadData=function(){
+  			$http.post('/resetful/nm820/sysPara/WindLevel',$scope.data)
+  			.success(function(){
+  				alert("保存修改成功");
+  			})
+  		}
 
 		$scope.test=function(){
 			 return "Username should be `awesome` or `error`";
