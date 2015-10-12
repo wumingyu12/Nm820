@@ -1,9 +1,9 @@
-<div class="my-page11-mainpage">
+<div class="my-page11-mainpage" ng-controller="page11StateMainCtrl">
 	<!-- 3d背景图片与动画 -->
 
 		<!-- 动画循环播放，加载后自动播放 -->
 	<!-- 风机1 -->
-	<video 
+	<video ng-show="RelayState[0]"
 		src="/view/page1_state/page11_video/fengji_1_110x110_gai_3279-236.mp4" 
 		loop="loop" 
 		autoplay="autoplay"
@@ -17,7 +17,7 @@
         my-height="110" >
 	</video>
 	<!-- 风机2 -->
-	<video 
+	<video ng-show="RelayState[1]"
 		src="/view/page1_state/page11_video/fengji_2_110x120_gai_3454-266.mp4" 
 		loop="loop" 
 		autoplay="autoplay"
@@ -31,7 +31,7 @@
         my-height="120" >
 	</video>
 	<!-- 风机3 -->
-	<video 
+	<video ng-show="RelayState[2]"
 		src="/view/page1_state/page11_video/fengji_3_120x120_gai_3655-310.mp4" 
 		loop="loop" 
 		autoplay="autoplay"
@@ -45,7 +45,7 @@
         my-height="120" >
 	</video>
 	<!-- 风机4 -->
-	<video 
+	<video ng-show="RelayState[3]"
 		src="/view/page1_state/page11_video/fengji_4_130x130_gai_3851-347.mp4" 
 		loop="loop" 
 		autoplay="autoplay"
@@ -59,6 +59,7 @@
         my-height="130" >
 	</video>
 
+	<!-- div -->
 	<!-- 自动实时的温度变化图 
 	<div class="my-page11-wenduChat-current" id="line-chart" ng-controller="page11_LineCtrl_wenduDay">    
     	显示温度的图表
@@ -90,8 +91,19 @@
         <span class="my-page11-textwendu"><i class="icon-wendu"></i>{{wenduCurrent}}℃</span>
     </div>
     -->
+    <!-- 一个风机组状态面板用来显示当前有哪些风机组是运行的 -->
+    <div class="my-page11-RelayPan">
+    	<div><p>风机组1</p><div ng-class="{1:'my-page11-RelayPan-On',0:'my-page11-RelayPan-Off'}[RelayState[0]]"></div></div>
+    	<div><p>风机组2</p><div ng-class="{1:'my-page11-RelayPan-On',0:'my-page11-RelayPan-Off'}[RelayState[1]]"></div></div>
+    	<div><p>风机组3</p><div ng-class="{1:'my-page11-RelayPan-On',0:'my-page11-RelayPan-Off'}[RelayState[2]]"></div></div>
+		<div><p>风机组4</p><div ng-class="{1:'my-page11-RelayPan-On',0:'my-page11-RelayPan-Off'}[RelayState[3]]"></div></div>
+		<div><p>风机组5</p><div ng-class="{1:'my-page11-RelayPan-On',0:'my-page11-RelayPan-Off'}[RelayState[4]]"></div></div>
+		<div><p>风机组6</p><div ng-class="{1:'my-page11-RelayPan-On',0:'my-page11-RelayPan-Off'}[RelayState[5]]"></div></div>
+		<div><p>风机组7</p><div ng-class="{1:'my-page11-RelayPan-On',0:'my-page11-RelayPan-Off'}[RelayState[6]]"></div></div>
+		<div><p>风机组8</p><div ng-class="{1:'my-page11-RelayPan-On',0:'my-page11-RelayPan-Off'}[RelayState[7]]"></div></div>
+    </div>
     <!-- 一个透明面板,请求resetful得到温度，湿度，时间，日龄，通风等级 -->
-    <div class="my-page11-statepan" ng-controller="page11StatepanCtrl">
+    <div class="my-page11-statepan" >
         <p>日龄：{{GDay}} 通风等级：{{FanLevel}}</p>
     	<p>控制器时间:{{Year}}-{{Month}}-{{Day}}  {{Hour}}:{{Min}}:{{Sec}}</p>
     	<div class="my-page11-wenshidu"><i class="icon-wendu">温度</i><span ng-bind="TemAvg">11</span>℃</div>

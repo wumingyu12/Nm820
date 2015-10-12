@@ -157,10 +157,14 @@ page11_model.controller('page11_LineCtrl_wenduDay',[
 /*========================控制器==温湿度状态显示面板==============================================
   双向绑定：1.TemAvg 温度  HumiAvg 湿度  GDay 日龄 FanLevel 通风等级
             2. Year Month Day Hour Min Sec 时间,通过服务
+  引用到的地方：
+          1.左上角风机状态面板
+          2.风机动画是否显示。
+          3.右下角状态显示列表
   内部方法：1.addzero在显示时间时将个位数前面补零
             2.longpoll不断请求后台数据，但不是在当前页就不请求
 =================================================================================================*/
-page11_model.controller('page11StatepanCtrl', [
+page11_model.controller('page11StateMainCtrl', [
   '$scope',
   '$http',
   '$timeout',
@@ -193,6 +197,7 @@ page11_model.controller('page11StatepanCtrl', [
           $scope.Hour=addzero(data.Hour);
           $scope.Min=addzero(data.Min);
           $scope.Sec=addzero(data.Sec);
+          $scope.RelayState=data.RelayState;//继电器开关,用于指示风机动画是否显示，左上角的风机组状态显示
         })
       };
       $timeout(longPoll,1000);

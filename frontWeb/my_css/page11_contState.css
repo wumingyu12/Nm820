@@ -1,5 +1,10 @@
 /*my-page11-mainpage 具有一张大的背景图*/
 /*|__my-page11-fan1 动画风机1*/
+/*|__my-page11-RelayPan 显示继电器状态的面板*/
+/*   |__  > div 面板div                */
+/*      |__ >div>p 面板里面的文字  */
+/*   |__my-page11-RelayPan-On 风机开图标*/
+/*   |__my-page11-RelayPan-Off 风机关图标*/
 /*|__my-page11-statepan  实时显示的状态面板*/
 /*   |__<p> 用来显示温度，湿度，日期等*/
 /*   |__my-page11-wenshidu  温湿度*/
@@ -15,6 +20,40 @@
 .my-page11-fan1{
 	position: absolute;
 }
+/*============================显示继电器状态的面板===========================================*/
+.my-page11-RelayPan{
+	position: absolute;
+	left: 1%;
+	top:1%;
+}
+.my-page11-RelayPan>div{
+	display:inline-block;
+	float: left;
+	margin: 4px;
+	background-color: #d2691e;
+	opacity: 0.9;
+	border-radius: 5px;
+	box-shadow: 5px 5px rgb(0,0,0);
+}
+/*面板里面的文字风机组*/
+.my-page11-RelayPan>div>p{
+	margin: 2px;
+	text-align: center;
+	color: white;
+}
+.my-page11-RelayPan-On{
+	width: 70px;
+	height: 30px;
+	background-image: url(/view/page1_state/page11_video/on.png);
+	background-size: 100% 100%;
+}
+.my-page11-RelayPan-Off{
+	width: 70px;
+	height: 30px;
+	background-image: url(/view/page1_state/page11_video/off.png);
+	background-size: 100% 100%;
+}
+/*=====================显示状态的面板====================================*/
 .my-page11-statepan{
 	width: 20%;
 	height: 30%;
