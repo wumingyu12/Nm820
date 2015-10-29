@@ -34,6 +34,9 @@ var chanRb = make(chan []byte, 1)      //接收的比特,缓冲0个
 var chanRbNum = make(chan int, 1)      //无缓冲表面是互斥锁，只有这个有值才会让串口发送命令
 var chanSerialBusy = make(chan int, 1) //有东西在里面代表busy，其他程序不要写上面的3个东西
 
+var currentState = &NM820_StatePara{} //被一秒钟更新一次的状态变量，在init函数启动的线程里面被更新
+var currentStatehasLink int = 1       //代表是否有请求得到状态变量，如果没有就停止,这里一开始不能为0因为要初始化一个数值
+
 /*=======================线程函数 init====================
 	依赖：1.chekerr()函数
 		  2.var chanSerialRecvice = make(chan []byte, 10) //接收的比特数组
@@ -162,6 +165,44 @@ func goGet24TemHumi() {
 	}
 }
 
+/*=======================状态心跳线程函数 init====================
+	作用：开启一个线程，每隔一秒读取一次NM820的数据，这个数据保存到var currentState = &NM820_StatePara{}
+	依赖：1串口发送通道
+		  2.NM820_StatePara结构体
+		  3.time包,iotil包，os包
+	使用：需要在init中启动
+	注意：这个线程要在goSendSerial后面启动，不用先于
+		  更新的结构体在resetful请求中/resetful/nm820/GetState会用到
+		  var currentStatehasLink int = 0 //代表是否有请求得到状态变量，如果没有就停止
+		  currentStatehasLink在resetful请求中会更改
+	生成的东西：currentState = &NM820_StatePara{}
+========================================================================*/
+func goFlashCurrentState() {
+	log.SetFlags(log.Lshortfile | log.LstdFlags) //设置打印时添加上所在文件，行数
+	log.Println("init--启动线程每秒更新状态结构体。")
+
+	for {
+		if currentStatehasLink == 1 { //只有有连接请求时才会更新结构体没有就不更新
+			//发送数据并获取，前提func init()的运行,g_statepara在另一个go中
+			chanSerialBusy <- 1 //为了其他地方使用串口时发送接受流程不被打断
+			chanWb <- append(g_statepara, sumCheck(g_statepara))
+			chanRbNum <- 100 //开启一次锁让进程发送一次命令,接收一次命令，接收字节数为100
+			rec := <-chanRb  //类型byte[100]
+			<-chanSerialBusy
+
+			//用返回的数据更新结构体
+			err := currentState.reflashValue(rec)
+			checkerr(err)
+
+			time.Sleep(1 * time.Second) //延迟1秒再次更新
+			currentStatehasLink = 0     //将请求变回0
+		} else {
+			time.Sleep(1 * time.Second) //延迟1秒再次更新，不加这个会导致很严重的死循环
+		}
+	}
+
+}
+
 /*==========================包初始化函数===init===============================
 	在包引入时会被调用，隐式调用
 	作用：
@@ -188,6 +229,7 @@ func init() {
 
 	go goSendSerial(chanWb, chanRb, chanRbNum, s) //串口收发线程
 	go goGet24TemHumi()                           //24小时温湿度读取
+	go goFlashCurrentState()                      //每一秒更新nm820的状态值
 }
 
 //-------------------------------------------------
@@ -280,26 +322,17 @@ func uint32_to_fourbyte(i uint32) (byte, byte, byte, byte) {
 				返回"error1:cant open serial port." 情况1不能打开串口，
 				返回"error"
 	依赖：1.func init()的运行
+	注意：currentStatehasLink代表有请求，线程的循环读取数据就会开启，在线程中一个循环后会将其变回0
 ==========================================================================*/
 
 func GetState(w http.ResponseWriter, r *http.Request) {
 	log.SetFlags(log.Lshortfile | log.LstdFlags) //设置打印时添加上所在文件，行数
 	log.Println("开始--resetful请求nm820获取状态。")
-	para := &NM820_StatePara{}
-
-	//发送数据并获取，前提func init()的运行,g_statepara在另一个go中
-	chanSerialBusy <- 1 //为了其他地方使用串口时发送接受流程不被打断
-	chanWb <- append(g_statepara, sumCheck(g_statepara))
-	chanRbNum <- 100 //开启一次锁让进程发送一次命令,接收一次命令，接收字节数为100
-	rec := <-chanRb  //类型byte[100]
-	<-chanSerialBusy
-
-	//用返回的数据更新结构体
-	err := para.reflashValue(rec)
-	checkerr(err)
+	//告诉线程有请求
+	currentStatehasLink = 1
 
 	//将para转换为json
-	b, err := json.Marshal(para) //用这个函数时一定要确保字段名首位大写
+	b, err := json.Marshal(currentState) //用这个函数时一定要确保字段名首位大写
 	checkerr(err)
 	//必须要string,确保没发送其他了否则解释不了为json在angular
 	fmt.Fprintf(w, "%s", b) //注意在armlinux下面不能用fmt.Fprintf(w, string(b))的方式
