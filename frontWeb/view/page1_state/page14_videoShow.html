@@ -1,20 +1,47 @@
 <!-- 实时视频监控与设备开关监控 -->
-<div>  
+<div class="my-page14-main">  
 	<script type ="text/javascript" src="/frame/jwplayer/jwplayer.js"></script>
-		<div id = "container" >Loading the player ...</div>
-	    <script type = "text/javascript" >
-
-	       jwplayer ( "container" ). setup ({
+		<!-- 视频1 -->
+		<div  class="my-page14-video1">
+			<div id = "my-page14-videocontainer1">Loading the player ...</div>
+	    	<script type = "text/javascript" >
+	        	my_page14_thePlayer1 =jwplayer ( "my-page14-videocontainer1" ). setup ({
 
 	                          flashplayer : "/frame/jwplayer/jwplayer.flash.swf" ,//指定播放器
 
 	                          //file : "/view/tes.mp4",//本地
 	                          //file:"rtmp://202.117.80.19:1935/live/live1",//cctv5
-	                          file:"rtmp://10.33.51.112:7776/flvplayback/test",
-	                          height : 540 ,
+	                          file:"rtmp://"+window.location.hostname+"/live/livestream", //用默认端口1935，用srs
+	                          //file:"rtmp://"
+	                          height : 480 ,
 
-	                          width : 960
+	                          width : 720
 
-	      });
-	</script>
+	      		});
+	      		my_page14_thePlayer1.play(true);//一开始就自动播放
+			</script>
+		</div>
+		<!-- 视频2 -->
+		<div class="my-page14-video2">
+			<div id = "my-page14-videocontainer2" class="my-page14-video2">Loading the player ...</div>
+		    <script type = "text/javascript" >
+		       my_page14_thePlayer2 =jwplayer ( "my-page14-videocontainer2" ). setup ({
+
+		                          flashplayer : "/frame/jwplayer/jwplayer.flash.swf" ,//指定播放器
+
+		                          //file : "/view/tes.mp4",//本地
+		                          //file:"rtmp://202.117.80.19:1935/live/live1",//cctv5
+		                          file:"rtmp://"+window.location.hostname+"/live/livestream1",
+		                          //file: "http://bcs.duapp.com/images-link/sample.mp4",
+		                          height : 480 ,
+
+		                          width : 720
+
+		      });
+		      my_page14_thePlayer2.play(true);//一开始就自动播放
+
+			</script>
+
+		</div>
+
 </div>
