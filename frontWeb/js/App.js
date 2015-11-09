@@ -4,6 +4,7 @@ var myApp = angular.module('MyApp', [
 	'MyApp.page12',
 	'MyApp.page11',
 	'MyApp.page13',
+	'MyApp.page14',
 	'MyApp.page2',
 	'chart.js'
 ]);//[]里可以注入模块

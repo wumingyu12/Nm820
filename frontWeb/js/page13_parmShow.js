@@ -1,6 +1,6 @@
 var page13_model=angular.module('MyApp.page13',["xeditable","checklist-model"]);
 
-page13_model.run(function(editableOptions) {
+page13_model.run(function(editableOptions) { //插件xeditable的初始化样式
   editableOptions.theme = 'bs3'; // bootstrap3 theme. Can be also 'bs2', 'default'
 });
 
