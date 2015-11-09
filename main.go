@@ -1,6 +1,7 @@
 package main
 
 import (
+	"./goService/hkPtz" //海康威视的Ptz控制
 	"./goService/nm820" //nm820的引用库
 	"fmt"
 	"github.com/gorilla/mux" //路由库
@@ -43,6 +44,7 @@ func main() {
 	mux_router := mux.NewRouter()               //用mux库做路由
 	mux_router.HandleFunc("/", NotFoundHandler) //初始化Session管理器
 
+	//=====================================NM820================================================
 	//resetful得到nm820的状态
 	//注意http://10.33.51.186:2234/resetful/nm820/GetState/是匹配不了的最后面不能有/
 	mux_router.HandleFunc("/resetful/nm820/GetState", nm820.GetState).Methods("GET")
@@ -61,6 +63,13 @@ func main() {
 
 	//测试用json---resetful/nm820Json/Get24TemHumi.json
 	http.Handle("/resetful/nm820Json/Get24TemHumi.json", http.FileServer(http.Dir("./")))
+	//==========================================================================================================
+
+	//====================================海康摄像头位置控制=====================================================
+	//mode--panleft panright(左右)，tiltup tiltdown（上下），zoomfar zoomnear（远近），stop（直接停止），默认速度都为60，连续运动
+	//camNum 摄像头的指定，1--1号摄像头，2--2号摄像头，对应的ip可以查看./myconfig/hkcamConfig.json
+	mux_router.HandleFunc("/resetful/hkPtz/Continuous/{camNum}/{mode}", hkPtz.Continuous).Methods("GET")
+	//============================================================================================================
 
 	http.Handle("/", mux_router) //这一句别忘了 否则前面的mux_router是不作用的
 	fmt.Println("正在监听2234端口,main.go")
