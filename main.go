@@ -66,9 +66,8 @@ func main() {
 	//==========================================================================================================
 
 	//====================================海康摄像头位置控制=====================================================
-	//mode--panleft panright(左右)，tiltup tiltdown（上下），zoomfar zoomnear（远近），stop（直接停止），默认速度都为60，连续运动
-	//camNum 摄像头的指定，1--1号摄像头，2--2号摄像头，对应的ip可以查看./myconfig/hkcamConfig.json
-	mux_router.HandleFunc("/resetful/hkPtz/Continuous/{camNum}/{mode}", hkPtz.Continuous).Methods("GET")
+	//camNum 摄像头的指定，mode运动的模式上下左右停止等，speed运动的速度默认60
+	mux_router.HandleFunc("/resetful/hkPtz/Continuous/{camNum}/{mode}/{speed}", hkPtz.Continuous).Methods("GET")
 	//============================================================================================================
 
 	http.Handle("/", mux_router) //这一句别忘了 否则前面的mux_router是不作用的

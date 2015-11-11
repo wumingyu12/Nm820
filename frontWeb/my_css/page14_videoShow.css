@@ -2,7 +2,9 @@
 /*
 my-page14-main
 |__my-page14-video1 视频1 布局div
+	|__my-page14-video1-ptz 海康的ptz控制按钮
 |__my-page14-video2 视频2 布局div
+	|__	|__my-page14-video1-ptz 海康的ptz控制按钮
 */
 .my-page14-main{
 	position: relative;
@@ -16,6 +18,11 @@ my-page14-main
 	position: absolute;
 	top: 2%;
 	left: 2%;
+}
+.my-page14-video1-ptz{
+	position: absolute;
+	top: 1%;
+	right: 2%;
 }
 .my-page14-video2{
 	width: 40%;
