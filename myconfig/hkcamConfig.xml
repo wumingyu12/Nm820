@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 用于ptz的控制一些参数，hkPtz会用到用来初始化摄像头的一些resetful参数 -->
+<hkcameras>
+    <camera ip="10.33.51.187" user="admin" password="wumingyu12"></camera>
+	<camera ip="10.33.51.188" user="admin" password="wumingyu12"></camera>
+</hkcameras>
