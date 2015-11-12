@@ -1,8 +1,8 @@
 //page14 视频显示与ptz控制
-var page14_model=angular.module('MyApp.page14', []);
+var page51_model=angular.module('MyApp.page51', []);
 
 //视频1的，ptz控制等
-page14_model.controller('page14_mainvideoCtrl', [
+page51_model.controller('page51_mainvideoCtrl', [
 	'$scope',
 	'$http', 
 	function ($scope,$http){

@@ -4,7 +4,7 @@ var myApp = angular.module('MyApp', [
 	'MyApp.page12',
 	'MyApp.page11',
 	'MyApp.page13',
-	'MyApp.page14',
+	'MyApp.page51',
 	'MyApp.page2',
 	'chart.js'
 ]);//[]里可以注入模块
@@ -15,7 +15,10 @@ myApp.controller('bodyCtrl',[
 	function ($scope,$rootScope){
 		$rootScope.mainShows=[//主页面用
 			{url:'page1_state/page1_controlIndex.html'},
-			{url:'page2_control/index.html'}
+			{url:'page2_control/index.html'},
+			{url:'page2_control/index.html'},
+			{url:'page2_control/index.html'},
+			{url:'page5_video/page51_videoShow.html'}
 		];
 		$rootScope.mainShow=$rootScope.mainShows[0];
 	}

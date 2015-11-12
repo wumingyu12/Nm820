@@ -1,11 +1,18 @@
 <!-- 实时视频监控与设备开关监控 -->
-<div class="my-page14-main" ng-controller="page14_mainvideoCtrl">  
+<!-- css -->
+<link rel="stylesheet" href="/my_css/page5_video_css/page51_videoShow.css">
+<!-- js -->
+<script src="/js/page51_videoShow.js"></script>
+
+
+
+<div class="my-page51-main" ng-controller="page51_mainvideoCtrl">  
 	<script type ="text/javascript" src="/frame/jwplayer/jwplayer.js"></script>
 		<!-- 视频1 -->
-		<div  class="my-page14-video1">
-			<div id = "my-page14-videocontainer1">Loading the player ...</div>
+		<div  class="my-page51-video1">
+			<div id = "my-page51-videocontainer1">Loading the player ...</div>
 	    	<script type = "text/javascript" >
-	        	my_page14_thePlayer1 =jwplayer ( "my-page14-videocontainer1" ). setup ({
+	        	my_page51_thePlayer1 =jwplayer ( "my-page51-videocontainer1" ). setup ({
 
 	                          flashplayer : "/frame/jwplayer/jwplayer.flash.swf" ,//指定播放器
 
@@ -18,10 +25,10 @@
 	                          width : 720
 
 	      		});
-	      		my_page14_thePlayer1.play(true);//一开始就自动播放
+	      		my_page51_thePlayer1.play(true);//一开始就自动播放
 			</script>
 			<!-- 视频1的控制 -->
-			<div class="my-page14-video1-ptz"><!-- 按下时发送连续运动命令，松开时发送停止命令 -->
+			<div class="my-page51-video1-ptz"><!-- 按下时发送连续运动命令，松开时发送停止命令 -->
 				<button ng-mousedown="hkptzResetful('1','panleft','60')" ng-mouseup="hkptzResetful('1','stop','60')">左</button>
 				<button ng-mousedown="hkptzResetful('1','panright','60')" ng-mouseup="hkptzResetful('1','stop','60')">右</button>
 				<button ng-mousedown="hkptzResetful('1','tiltup','60')" ng-mouseup="hkptzResetful('1','stop','60')" >上</button>
@@ -33,10 +40,10 @@
 		<!-- 视频1的控制 -->
 
 		<!-- 视频2 -->
-		<div class="my-page14-video2">
-			<div id = "my-page14-videocontainer2" class="my-page14-video2">Loading the player ...</div>
+		<div class="my-page51-video2">
+			<div id = "my-page51-videocontainer2" class="my-page51-video2">Loading the player ...</div>
 		    <script type = "text/javascript" >
-		       my_page14_thePlayer2 =jwplayer ( "my-page14-videocontainer2" ). setup ({
+		       my_page51_thePlayer2 =jwplayer ( "my-page51-videocontainer2" ). setup ({
 
 		                          flashplayer : "/frame/jwplayer/jwplayer.flash.swf" ,//指定播放器
 
@@ -49,11 +56,11 @@
 		                          width : 720
 
 		      });
-		      my_page14_thePlayer2.play(true);//一开始就自动播放
+		      my_page51_thePlayer2.play(true);//一开始就自动播放
 
 			</script>
 			<!-- 视频2的ptz控制 -->
-			<div class="my-page14-video1-ptz"><!-- 按下时发送连续运动命令，松开时发送停止命令 这里的速度用30，第二个个1900元的速度太快-->
+			<div class="my-page51-video1-ptz"><!-- 按下时发送连续运动命令，松开时发送停止命令 这里的速度用30，第二个个1900元的速度太快-->
 				<button ng-mousedown="hkptzResetful('2','panleft','30')" ng-mouseup="hkptzResetful('2','stop','60')">左</button>
 				<button ng-mousedown="hkptzResetful('2','panright','30')" ng-mouseup="hkptzResetful('2','stop','60')">右</button>
 				<button ng-mousedown="hkptzResetful('2','tiltup','30')" ng-mouseup="hkptzResetful('2','stop','60')" >上</button>

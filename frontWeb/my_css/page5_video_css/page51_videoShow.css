@@ -1,30 +1,30 @@
 /*视频监控，及设备监控css样式表*/
 /*
-my-page14-main
-|__my-page14-video1 视频1 布局div
-	|__my-page14-video1-ptz 海康的ptz控制按钮
-|__my-page14-video2 视频2 布局div
-	|__	|__my-page14-video1-ptz 海康的ptz控制按钮
+my-page51-main
+|__my-page51-video1 视频1 布局div
+	|__my-page51-video1-ptz 海康的ptz控制按钮
+|__my-page51-video2 视频2 布局div
+	|__	|__my-page51-video1-ptz 海康的ptz控制按钮
 */
-.my-page14-main{
+.my-page51-main{
 	position: relative;
 	width: 100%;
 	height: 100%;
 	background-color: grey;
 }
-.my-page14-video1{
+.my-page51-video1{
 	width: 40%;
 	height: 60%;
 	position: absolute;
 	top: 2%;
 	left: 2%;
 }
-.my-page14-video1-ptz{
+.my-page51-video1-ptz{
 	position: absolute;
 	top: 1%;
-	right: 2%;
+	right: 10%;
 }
-.my-page14-video2{
+.my-page51-video2{
 	width: 40%;
 	height: 60%;
 	position: absolute;

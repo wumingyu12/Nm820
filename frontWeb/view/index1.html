@@ -16,12 +16,14 @@
 	<!--图标集-->
 	<link rel="stylesheet" href="/my_css/iconmoon/iconmoonstyle.css">
 	<link rel="stylesheet" href="/my_css/index1.css">
-	<link rel="stylesheet" href="/my_css/page1.css">
-	<link rel="stylesheet" href="/my_css/page1_controlIndex.css">
-	<link rel="stylesheet" href="/my_css/page11_contState.css">
-	<link rel="stylesheet" href="/my_css/page12_historyDate.css">
-	<link rel="stylesheet" href="/my_css/page13_parmShow.css">
-	<link rel="stylesheet" href="/my_css/page14_videoShow.css">
+ 		<!-- 第一个页面环境控制的css -->
+	<link rel="stylesheet" href="/my_css/page1_state_css/page1_controlIndex.css">
+	<link rel="stylesheet" href="/my_css/page1_state_css/page11_contState.css">
+	<link rel="stylesheet" href="/my_css/page1_state_css/page12_historyDate.css">
+	<link rel="stylesheet" href="/my_css/page1_state_css/page13_parmShow.css">
+		<!-- 第五个页面视频监控用到的css -->
+	<link rel="stylesheet" href="/my_css/page5_video_css/page51_videoShow.css">
+
 	<!--===============脚本=====================-->
 	<script src="/frame/jquery-1.7.1.min.js"></script>
 	<script src="/frame/angular_js/angular.js"></script>
@@ -30,12 +32,16 @@
 	<script src="/frame/ui-bootstrap/ui-bootstrap-tpls-0.12.1.js"></script>
 	<script src="/frame/angular_js/angular-animate.js"></script>
 	<script src="/js/App.js"></script>
-	<script src="/js/page1_controlIndex.js"></script><!-- 页面1用到的指令等，一定要跟在app.js后 -->
-	<script src="/js/page11_contState.js"></script>
-	<script src="/js/page12_historyDate.js"></script>
-	<script src="/js/page13_parmShow.js"></script>
-	<script src="/js/page14_videoShow.js"></script>
+		<!-- 页面1 环境监控 -->
+	<script src="/js/page1_state/page1_controlIndex.js"></script><!-- 页面1用到的指令等，一定要跟在app.js后 -->
+	<script src="/js/page1_state/page11_contState.js"></script>
+	<script src="/js/page1_state/page12_historyDate.js"></script>
+	<script src="/js/page1_state/page13_parmShow.js"></script>
+		<!-- 页面2 连续控制 -->
 	<script src="/js/page2_control.js"></script><!-- 页面1用到的指令等，一定要跟在app.js后 -->
+		<!-- 页面5 视频监控 -->
+	<script src="/js/page5_video/page51_videoShow.js"></script>
+	
 	
 	<!-- 引入angular char -->
 	<link rel="stylesheet" href="/frame/angular-chart/angular-chart.css">
@@ -58,11 +64,14 @@
 			<a class="my-nav-button" ng-class="{'my-nav-button-select':currentIndexNum===1}" ng-click="showMain(1)">
 				<span><i class="fa fa-chain fa-fw "></i>料线控制</span>
 			</a>
-			<a class="my-nav-button" >
-				<span><i class="fa fa-spoon fa-fw "></i>精准喂料</span>
+			<a class="my-nav-button" ng-class="{'my-nav-button-select':currentIndexNum===2}" ng-click="showMain(2)">
+				<span><i class="fa fa-spoon fa-fw " ></i>精准喂料</span>
 			</a>
-			<a class="my-nav-button" >
+			<a class="my-nav-button" ng-class="{'my-nav-button-select':currentIndexNum===3}" ng-click="showMain(3)">
 				<span><i class="fa fa-tachometer fa-fw "></i>料塔称重</span>
+			</a>
+			<a class="my-nav-button" ng-class="{'my-nav-button-select':currentIndexNum===4}" ng-click="showMain(4)">
+				<span><i class="fa fa-video-camera fa-fw "></i>视频监控</span>
 			</a>
 		</div>
 		<div class="my-main-show " ng-include="$root.mainShow.url">
