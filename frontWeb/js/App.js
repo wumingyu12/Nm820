@@ -1,4 +1,5 @@
 var myApp = angular.module('MyApp', [
+	'ui.router',
 	'ngAnimate',
 	'MyApp.page1',
 	'MyApp.page12',
@@ -8,6 +9,34 @@ var myApp = angular.module('MyApp', [
 	'MyApp.page2',
 	'chart.js'
 ]);//[]里可以注入模块
+
+//================================
+//ui-view的路由
+//==============================
+myApp.config(function($stateProvider, $urlRouterProvider) {
+	$urlRouterProvider.otherwise("/page1");//默认
+	$stateProvider
+        .state('page1', {//环境控制监控顶级页面
+            url: "/page1",
+            templateUrl: "page1_state/page1_controlIndex.html"
+        })
+        .state('page2', {
+            url: "/page2",
+            templateUrl: "page1_state/page1_controlIndex.html"
+        })
+        .state('page3', {
+            url: "/page3",
+            templateUrl: "page1_state/page1_controlIndex.html"
+        })
+        .state('page4', {
+            url: "/page4",
+            templateUrl: "page2_control/index.html"
+        })
+        .state('page5', {//视频监控顶级页面
+            url: "/page5",
+            templateUrl: "page5_video/page51_videoShow.html"
+        });;
+})
 
 myApp.controller('bodyCtrl',[
 	'$scope',

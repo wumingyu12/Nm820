@@ -74,8 +74,31 @@
 				<span><i class="fa fa-video-camera fa-fw "></i>视频监控</span>
 			</a>
 		</div>
-		<div class="my-main-show " ng-include="$root.mainShow.url">
+		<!--		<div class="my-main-show " ng-include="$root.mainShow.url">
+		</div>  -->
+
+		<!-- <div ui-view class="animated zoomIn zoomOut my-main-show"> 有跳场动画，需要angular动画模块-->
+		<div ui-view class="my-main-show">
+			<!-- ui-rounter初始状态的显示处 -->
 		</div>
+
+					<div class="list-group">
+				<!--ui-sref="state1"为uirounter的属性-->
+				<a class="list-group-item my-left-botton" ui-sref="page1"> <i class="fa fa-home fa-fw " style="vertical-align:middle;font-size:10vh;"></i>
+					<h1 class="my-test-inline">Home</h1>
+				</a>
+				<a class="list-group-item my-left-botton" ui-sref="page2"> <i class="fa fa-book fa-fw " style="vertical-align:middle;font-size:10vh;"></i>
+					<h1 class="my-test-inline" >Home</h1>
+				</a>
+				<a class="list-group-item my-left-botton" ui-sref="page3">
+					<i class="fa fa-pencil fa-fw " style="vertical-align:middle;font-size:10vh;"></i>
+					<h1 class="my-test-inline">Home</h1>
+				</a>
+				<a class="list-group-item my-left-botton" ui-sref="page4">
+					<i class="fa fa-cog fa-fw " style="vertical-align:middle;font-size:10vh;"></i>
+					<h1 class="my-test-inline">Home</h1>
+				</a>
+				</div>
 	</div>
 </body>
 </html>
