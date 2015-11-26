@@ -23,7 +23,7 @@ myApp.config(function($stateProvider, $urlRouterProvider) {
         })
             .state('page1.contState', {//环境控制监控,第二级页面状态监控
 	            url: "/contState",
-	            templateUrl: "page1_state/page11_conState.html"
+	            templateUrl: "page1_state/page11_contState.html"
         	})
         	.state('page1.historyData', {//环境控制监控,第二级页面历史数据
 	            url: "/historyData",

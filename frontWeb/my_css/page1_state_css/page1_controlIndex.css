@@ -5,6 +5,7 @@
 /*   	|__my-page1-left-nav-button:hover*/
 /*   	|__my-page1-left-nav-button-select*/
 /*|__my-page1-mainShow
+/*   |__my-page1-mainShow-animate  加这一层主要是为了切场动画不会过格*/
 /*------------------------------*/
 /*@media  800~  500~800 200~500*/
 /*|__my-page1-left-nav */
@@ -48,7 +49,7 @@
 .my-page1-main{
 	width: 100%;
 	height: 100%;
-	background-color: rgb(233,189,211);
+	background-color: white;
 	position: relative;
 }
 /*------------------------------*/
@@ -101,5 +102,10 @@
 	/*width: 85%;*/
 	height: 100%;
 	float: left;
+	position: relative;
+}
+.my-page1-mainShow-animate{
+	height: 100%;
+	width: 100%;
 	position: relative;
 }

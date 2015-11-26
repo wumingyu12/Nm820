@@ -2,17 +2,19 @@
 <div class="my-page1-main" ng-controller="page1_MainCtrl">
 	<!-- 左侧导航条 -->
 	<div class="my-page1-left-nav">
-		<a class="my-page1-left-nav-button" ng-class="{'my-page1-left-nav-button-select':currentIndexNum===0}" ng-click="showMain(0)"><!-- currentIndexNum===0如果当前的选择索引是0 -->
+		<a class="my-page1-left-nav-button" ng-class="{'my-page1-left-nav-button-select':currentIndexNum===0}" ui-sref="page1.contState"><!-- currentIndexNum===0如果当前的选择索引是0 -->
 			<span><i class="fa fa-eye fa-fw "></i>状态监控</span>
 		</a>
-		<a class="my-page1-left-nav-button" ng-class="{'my-page1-left-nav-button-select':currentIndexNum===1}" ng-click="showMain(1)">
+		<a class="my-page1-left-nav-button" ng-class="{'my-page1-left-nav-button-select':currentIndexNum===1}" ui-sref="page1.historyData">
 			<span><i class="fa fa-history fa-fw "></i>历史数据</span>
 		</a>
-		<a class="my-page1-left-nav-button" ng-class="{'my-page1-left-nav-button-select':currentIndexNum===2}" ng-click="showMain(2)">
+		<a class="my-page1-left-nav-button" ng-class="{'my-page1-left-nav-button-select':currentIndexNum===2}" ui-sref="page1.parmShow">
 			<span><i class="fa fa-sliders fa-fw "></i>配置查看</span>
 		</a>
 	</div>
-	<div class="my-page1-mainShow" ng-include="mainShow.url">
-		
+	<div class="my-page1-mainShow">
+		<div ui-view class="animated zoomIn zoomOut my-page1-mainShow-animate"> <!-- 加多一层让过场动画限制在ui-view里面 -->
+			
+		</div>
 	</div>
 </div>
