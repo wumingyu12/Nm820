@@ -1,10 +1,6 @@
 /*body*/
 /*|__my-main*/
-/*   |__my-nav*/
-/*      |__my-nav-button*/
-/*         |__my-nav-button:hover*/
-/*         |__my-nav-button-select*/
-/*         |__span*/
+/*   |——my-nav 对bootstrap的导航条进行一定的调整*/
 /*   |__my-main-show*/
 /*=============================================*/
 /*@media  800~  500~800 200~500*/
@@ -23,48 +19,14 @@ html,body{/*全屏--*/
 	height: 100% 
 	
 }
-/*-------------------*/
-/*自适应媒体查询*/
-/*----------------*/
-@media all and (min-width: 800px){/*当宽度大于800px的所有情况*/
-	body{
-		font-size:16px;
-	}
-	.my-nav{
-		height: 6%;
-	}
-	.my-main-show{
-		height: 94%;
-	}
-}
-@media (min-width: 500px) and (max-width: 800px){/*当宽度小于500-800px的所有情况*/
-	body{
-		font-size:10px;
-	}
-	.my-nav{
-		height: 10%;
-	}
-	.my-main-show{
-		height: 90%;
-	}
-}
-@media (min-width: 200px) and (max-width: 500px){/*当宽度200-500的所有情况*/
-	body{
-		font-size:7px;
-	}
-	.my-nav{
-		height: 10%;
-	}
-	.my-main-show{
-		height: 90%;
-	}
-}
+
 /*-------------------*/
 /*主页面属性*/
 /*----------------*/
 
 body{
 	/*overflow:hidden;没有滚动条*/
+	padding-top: 50px;/*为了一直浮动在顶部的nav预留位置*/
 }
 .my-main{/*底布*/
 	width: 100%;
@@ -74,56 +36,15 @@ body{
 /*-------------------*/
 /*导航图标集合*/
 /*----------------*/
-.my-nav{/*定位在底板顶部,height是定位在媒体查询中*/
-	position: relative;
-	top: 0px;
-	left:0;
-	/*height: 15%;*/
-	width: 100%;
-	/*max-height: 60px;*/
-	background-color: rgb(22,22,22);
-
+.my-nav{
+	margin: 0px !important;
 }
-/*导航按钮*/
-.my-nav-button{/*导航按钮*/
-	display: block;/*不能*/
-	float: left;/*浮动排列*/
-	height:100%;
-	max-height: 80px;/*最大不可以超过100px*/
-	width:16%;
-	margin-left: 0.4em;/*调整间距*/
-	border-radius: 0.5em;
-	position: relative;
-}
-.my-nav-button:hover{/*悬停*/
-	background-color:rgb(44,55,55);
-	cursor: pointer;
-}
-
-.my-nav-button-select{/*高亮显示当前图标*/
-	background-color:rgb(44,55,55) !important;
-
-}
-.my-nav-button span{/*选项按钮里的字体*/
-/*选项按钮里的图标,垂直居中*/
-	 position: absolute;
-	 top:50%;
-	 left: 50%;
-	 font-size: 2em;
-	 display:inline;
-	 white-space:nowrap;/*不要换行*/
-	 color: white;
-	 -webkit-transform: translateX(-50%) translateY(-50%);
-	 -moz-transform: translateX(-50%) translateY(-50%);
-	 -ms-transform: translateX(-50%) translateY(-50%);
-	 transform: translateX(-50%) translateY(-50%);
-}
-/**/
 
 /*主界面的css---*/
 .my-main-show{
 	/*height:85%;/*导航条最多15%*/
 	width: 100%;/*与.my-nav-toggle的width关系*/
+	height: 100%;
 	display: inline-block;
 	position: relative;
 }

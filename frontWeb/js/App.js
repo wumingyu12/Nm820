@@ -16,10 +16,25 @@ var myApp = angular.module('MyApp', [
 myApp.config(function($stateProvider, $urlRouterProvider) {
 	$urlRouterProvider.otherwise("/page1");//默认
 	$stateProvider
+		//========================页面1==========================
         .state('page1', {//环境控制监控顶级页面
             url: "/page1",
             templateUrl: "page1_state/page1_controlIndex.html"
         })
+            .state('page1.contState', {//环境控制监控,第二级页面状态监控
+	            url: "/contState",
+	            templateUrl: "page1_state/page11_conState.html"
+        	})
+        	.state('page1.historyData', {//环境控制监控,第二级页面历史数据
+	            url: "/historyData",
+	            templateUrl: "page1_state/page12_historyDate.html"
+        	})
+        	.state('page1.parmShow', {//环境控制监控,第二级页面参数设置
+	            url: "/parmShow",
+	            templateUrl: "page1_state/page13_parmShow.html"
+        	})
+
+        //================页面二================================
         .state('page2', {
             url: "/page2",
             templateUrl: "page1_state/page1_controlIndex.html"
