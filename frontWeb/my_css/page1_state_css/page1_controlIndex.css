@@ -35,12 +35,21 @@
 		width: 88%;
 	}
 }
-@media (min-width: 200px) and (max-width: 500px){/*当宽度200-500的所有情况*/
+@media (min-width: 400px) and (max-width: 500px){/*当宽度200-500的所有情况*/
 	.my-page1-left-nav{
 		width: 15%;
 	}
 	.my-page1-mainShow{
 		width: 85%;
+	}
+}
+/*手机的小屏幕时不显示侧边栏*/
+@media all and (max-width: 400px){/*当宽度200-500的所有情况*/
+	.my-page1-left-nav{
+		width: 0%;
+	}
+	.my-page1-mainShow{
+		width: 100%;
 	}
 }
 

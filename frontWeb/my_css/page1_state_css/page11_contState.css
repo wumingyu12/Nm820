@@ -1,45 +1,51 @@
-/*my-page11-mainpage 具有一张大的背景图*/
+/*my-page11-mainpage 具有一张大的背景图 */
+/*|     @media all and (max-width: 400px)  媒体查询决定是否加载图片                                   */
+/*|     @media all and (min-width: 400px)                                     */
 /*|__my-page11-fan1 动画风机1*/
-/*|__my-page11-RelayPan 显示继电器状态的面板*/
-/*   |__  > div 面板div                */
-/*      |__ >div>p 面板里面的文字  */
-/*   |__my-page11-RelayPan-On 风机开图标*/
-/*   |__my-page11-RelayPan-Off 风机关图标*/
-/*|__my-page11-statepan  实时显示的状态面板*/
-/*   |__<p> 用来显示温度，湿度，日期等*/
-/*   |__my-page11-wenshidu  温湿度*/
-
-
+/*|     @media all and (max-width: 400px)  大于400才显示                                   */
+/*|_my-page11-RelayPan 显示继电器状态的面板*/
+/*   |__my-page11-RelayPan-body 面板div                */
+/*      	|__ >div>p 面板里面的文字  */
+/*   	|__my-page11-RelayPan-On 风机开图标*/
+/*   	|__my-page11-RelayPan-Off 风机关图标*/
+/*|__my-page11-pan  实时显示的状态面板*/
+/*   |__my-page11-pan-wendu 显示日龄与时间*/
+/*   |__my-page11-pan-other 显示温湿度与通风等级*/
+/*      |__>p  */
+/*=========================================================*/
 .my-page11-mainpage{
 	width: 100%;
 	height: 100%;
-	background-image: url(/view/page1_state/page11_video/back_4096-2304.jpg);
-	background-size: 100% 100%;
 	position: relative;
 }
+/*手机的小屏幕时不显示图片*/
+@media all and (max-width: 400px){/*当宽度0-400的所有情况*/
+	.my-page11-mainpage{
+		background: -ms-linear-gradient(top, from(rgb(50,50,50)), to(rgb(180,180,180)));        /* IE 10 */
+		background:-moz-linear-gradient(top,from(rgb(50,50,50)), to(rgb(180,180,180)));/*火狐*/ 
+		background:-webkit-gradient(linear, 0% 25%, 75% 100%,from(rgb(50,50,50)), to(rgb(180,180,180)));/*谷歌*/ 
+	}
+}
+@media all and (min-width: 400px){/*当宽度400~的所有情况*/
+	.my-page11-mainpage{
+		background-image: url(/view/page1_state/page11_video/back_4096-2304.jpg);
+		background-size: 100% 100%;
+	}
+}
+
 .my-page11-fan1{
 	position: absolute;
 }
+@media all and (max-width: 400px){/*当宽度0-400的所有情况*/
+	.my-page11-fan1{
+		display: none;
+	}
+}
+
 /*============================显示继电器状态的面板===========================================*/
 .my-page11-RelayPan{
 	position: absolute;
-	left: 1%;
-	top:1%;
-}
-.my-page11-RelayPan>div{
-	display:inline-block;
-	float: left;
-	margin: 4px;
-	background-color: #d2691e;
-	opacity: 0.9;
-	border-radius: 5px;
-	box-shadow: 5px 5px rgb(0,0,0);
-}
-/*面板里面的文字风机组*/
-.my-page11-RelayPan>div>p{
-	margin: 2px;
-	text-align: center;
-	color: white;
+	font-weight: bold;
 }
 .my-page11-RelayPan-On{
 	width: 70px;
@@ -53,28 +59,127 @@
 	background-image: url(/view/page1_state/page11_video/off.png);
 	background-size: 100% 100%;
 }
-/*=====================显示状态的面板====================================*/
-.my-page11-statepan{
-	width: 20%;
-	height: 30%;
-	top: 60%;
-	right: 3%;
-	background-color: blue;
+	/*面板里面的文字风机组*/
+.my-page11-RelayPan-body>div>p{
+	margin: 2px;
+	text-align: center;
+	color: black;
+}
+
+/*pc端*/
+@media all and (min-width: 400px){/*当宽度0-400的所有情况*/
+	.my-page11-RelayPan{
+		width: 25%;
+		bottom: 1%;
+		right: 1%;
+		margin: 2px;
+	}
+	.my-page11-RelayPan-body{
+		padding: 1px;
+		padding-left: 10px;
+		background:-webkit-gradient(radial, 121 6, 0, 222 -257, 465, from(#596A81), to(#6F5E28))
+	}
+	.my-page11-RelayPan-body>div{
+		opacity: 1;
+		display:inline-block;
+		float: left;
+		padding: 3px;
+		padding-right: 10px;
+		border-right: 1px solid #aaaaaa;
+		border-bottom: 1px solid #aaaaaa;
+	}
+
+}
+
+
+/*手机*/
+@media all and (max-width: 400px){/*当宽度0-400的所有情况*/
+	.my-page11-RelayPan{
+		width: 98%;
+		height: 30%;
+		left: 1%;
+		top:1%;
+		margin: 2px;
+	}
+	.my-page11-RelayPan-body{
+		padding: 1px;
+		padding-left: 10px;
+	}
+	.my-page11-RelayPan-body>div{
+		opacity: 1;
+		display:inline-block;
+		float: left;
+		padding: 3px;
+		padding-right: 10px;
+		opacity: 0.9;
+		border-right: 1px solid #aaaaaa;
+		border-bottom: 1px solid #aaaaaa;
+	}
+}
+
+/*==================================实时显示状态的面板==================================================*/
+.my-page11-pan{
 	position: absolute;
-	opacity: 0.7;
-	box-shadow: 10px 10px rgb(0,0,0);
-	border-radius:10px;
-}
-.my-page11-statepan>p{
-	color: white;
+	padding: 2px;
 	font-weight: bold;
-	font-size: 20px;
-	margin-left: 10px;
+	opacity: 0.8
 }
-.my-page11-wenshidu{
-	font-size: 2em;
-	color: white;
+.my-page11-pan-body{
+
 }
+
+/*pc端*/
+@media all and (min-width: 400px){/*当宽度0-400的所有情况*/
+	.my-page11-pan{
+		width: 350px;
+		height: 130px;
+		left: 1%;
+		top: 1%;
+	}
+	.my-page11-pan-wendu{
+		font-size: 40px;
+		display: inline-block;
+		border-right: 1px solid #aaaaaa;
+		float: left;
+	}
+	.my-page11-pan-other{
+		display: inline-block;
+		float: left;
+		padding-left: 15px;
+	}
+	.my-page11-pan-other>p{
+		margin: 2px;
+	}
+	.my-pan-body{
+		
+	}
+}
+/*手机*/
+@media all and (max-width: 400px){/*当宽度0-400的所有情况*/
+	.my-page11-pan{
+		width: 98%;
+		height: 30%;
+		bottom: 1%;
+		margin: 2px;
+	}
+	.my-page11-pan-wendu{
+		font-size: 40px;
+		display: inline-block;
+		border-right: 1px solid #aaaaaa;
+		float: left;
+	}
+	.my-page11-pan-other{
+		display: inline-block;
+		float: left;
+		padding-left: 15px;
+	}
+	.my-page11-pan-other>p{
+		margin: 2px;
+	}
+}
+
+
+/*====================================================================================*/
 /*实时温度的自走曲线
 .my-page11-wenduChat-current{
 	width: 300px;

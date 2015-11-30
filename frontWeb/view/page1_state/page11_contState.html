@@ -92,23 +92,44 @@
     </div>
     -->
     <!-- 一个风机组状态面板用来显示当前有哪些风机组是运行的 -->
-    <div class="my-page11-RelayPan">
-    	<div><p>风机组1</p><div ng-class="{1:'my-page11-RelayPan-On',0:'my-page11-RelayPan-Off'}[RelayState[0]]"></div></div>
-    	<div><p>风机组2</p><div ng-class="{1:'my-page11-RelayPan-On',0:'my-page11-RelayPan-Off'}[RelayState[1]]"></div></div>
-    	<div><p>风机组3</p><div ng-class="{1:'my-page11-RelayPan-On',0:'my-page11-RelayPan-Off'}[RelayState[2]]"></div></div>
-		<div><p>风机组4</p><div ng-class="{1:'my-page11-RelayPan-On',0:'my-page11-RelayPan-Off'}[RelayState[3]]"></div></div>
-		<div><p>风机组5</p><div ng-class="{1:'my-page11-RelayPan-On',0:'my-page11-RelayPan-Off'}[RelayState[4]]"></div></div>
-		<div><p>风机组6</p><div ng-class="{1:'my-page11-RelayPan-On',0:'my-page11-RelayPan-Off'}[RelayState[5]]"></div></div>
-		<div><p>风机组7</p><div ng-class="{1:'my-page11-RelayPan-On',0:'my-page11-RelayPan-Off'}[RelayState[6]]"></div></div>
-		<div><p>风机组8</p><div ng-class="{1:'my-page11-RelayPan-On',0:'my-page11-RelayPan-Off'}[RelayState[7]]"></div></div>
+    <div class=" my-page11-RelayPan">	
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				继电器实时状态
+			</div>
+	  		<div class="panel-body my-page11-RelayPan-body">
+			    	<div><p>风机组1</p><div ng-class="{1:'my-page11-RelayPan-On',0:'my-page11-RelayPan-Off'}[RelayState[0]]"></div></div>
+			    	<div><p>风机组2</p><div ng-class="{1:'my-page11-RelayPan-On',0:'my-page11-RelayPan-Off'}[RelayState[1]]"></div></div>
+			    	<div><p>风机组3</p><div ng-class="{1:'my-page11-RelayPan-On',0:'my-page11-RelayPan-Off'}[RelayState[2]]"></div></div>
+					<div><p>风机组4</p><div ng-class="{1:'my-page11-RelayPan-On',0:'my-page11-RelayPan-Off'}[RelayState[3]]"></div></div>
+					<div><p>风机组5</p><div ng-class="{1:'my-page11-RelayPan-On',0:'my-page11-RelayPan-Off'}[RelayState[4]]"></div></div>
+					<div><p>风机组6</p><div ng-class="{1:'my-page11-RelayPan-On',0:'my-page11-RelayPan-Off'}[RelayState[5]]"></div></div>
+					<div><p>风机组7</p><div ng-class="{1:'my-page11-RelayPan-On',0:'my-page11-RelayPan-Off'}[RelayState[6]]"></div></div>
+					<div><p>风机组8</p><div ng-class="{1:'my-page11-RelayPan-On',0:'my-page11-RelayPan-Off'}[RelayState[7]]"></div></div>
+	  		</div>
+		</div>
     </div>
+
     <!-- 一个透明面板,请求resetful得到温度，湿度，时间，日龄，通风等级 -->
-    <div class="my-page11-statepan" >
-        <p>日龄：{{GDay}} 通风等级：{{FanLevel}}</p>
-    	<p>控制器时间:{{Year}}-{{Month}}-{{Day}}  {{Hour}}:{{Min}}:{{Sec}}</p>
-    	<div class="my-page11-wenshidu"><i class="icon-wendu">温度</i><span ng-bind="TemAvg">11</span>℃</div>
-    	<div class="my-page11-wenshidu"><i class="icon-wendu">湿度</i><span ng-bind="HumiAvg">11</span>%</div>
-    </div>
+    <div class="my-page11-pan">
+		<div class="panel panel-default">
+				<!-- Default panel contents -->
+			<div class="panel-heading">
+				<span>{{Year}}-{{Month}}-{{Day}}  {{Hour}}:{{Min}}:{{Sec}}</span>
+				<span class="pull-right">日龄:{{GDay}}</span>
+			</div>
+	  		<div class="panel-body my-pan-body">
+	  			<div class="my-page11-pan-wendu">
+	  				<span ng-bind="TemAvg">11</span>℃&nbsp&nbsp&nbsp
+	  			</div>
+	  			<div class="my-page11-pan-other">
+	  				<p>通风等级：{{FanLevel}}</p>
+	  				<p>当前湿度：<span ng-bind="HumiAvg">11</span>%</p>
+	  				<p>目标温度：{{FanLevel}}</p>
+	  			</div>
+	  		</div>
+		</div>
+	</div>
 </div>
 
 
