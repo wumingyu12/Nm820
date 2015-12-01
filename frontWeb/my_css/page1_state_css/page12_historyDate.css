@@ -19,9 +19,6 @@
 }
 /*用于表头刷新数据的按钮位置*/
 .my-page12-reflashDate{
-	position: absolute;
-	top: 10px;
-	right: 30px;
 	font-size: 26px;
 
 }
@@ -39,38 +36,65 @@
 }
 
 /*温湿度图表*/
-.my-page12-wenduChat-day{
-	width:35%;
-	height:20%;/*控制不了他的高度，与宽度成比例关系*/
-	position: absolute;
-	top: 2%;
-	left: 5%;
-	display: inline-block;
+/*pc*/
+@media all and (min-width: 400px){/*当宽度400~的所有情况*/
+	.my-page12-wenduChat-day{
+		width:35%;
+		height:20%;/*控制不了他的高度，与宽度成比例关系*/
+		position: absolute;
+		top: 2%;
+		left: 5%;
+		display: inline-block;
+	}
 }
 
+@media all and (max-width: 400px){/*当宽度0-400的所有情况*/
+
+}
 /*一个月内最高，最低，平均的气温*/
-.my-page12-wenduChat-month{
-	width:35%;
-	height:20%;
-	position:absolute;
-	top: 2%;
-	left: 50%;
-	display: inline-block;
+/*pc*/
+@media all and (min-width: 400px){/*当宽度400~的所有情况*/
+	.my-page12-wenduChat-month{
+		width:35%;
+		height:20%;
+		position:absolute;
+		top: 2%;
+		left: 50%;
+		display: inline-block;
+	}
+}
+
+@media all and (max-width: 400px){/*当宽度0-400的所有情况*/
+	
 }
 /*24x小时湿度*/
-.my-page12-shiduChat-day{
-	width: 35%;
-	height: 20%;
-	position: absolute;
-	left: 5%;
-	top: 50%;
+/*pc*/
+@media all and (min-width: 400px){/*当宽度400~的所有情况*/
+	.my-page12-shiduChat-day{
+		width: 35%;
+		height: 20%;
+		position: absolute;
+		left: 5%;
+		top: 50%;
+	}
+}
+
+@media all and (max-width: 400px){/*当宽度0-400的所有情况*/
+	
 }
 
 /*一个月湿度*/
-.my-page12-shiduChat-month{
-	width: 35%;
-	height: 20%;
-	position: absolute;
-	left: 50%;
-	top: 50%;
+/*pc*/
+@media all and (min-width: 400px){/*当宽度400~的所有情况*/
+	.my-page12-shiduChat-month{
+		width: 35%;
+		height: 20%;
+		position: absolute;
+		left: 50%;
+		top: 50%;
+	}
+}
+
+@media all and (max-width: 400px){/*当宽度0-400的所有情况*/
+	
 }

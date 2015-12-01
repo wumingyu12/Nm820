@@ -79,15 +79,15 @@
 						<!-- 为了避免按动选项后不会缩回去我在每次按完后添加一个jquery的单击顶部按钮的事件让其缩回去  onclick="$('#my-nav-button').click()"-->
 				          	<a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span><i class="fa fa-skyatlas fa-fw "></i>环境控制</span><span class="caret"></span></a>
 					        <ul class="dropdown-menu">
-					            <li><a href="index1.html#/page1/contState" onclick="$('#my-nav-button').click()"><span><i class="fa fa-eye fa-fw "></i>状态监控</span></a></li>
-					            <li><a href="index1.html#page1/historyData" onclick="$('#my-nav-button').click()"><span><i class="fa fa-history fa-fw "></i>历史数据</span></a></li>
-					            <li><a href="index1.html#page1/parmShow" onclick="$('#my-nav-button').click()"><span><i class="fa fa-sliders fa-fw "></i>配置查看</span></a></li>
+					            <li><a href="index1.html#/page1/contState" onclick="if($(window).width()<500){$('#my-nav-button').click()}"><span><i class="fa fa-eye fa-fw "></i>状态监控</span></a></li>
+					            <li><a href="index1.html#page1/historyData" onclick="if($(window).width()<500){$('#my-nav-button').click()}"><span><i class="fa fa-history fa-fw "></i>历史数据</span></a></li>
+					            <li><a href="index1.html#page1/parmShow" onclick="if($(window).width()<500){$('#my-nav-button').click()}"><span><i class="fa fa-sliders fa-fw "></i>配置查看</span></a></li>
 					        </ul>
 				        </li>
-				        <li><a href="" onclick="$('#my-nav-button').click()"><span><i class="fa fa-chain fa-fw "></i>料线控制</span></a></li>
-				        <li><a href="" onclick="$('#my-nav-button').click()"><span><i class="fa fa-spoon fa-fw " ></i>精准喂料</span></a></li>
-				        <li><a href="" onclick="$('#my-nav-button').click()"><span><i class="fa fa-tachometer fa-fw "></i>料塔称重</span></a></li>
-				        <li><a href="#/page5" onclick="$('#my-nav-button').click()"><span><i class="fa fa-video-camera fa-fw "></i>视频监控</span></a></li>
+				        <li><a href="" onclick="if($(window).width()<500){$('#my-nav-button').click()}"><span><i class="fa fa-chain fa-fw "></i>料线控制</span></a></li>
+				        <li><a href="" onclick="if($(window).width()<500){$('#my-nav-button').click()}"><span><i class="fa fa-spoon fa-fw " ></i>精准喂料</span></a></li>
+				        <li><a href="" onclick="if($(window).width()<500){$('#my-nav-button').click()}"><span><i class="fa fa-tachometer fa-fw "></i>料塔称重</span></a></li>
+				        <li><a href="#/page5" onclick="if($(window).width()<500){$('#my-nav-button').click()}"><span><i class="fa fa-video-camera fa-fw "></i>视频监控</span></a></li>
 			        </ul>
 				    <ul class="nav navbar-nav navbar-right">
 				    	<li><a href="#">返回主页</a></li>

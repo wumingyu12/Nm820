@@ -16,11 +16,13 @@
 					data="data" 
 					labels="labels" 
 
+
 	                options="{
         				scaleShowHorizontalLines: true,
         				scaleShowVerticalLines: true,
         				tooltipTemplate: '<%= value %> $',
-        				responsive: true
+        				responsive: true,
+        				pointDot:false
     				}"
 					>
 	            </canvas>
@@ -35,7 +37,7 @@
 	        <div class="panel-heading">
 	        	<span>月平均，最高，最低温度</span>
 	        	<!-- 按钮用于刷新数据 -->
-				<a href=""><span class="glyphicon glyphicon-refresh my-page12-reflashDate" ng-class="{'my-page12-rotate':isRotate}" ng-click="reflashData()" aria-hidden="true"></span></a>
+				<a href=""><span class="glyphicon glyphicon-refresh my-page12-reflashDate pull-right" ng-class="{'my-page12-rotate':isRotate}" ng-click="reflashData()" aria-hidden="true"></span></a>
 	        </div>
 	        <div class="panel-body">
 	            <canvas id="line" 
@@ -96,7 +98,7 @@
 	    <div class="panel panel-default">
 	        <div class="panel-heading">
 	        	<span>月平均湿度</span>
-				<a href=""><span class="glyphicon glyphicon-refresh my-page12-reflashDate" ng-class="{'my-page12-rotate':isRotate}" ng-click="reflashData()" aria-hidden="true"></span></a>
+				<a href=""><span class="glyphicon glyphicon-refresh my-page12-reflashDate pull-right" ng-class="{'my-page12-rotate':isRotate}" ng-click="reflashData()" aria-hidden="true"></span></a>
 	        </div>
 	        <div class="panel-body">
 	            <canvas id="line" 
