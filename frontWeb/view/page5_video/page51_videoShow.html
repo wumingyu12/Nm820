@@ -1,18 +1,24 @@
 <!-- 实时视频监控与设备开关监控 -->
 <!-- css -->
+
 <link rel="stylesheet" href="/my_css/page5_video_css/page51_videoShow.css">
 <!-- js -->
 <script src="/js/page51_videoShow.js"></script>
-
-
+<!-- 
+ -->
 
 <div class="my-page51-main" ng-controller="page51_mainvideoCtrl">  
+	<div class="my-page51-phonemain"><!-- 用于手机端时演示 rtsp://admin:wumingyu12@10.33.51.187:554/h264/ch1/main/av_stream-->
+		<video autoplay class="my-page51-phonevido1" src="/view/page5_video/tes.mp4">111</video>
+	</div>
 	<script type ="text/javascript" src="/frame/jwplayer/jwplayer.js"></script>
 		<!-- 视频1 -->
 		<div  class="my-page51-video1">
-			<div id = "my-page51-videocontainer1">Loading the player ...</div>
+			<div id = "my-page51-videocontainer1">小屏幕不在浏览器内播放视频 ...</div>
 	    	<script type = "text/javascript" >
-	        	my_page51_thePlayer1 =jwplayer ( "my-page51-videocontainer1" ). setup ({
+	    		//根据屏幕判断如果是大于400px的屏幕，就是非手机，就用rtmp播放器播放，否则就让手机直接播放rtsp
+	    		if($(window).width()>400){
+	    			my_page51_thePlayer1 =jwplayer ( "my-page51-videocontainer1" ). setup ({
 
 	                          flashplayer : "/frame/jwplayer/jwplayer.flash.swf" ,//指定播放器
 	                          //file:"rtmp://localhost/oflaDemo/hello",
@@ -24,8 +30,10 @@
 
 	                          width : 720
 
-	      		});
-	      		my_page51_thePlayer1.play(true);//一开始就自动播放
+	      			});
+	      			my_page51_thePlayer1.play(true);//一开始就自动播放
+	    		}else{
+	    		}
 			</script>
 			<!-- 视频1的控制 -->
 			<div class="my-page51-video1-ptz"><!-- 按下时发送连续运动命令，松开时发送停止命令 -->
@@ -41,9 +49,10 @@
 
 		<!-- 视频2 -->
 		<div class="my-page51-video2">
-			<div id = "my-page51-videocontainer2" class="my-page51-video2">Loading the player ...</div>
+			<div id = "my-page51-videocontainer2" class="my-page51-video2">小屏幕不在浏览器内播放视频 ...</div>
 		    <script type = "text/javascript" >
-		       my_page51_thePlayer2 =jwplayer ( "my-page51-videocontainer2" ). setup ({
+		    	if($(window).width()>400){
+		    		my_page51_thePlayer2 =jwplayer ( "my-page51-videocontainer2" ). setup ({
 
 		                          flashplayer : "/frame/jwplayer/jwplayer.flash.swf" ,//指定播放器
 
@@ -55,8 +64,10 @@
 
 		                          width : 720
 
-		      });
-		      my_page51_thePlayer2.play(true);//一开始就自动播放
+		      		});
+		      		my_page51_thePlayer2.play(true);//一开始就自动播放
+		    	}
+
 
 			</script>
 			<!-- 视频2的ptz控制 -->
