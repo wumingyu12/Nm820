@@ -14,6 +14,7 @@ var page11_model=angular.module('MyApp.page11', []);
      Year Month Day Hour Min Sec 时间
     2.ifCurrentPage 指示是否是当前页，只有确定是当前页才进行重复地请求
   方法：1.getstate(ifcurrentp),通过传入的ifcurrentp值确定是否请求resetful
+        2.
 ==================================================================================================*/
 page11_model.factory('page11getstateSer', ['$timeout','$http',function($timeout,$http){
 
@@ -23,6 +24,17 @@ page11_model.factory('page11getstateSer', ['$timeout','$http',function($timeout,
       //如果是当前页就请求resetful
       if (ifcurrentp=="yes") {
         return $http.get("/resetful/nm820/GetState");
+      }
+      else {
+        return null;
+      };
+    },
+
+    //一个服务用来获取目标温度
+    getTargetTem:function(ifcurrentp){
+      //如果是当前页就请求resetful
+      if (ifcurrentp=="yes") {
+        return $http.get("/resetful/nm820/sysPara/WenduCurve");
       }
       else {
         return null;
@@ -183,6 +195,7 @@ page11_model.controller('page11StateMainCtrl', [
     var addzero=function(s){ //时间补零函数
       return s < 10 ? '0' + s: s;
     };
+    //======================心跳获取状态值,每一秒=============================================
     var longPoll=function(){
       var p=page11getstateSer.getstate(page11getstateSer.ifCurrentPage);
       if (p!=null) {//说明在当前页面，返回一个$q对象不是null具体看服务page11getstateSer。
@@ -203,6 +216,38 @@ page11_model.controller('page11StateMainCtrl', [
       $timeout(longPoll,1000);
     };
     longPoll();
+    //======================================================================================
+    //=====================心跳获取目标温度，为了避免占用过多的串口资源，10分钟一次,定义了外部的$scope.targerTem
+    var longPollTargerTem=function(){
+      var p=page11getstateSer.getTargetTem(page11getstateSer.ifCurrentPage);
+      if (p!=null) {//说明在当前页面，返回一个$q对象不是null具体看服务page11getstateSer。
+        p.success(function(data){
+          var d=data.Day;
+          var t=data.Target;
+          console.log(d);
+          console.log(t);
+          //判断日龄是否小于第一条的日龄
+          if ($scope.GDay<d[0]) {
+            $scope.TargerTem=t[0];
+          };
+
+          //判断当前日龄在温度曲线日龄的哪个区间
+          for (var i = 0; i < d.length-1; i++) {//d.length是为了最后一个不用循环了
+            if(($scope.GDay>=d[i])&&($scope.GDay<d[i+1])){//如果GDAY的范围在第i条记录与第i+1条记录之间
+              $scope.TargerTem=t[i];
+              break;//退出循环体了后面的不再查找，已经找到了位置
+            }
+            //如果日龄大于最后的一条记录
+            if (d[i+1]<d[i]) {//大于最后2个了
+              $scope.TargerTem=t[i];
+              break;//退出循环体了后面的不再查找
+            };
+          };
+        })
+      };
+      $timeout(longPollTargerTem,600000);//10分钟一次
+    };
+    longPollTargerTem();
   }
 ])
 

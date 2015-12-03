@@ -17,7 +17,7 @@ my-page51-main
 /*手机*/
 @media all and (max-width: 400px) {
 	.my-page51-phonemain{
-		width:100%;                                                                                     %;
+		width:100%;                         
 		height:100px;
 		margin-top: 10px;
 		position: relative;
