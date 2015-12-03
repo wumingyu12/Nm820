@@ -13,38 +13,41 @@
 /*   |__my-page11-pan-other 显示温湿度与通风等级*/
 /*      |__>p  */
 /*=========================================================*/
-.my-page11-mainpage{
-	width: 100%;
-	height: 100%;
-	position: relative;
-}
-/*手机的小屏幕时不显示图片*/
+
+/*手机*/
 @media all and (max-width: 400px){/*当宽度0-400的所有情况*/
 	.my-page11-mainpage{
 		background: -ms-linear-gradient(top, from(rgb(50,50,50)), to(rgb(180,180,180)));        /* IE 10 */
 		background:-moz-linear-gradient(top,from(rgb(50,50,50)), to(rgb(180,180,180)));/*火狐*/ 
 		background:-webkit-gradient(linear, 0% 25%, 75% 100%,from(rgb(50,50,50)), to(rgb(180,180,180)));/*谷歌*/ 
+		width: 100%;
+		position: relative;
+	}
+	.my-page11-fan1{
+		display: none;
 	}
 }
+/*pc*/
 @media all and (min-width: 400px){/*当宽度400~的所有情况*/
 	.my-page11-mainpage{
 		background-image: url(/view/page1_state/page11_video/back_4096-2304.jpg);
 		background-size: 100% 100%;
+	}
+	.my-page11-mainpage{
+		width: 100%;
+		height: 100%;
+		position: relative;
 	}
 }
 
 .my-page11-fan1{
 	position: absolute;
 }
-@media all and (max-width: 400px){/*当宽度0-400的所有情况*/
-	.my-page11-fan1{
-		display: none;
-	}
-}
+
 
 /*============================显示继电器状态的面板===========================================*/
 .my-page11-RelayPan{
-	position: absolute;
+
 	font-weight: bold;
 }
 .my-page11-RelayPan-On{
@@ -73,6 +76,7 @@
 		bottom: 1%;
 		right: 1%;
 		margin: 2px;
+		position: absolute;
 	}
 	.my-page11-RelayPan-body{
 		padding: 1px;
@@ -96,9 +100,6 @@
 @media all and (max-width: 400px){/*当宽度0-400的所有情况*/
 	.my-page11-RelayPan{
 		width: 98%;
-		height: 30%;
-		left: 1%;
-		top:1%;
 		margin: 2px;
 	}
 	.my-page11-RelayPan-body{
@@ -119,7 +120,7 @@
 
 /*==================================实时显示状态的面板==================================================*/
 .my-page11-pan{
-	position: absolute;
+
 	padding: 2px;
 	font-weight: bold;
 	opacity: 0.8
@@ -135,6 +136,7 @@
 		height: 130px;
 		left: 1%;
 		top: 1%;
+		position: absolute;
 	}
 	.my-page11-pan-wendu{
 		font-size: 40px;
@@ -159,7 +161,6 @@
 	.my-page11-pan{
 		width: 98%;
 		height: 30%;
-		bottom: 5%;
 		margin: 2px;
 	}
 	.my-page11-pan-wendu{

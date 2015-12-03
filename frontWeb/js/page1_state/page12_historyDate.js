@@ -94,7 +94,7 @@ page12_model.controller('page12_LineCtrl_shiduDay',[
       [70,70,70,70,70,70,70,70,70,70,70,70,70,70,70,70,70,70,70,70,70,70,70,70],
       ];
     $scope.labels=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23];
-    $http.get('/resetful/nm820Json/Get24TemHumi.json').success(function(data){;
+    $http.get('/resetful/nm820Json/Get24TemHumi.json').success(function(data){
       $scope.data[0]=data.Havg;
     });
   }
