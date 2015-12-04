@@ -78,20 +78,25 @@ func goSendSerial(wb <-chan []byte, rb chan<- []byte, rbnum <-chan int, io io.Re
 
 /*=======================线程函数 init====================
 	作用：开启一个线程，每隔15分钟读一次数据作为24小时温度
+	机制：先读控制器的小时数，如果当前小时数为现在正在记录的小时内就加到sum中，否则就求和，并更新新的小时数
 	依赖：1串口发送通道
 		  2.NM820_StatePara结构体
 		  3.time包,iotil包，os包
 	使用：需要在init中启动
 	生成的东西：resetful/nm820Json/Get24TemHumi.json
+
+	//修改说明：
+		20151203 将其修改为按现在温度前的方式显示，不是绝对的时间显示
 ========================================================================*/
 func goGet24TemHumi() {
 	log.SetFlags(log.Lshortfile | log.LstdFlags)
 	log.Println("线程goGet24Tem启动,每隔15分钟取一次温度。")
 
 	type TemHumi24Hour struct {
-		Time []uint16
-		Tavg []float32
-		Havg []float32
+		Nowhour uint16 //增加 20151203 代表当前时间
+		Time    []uint16
+		Tavg    []float32
+		Havg    []float32
 	}
 	var mytime uint16 = 0 //一开始的时间点为0时
 	var temSum int16 = 0
@@ -101,6 +106,17 @@ func goGet24TemHumi() {
 	data := TemHumi24Hour{}
 	var tAvg, hAvg float32
 
+	//第一次运行时获取当前的小时值
+	log.Println("获取当前小时值。")
+	//发送数据并获取，前提func init()的运行,g_statepara在另一个go中
+	chanSerialBusy <- 1 //为了其他地方使用串口时发送接受流程不被打断
+	chanWb <- append(g_statepara, sumCheck(g_statepara))
+	chanRbNum <- 100 //开启一次锁让进程发送一次命令,接收一次命令，接收字节数为100
+	rec := <-chanRb  //类型byte[100]
+	<-chanSerialBusy
+	para.reflashValue(rec) //当前的状态
+	mytime = para.Hour
+
 	//判断之前的存放历史数据的json文件是否存在
 	_, err := os.Stat("./resetful/nm820Json/Get24TemHumi.json")
 	if err != nil { //如果不存在,初始化一个json
@@ -108,6 +124,7 @@ func goGet24TemHumi() {
 		os.Create("./resetful/nm820Json/Get24TemHumi.json")
 		//初始化一个json
 		p := &TemHumi24Hour{}
+		p.Nowhour = mytime //增加 20151203 代表当前时间
 		p.Time = []uint16{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23}
 		p.Tavg = []float32{20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20}
 		p.Havg = []float32{80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80}
@@ -116,6 +133,8 @@ func goGet24TemHumi() {
 		checkerr(err)
 		ioutil.WriteFile("./resetful/nm820Json/Get24TemHumi.json", b, 0777) //写入到指定位置
 	}
+
+	//主循环
 	for {
 		log.Println("每隔6分钟取一次温度。")
 		//发送数据并获取，前提func init()的运行,g_statepara在另一个go中
@@ -143,13 +162,14 @@ func goGet24TemHumi() {
 			hFl := float32(int32(hAvg*10)) / 10
 
 			//刚运行那会mytime为0并且sum也为0的的第一次就不修改json
-			if mytime != 0 && sum != 0 {
-				data.Tavg[mytime] = tFl
-				data.Havg[mytime] = hFl
-				b, err := json.Marshal(data) //用这个函数时一定要确保字段名首位大写
-				checkerr(err)
-				ioutil.WriteFile("./resetful/nm820Json/Get24TemHumi.json", b, 0777) //将结果写回到json中
-			}
+			//if mytime != 0 && sum != 0 {
+			data.Nowhour = mytime //增加 20151203 代表当前时间
+			data.Tavg[mytime] = tFl
+			data.Havg[mytime] = hFl
+			b, err := json.Marshal(data) //用这个函数时一定要确保字段名首位大写
+			checkerr(err)
+			ioutil.WriteFile("./resetful/nm820Json/Get24TemHumi.json", b, 0777) //将结果写回到json中
+			//}
 			//累加清零
 			temSum = 0
 			humiSum = 0

@@ -15,8 +15,17 @@ page12_model.controller('page12_LineCtrl_wenduDay',[
       [10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10],
       ];
     $scope.labels=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23];
-    $http.get('/resetful/nm820Json/Get24TemHumi.json').success(function(data){;
-      $scope.data[0]=data.Tavg;
+    $http.get('/resetful/nm820Json/Get24TemHumi.json').success(function(data){
+      var nowhour=data.Nowhour;//json返回的当前时间
+      //以当前时间作为截取，让当前时间对应的温湿度值放到数组的最后，【0,1,2。。now| now+1，。。】变【now+1，。。。，前1小时，now】
+      var nowfront=data.Tavg.slice(0,nowhour+1);
+      var nowafter=data.Tavg.slice(nowhour+1);
+      $scope.data[0]=nowafter.concat(nowfront);
+
+      //时间进度条要变化
+      var timefront=data.Time.slice(0,nowhour+1);
+      var timeafter=data.Time.slice(nowhour+1);
+      $scope.labels=timeafter.concat(timefront);
     });
   }
 ]);
@@ -95,7 +104,16 @@ page12_model.controller('page12_LineCtrl_shiduDay',[
       ];
     $scope.labels=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23];
     $http.get('/resetful/nm820Json/Get24TemHumi.json').success(function(data){
-      $scope.data[0]=data.Havg;
+      var nowhour=data.Nowhour;//json返回的当前时间
+      //以当前时间作为截取，让当前时间对应的温湿度值放到数组的最后，【0,1,2。。now| now+1，。。】变【now+1，。。。，前1小时，now】
+      var nowfront=data.Havg.slice(0,nowhour+1);
+      var nowafter=data.Havg.slice(nowhour+1);
+      $scope.data[0]=nowafter.concat(nowfront);
+
+      //时间进度条要变化
+      var timefront=data.Time.slice(0,nowhour+1);
+      var timeafter=data.Time.slice(nowhour+1);
+      $scope.labels=timeafter.concat(timefront);
     });
   }
 ]);
