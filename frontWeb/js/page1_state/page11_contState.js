@@ -40,6 +40,17 @@ page11_model.factory('page11getstateSer', ['$timeout','$http',function($timeout,
         return null;
       };
     },
+
+    //一个服务用来获取目标温度
+    getSysVal:function(ifcurrentp){
+      //如果是当前页就请求resetful
+      if (ifcurrentp=="yes") {
+        return $http.get("/resetful/nm820/sysPara/SysValTable");
+      }
+      else {
+        return null;
+      };
+    },
     ifCurrentPage:ifCurrentPage,//这个就是用于上面的参数
   };
 }]);
@@ -217,37 +228,59 @@ page11_model.controller('page11StateMainCtrl', [
     };
     longPoll();
     //======================================================================================
-    //=====================心跳获取目标温度，为了避免占用过多的串口资源，10分钟一次,定义了外部的$scope.targerTem
-    var longPollTargerTem=function(){
+    //=====================心跳获取目标温度，状态控制模式，为了避免占用过多的串口资源，10分钟一次,定义了外部的$scope.targerTem
+    
+    //获取曲线表，根据当前日龄结合温度曲线得到曲线控制时的目标温度
+    var getTargetTembyTable=function(){
       var p=page11getstateSer.getTargetTem(page11getstateSer.ifCurrentPage);
       if (p!=null) {//说明在当前页面，返回一个$q对象不是null具体看服务page11getstateSer。
         p.success(function(data){
-          var d=data.Day;
-          var t=data.Target;
-          console.log(d);
-          console.log(t);
+          var d=data.Day; //resetful后得到的曲线表
+          var t=data.Target; //
           //判断日龄是否小于第一条的日龄
           if ($scope.GDay<d[0]) {
-            $scope.TargerTem=t[0];
+            $scope.TargetTem=t[0];
           };
 
           //判断当前日龄在温度曲线日龄的哪个区间
           for (var i = 0; i < d.length-1; i++) {//d.length是为了最后一个不用循环了
             if(($scope.GDay>=d[i])&&($scope.GDay<d[i+1])){//如果GDAY的范围在第i条记录与第i+1条记录之间
-              $scope.TargerTem=t[i];
+              $scope.TargetTem=t[i];
               break;//退出循环体了后面的不再查找，已经找到了位置
             }
             //如果日龄大于最后的一条记录
             if (d[i+1]<d[i]) {//大于最后2个了
-              $scope.TargerTem=t[i];
+              $scope.TargetTem=t[i];
               break;//退出循环体了后面的不再查找
             };
           };
         })
       };
+    };
+    //定时任务
+    var longPollTargerTem=function(){
+      //获取当前的控制方式
+      var p=page11getstateSer.getSysVal(page11getstateSer.ifCurrentPage);//reserful请求
+      if(p!=null){
+        p.success(function(data){
+          var mode=data.Mode;//得到控制模式码，温度控制模式 2--曲线+通风 0--自设 1--曲线 表7.1
+          if (mode==2) {//如果控制模式为曲线+通风
+            getTargetTembyTable();//获取曲线表，根据当前日龄结合温度曲线得到曲线控制时的目标温度
+            $scope.CtrMode="曲线+通风";
+          };
+          if (mode==1) {//如果控制模式为曲线
+            getTargetTembyTable();//获取曲线表，根据当前日龄结合温度曲线得到曲线控制时的目标温度
+            $scope.CtrMode="曲线";
+          };
+          if(mode==0){//如果控制模式为自设
+             $scope.TargetTem=data.Temp_Des;//显示的目标温度为自设的温度
+             $scope.CtrMode="自设";
+          }
+        });
+      }; 
       $timeout(longPollTargerTem,600000);//10分钟一次
     };
-    longPollTargerTem();
+    longPollTargerTem();//开启定时任务
   }
 ])
 

@@ -556,3 +556,51 @@ func ReflashWindLevel(w http.ResponseWriter, r *http.Request) {
 	log.Println(p)
 	log.Printf("结束--Post请求最大最小通风等级数据\n")
 }
+
+/*=====================================resetful 获取系统变量参数表=================================================
+	请求：GET /resetful/nm820/sysPara/SysValTable
+	作用： 获取系统变量参数表
+	返回：
+	依赖的函数：
+		2.NM820_sysPara.go
+=========================================================================================*/
+func GetSysVal(w http.ResponseWriter, r *http.Request) {
+	log.SetFlags(log.Lshortfile | log.LstdFlags) //设置打印时添加上所在文件，行数
+	log.Printf("开始--resetful请求获取系统参数表\n")
+
+	p := &NM820_SysVal{}
+	err := p.addData() //用返回的串口数据更新结构体
+	checkerr(err)
+
+	//将hd转换为json
+	b, err := json.Marshal(p) //用这个函数时一定要确保字段名首位大写
+	checkerr(err)
+	//必须要string,确保没发送其他了否则解释不了为json在angular
+	fmt.Fprintf(w, "%s", b) //注意在armlinux下面不能用fmt.Fprintf(w, string(b))的方式
+	//fmt.Printf("para:%s\n", b)
+	log.Printf("结束--resetful请求获取通风等级数据\n")
+}
+
+/*=====================================resetful POST修改系统变量参数表=================================================
+	请求：POST：/resetful/nm820/sysPara/SysValTable
+	作用：修改系统变量参数表
+	返回：
+	依赖的函数：
+		1.uint16_to_twobyte
+		2.NM820_sysPara.go
+	注意：1.前端经过xeditable的使用后是string类型的，用`json:",string"`是不适用于数组，所以要在前端进行将string转int
+		  2.
+=========================================================================================*/
+func ReflashSysVal(w http.ResponseWriter, r *http.Request) {
+	log.SetFlags(log.Lshortfile | log.LstdFlags) //设置打印时添加上所在文件，行数
+	log.Printf("开始--Post请求修改系统变量参数表\n")
+
+	postData, _ := ioutil.ReadAll(r.Body) //读出发送的的post数据
+	log.Println(string(postData))
+	r.Body.Close()
+	p := &NM820_SysVal{}
+	json.Unmarshal([]byte(postData), p) //将post的数据解析为结构体
+	p.uploadData()
+	log.Println(p)
+	log.Printf("结束--Post请求修改系统变量参数表\n")
+}

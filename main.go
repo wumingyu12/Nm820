@@ -60,6 +60,9 @@ func main() {
 	//得到通风最大最小等级，按日龄 /resetful/nm820/sysPara/WindLevel
 	mux_router.HandleFunc("/resetful/nm820/sysPara/WindLevel", nm820.WindLevel).Methods("GET")
 	mux_router.HandleFunc("/resetful/nm820/sysPara/WindLevel", nm820.ReflashWindLevel).Methods("POST")
+	//得到系统高级设置的参数表
+	mux_router.HandleFunc("/resetful/nm820/sysPara/SysValTable", nm820.GetSysVal).Methods("GET")
+	mux_router.HandleFunc("/resetful/nm820/sysPara/SysValTable", nm820.ReflashSysVal).Methods("POST")
 
 	//测试用json---resetful/nm820Json/Get24TemHumi.json
 	http.Handle("/resetful/nm820Json/Get24TemHumi.json", http.FileServer(http.Dir("./")))
