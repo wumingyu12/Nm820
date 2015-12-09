@@ -23,7 +23,9 @@ page11_model.factory('page11getstateSer', ['$timeout','$http',function($timeout,
     getstate:function(ifcurrentp){
       //如果是当前页就请求resetful
       if (ifcurrentp=="yes") {
-        return $http.get("/resetful/nm820/GetState");
+        return $http.get("/resetful/nm820/GetState"+"?timestamp=" + new Date().getTime());
+        //加时间标记避免手机端的缓存
+        //return $http({method: 'GET', url: '/resetful/nm820/GetState'+'?timestamp=' + new Date().getTime(), cache: false});
       }
       else {
         return null;

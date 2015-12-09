@@ -45,402 +45,367 @@
 		</div>	
 		</div>
 	</div>
+	
+	<div class="row"><!-- bootstrap栅格布局 -->
+		<div class="col-md-5" style="padding:10px;">
+			<!--============================================== -->
+			<!-- 第二个表温度曲线表 -->
+			<!--============================================== -->
+			<div  class="panel panel-default my-page13-wenduCurve" ng-controller="page13_wenduCurveCtrl">
+				<div class="panel-heading my-page13-panelhead">
+					<span>温度曲线图</span>
+					<button type="button" class="btn btn-primary btn-sm my-page13-floatright-marginRight pull-right" ng-click="uploadData()">保存设置</button>
+					<!-- 按钮用于切换图表显示还是表格显示 -->
+					<a href=""><span class="glyphicon glyphicon-sort my-page13-changeTab pull-right" ng-click="changeTabChat()" aria-hidden="true"></span></a>
+				</div>
+				<div class="panel-body" style="padding:0px;">
+					<table ng-if="ifShowTab" class="table table-bordered table-condensed table-striped " >
+						<thead>
+							<tr>
+								<th>序号</th>
+								<th>日龄</th>
+								<th>目标温度</th>
+								<th>加热温度</th>
+								<th>制冷温度</th>
+							</tr>
+						</thead>
+						<tbody >
+							<tr ng-repeat="n in data.Day track by $index">
+								<th>{{$index+1}}</th>
+								<th editable-number="data.Day[$index]">{{n}}</th>
+								<th editable-number="data.Target[$index]">{{data.Target[$index]}}</th>
+								<th editable-number="data.Heat[$index]">{{data.Heat[$index]}}</th>
+								<th editable-number="data.Cool[$index]">{{data.Cool[$index]}}</th>
+							</tr>
+						</tbody>
+					</table>
+					<!-- 图表显示通风等级曲线图 一开始是不显示-->
+					<div class="my-page13-tongfengCurve" ng-if="ifShowCurve">
+						<canvas id="line" 
+			          		class="chart chart-line" 
+			          		legend="flase"
+			                click="onClick" 
+			                hover="onHover"
+			                series="CurveData.series"
+							data="CurveData.data" 
+							labels="CurveData.labels" 
 
-	<!--============================================== -->
-	<!-- 第二个表温度曲线表 -->
-	<!--============================================== -->
-	<div  class="panel panel-default my-page13-wenduCurve" ng-controller="page13_wenduCurveCtrl">
-		<div class="panel-heading my-page13-panelhead">
-			<span>温度曲线图</span>
-			<button type="button" class="btn btn-primary btn-sm my-page13-floatright-marginRight pull-right" ng-click="uploadData()">保存设置</button>
-			<!-- 按钮用于切换图表显示还是表格显示 -->
-			<a href=""><span class="glyphicon glyphicon-sort my-page13-changeTab pull-right" ng-click="changeTabChat()" aria-hidden="true"></span></a>
-		</div>
-		<div class="panel-body" style="padding:0px;">
-			<table ng-if="ifShowTab" class="table table-bordered table-condensed table-striped " >
-				<thead>
-					<tr>
-						<th>序号</th>
-						<th>日龄</th>
-						<th>目标温度</th>
-						<th>加热温度</th>
-						<th>制冷温度</th>
-					</tr>
-				</thead>
-				<tbody >
-					<tr ng-repeat="n in data.Day track by $index">
-						<th>{{$index+1}}</th>
-						<th editable-number="data.Day[$index]">{{n}}</th>
-						<th editable-number="data.Target[$index]">{{data.Target[$index]}}</th>
-						<th editable-number="data.Heat[$index]">{{data.Heat[$index]}}</th>
-						<th editable-number="data.Cool[$index]">{{data.Cool[$index]}}</th>
-					</tr>
-				</tbody>
-			</table>
-			<!-- 图表显示通风等级曲线图 一开始是不显示-->
-			<div class="my-page13-tongfengCurve" ng-if="ifShowCurve">
-				<canvas id="line" 
-	          		class="chart chart-line" 
-	          		legend="flase"
-	                click="onClick" 
-	                hover="onHover"
-	                series="CurveData.series"
-					data="CurveData.data" 
-					labels="CurveData.labels" 
-
-	                options="{
-        				scaleShowHorizontalLines: true,
-        				scaleShowVerticalLines: true,
-        				tooltipTemplate: '<%= value %> $',
-        				responsive: true,
-        				datasetFill: false
-    				}"
-					>
-	            </canvas>
+			                options="{
+		        				scaleShowHorizontalLines: true,
+		        				scaleShowVerticalLines: true,
+		        				tooltipTemplate: '<%= value %> $',
+		        				responsive: true,
+		        				datasetFill: false
+		    				}"
+							>
+			            </canvas>
+					</div>
+				</div>
 			</div>
-		</div>
-	</div>
-	<!--============================================== -->
-		<!-- 第三个表最小最大通风等级表 -->
-	<!--============================================== -->
-	<div  class="panel panel-default my-page13-WindLevel" ng-controller="page13_WindLevelCtrl">
-		<div class="panel-heading my-page13-panelhead">
-			<span >通风等级</span>
-			<!--  -->
-			<button type="button" class="btn btn-primary btn-sm my-page13-floatright-marginRight pull-right" ng-click="uploadData()">保存设置</button>
-			<!-- 按钮用于切换图表显示还是表格显示 -->
-			<a href=""><span class="glyphicon glyphicon-sort my-page13-changeTab" ng-click="changeTabChat()" aria-hidden="true"></span></a>
-		</div>
-		<div class="panel-body" style="padding:0px;">
-			<!-- 表格显示温度曲线图 -->
-			<table ng-if="ifShowTab" class="table table-bordered table-condensed table-striped ">
-				<thead>
-					<tr>
-						<th>序号</th>
-						<th>日龄</th>
-						<th>最小通风级别</th>
-						<th>最大通风级别</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr ng-repeat="n in data.Day track by $index">
-						<th >{{$index+1}}</th>
-						<th editable-number="data.Day[$index]" onaftersave="" e-style="width:100px">{{n}}</th>
-						<th editable-number="data.Min[$index]" onaftersave="" e-style="width:100px">{{data.Min[$index]}}</th>
-						<th editable-number="data.Max[$index]">{{data.Max[$index]}}</th>
-					</tr>
-				</tbody>
-			</table>
-			<!-- 图表显示通风等级曲线图 一开始是不显示-->
-			<div class="my-page13-tongfengCurve" ng-if="ifShowCurve">
-				<canvas id="line" 
-	          		class="chart chart-line" 
-	          		legend="flase"
-	                click="onClick" 
-	                hover="onHover"
-	                series="CurveData.series"
-					data="CurveData.data" 
-					labels="CurveData.labels" 
+			<!--============================================== -->
+				<!-- 第三个表最小最大通风等级表 -->
+			<!--============================================== -->
+			<div  class="panel panel-default my-page13-WindLevel" ng-controller="page13_WindLevelCtrl">
+				<div class="panel-heading my-page13-panelhead">
+					<span >通风等级</span>
+					<!--  -->
+					<button type="button" class="btn btn-primary btn-sm my-page13-floatright-marginRight pull-right" ng-click="uploadData()">保存设置</button>
+					<!-- 按钮用于切换图表显示还是表格显示 -->
+					<a href=""><span class="glyphicon glyphicon-sort my-page13-changeTab" ng-click="changeTabChat()" aria-hidden="true"></span></a>
+				</div>
+				<div class="panel-body" style="padding:0px;">
+					<!-- 表格显示温度曲线图 -->
+					<table ng-if="ifShowTab" class="table table-bordered table-condensed table-striped ">
+						<thead>
+							<tr>
+								<th>序号</th>
+								<th>日龄</th>
+								<th>最小通风级别</th>
+								<th>最大通风级别</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr ng-repeat="n in data.Day track by $index">
+								<th >{{$index+1}}</th>
+								<th editable-number="data.Day[$index]" onaftersave="" e-style="width:100px">{{n}}</th>
+								<th editable-number="data.Min[$index]" onaftersave="" e-style="width:100px">{{data.Min[$index]}}</th>
+								<th editable-number="data.Max[$index]">{{data.Max[$index]}}</th>
+							</tr>
+						</tbody>
+					</table>
+					<!-- 图表显示通风等级曲线图 一开始是不显示-->
+					<div class="my-page13-tongfengCurve" ng-if="ifShowCurve">
+						<canvas id="line" 
+			          		class="chart chart-line" 
+			          		legend="flase"
+			                click="onClick" 
+			                hover="onHover"
+			                series="CurveData.series"
+							data="CurveData.data" 
+							labels="CurveData.labels" 
 
-	                options="{
-        				scaleShowHorizontalLines: true,
-        				scaleShowVerticalLines: true,
-        				tooltipTemplate: '<%= value %> $',
-        				responsive: true
-    				}"
-					>
-	            </canvas>
+			                options="{
+		        				scaleShowHorizontalLines: true,
+		        				scaleShowVerticalLines: true,
+		        				tooltipTemplate: '<%= value %> $',
+		        				responsive: true
+		    				}"
+							>
+			            </canvas>
+					</div>
+
+				</div>
+			</div>
+			<!--=========以下的表用同一个控制器page12_SysvalCtrl=.对应数据在/resetful/nm820/sysPara/SysValTable中================== -->
+			<!--============================================== -->
+				<!-- 第四个表继电器设置 -->
+			<!--============================================== -->
+			<div class="panel panel-default my-page13-relayCode" data-ng-controller="page13_SysvalCtrl">
+				<div class="panel-heading">
+					<span>继电器设置</span>
+					<button type="button" class="btn btn-primary btn-sm pull-right" ng-click="uploadData()">保存设置</button>
+				</div>
+				<div class="panel-body" style="padding:0px;">
+					<table class="table table-bordered table-condensed table-striped ">
+						<tbody>
+							<thead>
+								<tr>
+									<th>序号</th>
+									<th>继电器</th>
+									<th>编码</th>
+									<th>继电器</th>
+									<th>编码</th>
+								</tr>
+							</thead>
+							<tr>
+								<th>1</th>	
+								<th>继电器1</th><th editable-select="sysVal.Relay_1" e-ng-options="s.value as s.text for s in relayList">{{relayShow(sysVal.Relay_1)}}</th>
+								<th>继电器2</th><th editable-select="sysVal.Relay_2" e-ng-options="s.value as s.text for s in relayList">{{relayShow(sysVal.Relay_2)}}</th>
+							</tr>
+							<tr>
+								<th>2</th>	
+								<th>继电器3</th><th editable-select="sysVal.Relay_3" e-ng-options="s.value as s.text for s in relayList">{{relayShow(sysVal.Relay_3)}}</th>
+								<th>继电器4</th><th editable-select="sysVal.Relay_4" e-ng-options="s.value as s.text for s in relayList">{{relayShow(sysVal.Relay_4)}}</th>
+							</tr>
+							<tr>
+								<th>3</th>	
+								<th>继电器5</th><th editable-select="sysVal.Relay_5" e-ng-options="s.value as s.text for s in relayList">{{relayShow(sysVal.Relay_5)}}</th>
+								<th>继电器6</th><th editable-select="sysVal.Relay_6" e-ng-options="s.value as s.text for s in relayList">{{relayShow(sysVal.Relay_6)}}</th>
+							</tr>
+							<tr>
+								<th>4</th>
+								<th>继电器7</th><th editable-select="sysVal.Relay_7" e-ng-options="s.value as s.text for s in relayList">{{relayShow(sysVal.Relay_7)}}</th>
+								<th>继电器8</th><th editable-select="sysVal.Relay_8" e-ng-options="s.value as s.text for s in relayList">{{relayShow(sysVal.Relay_8)}}</th>
+							</tr>
+							<tr>
+								<th>5</th>	
+								<th>继电器9</th><th editable-select="sysVal.Relay_9" e-ng-options="s.value as s.text for s in relayList">{{relayShow(sysVal.Relay_9)}}</th>
+								<th>继电器10</th><th editable-select="sysVal.Relay_10" e-ng-options="s.value as s.text for s in relayList">{{relayShow(sysVal.Relay_10)}}</th>
+							</tr>
+							<tr>
+								<th>6</th>	
+								<th>继电器11</th><th editable-select="sysVal.Relay_11" e-ng-options="s.value as s.text for s in relayList">{{relayShow(sysVal.Relay_11)}}</th>
+								<th>继电器12</th><th editable-select="sysVal.Relay_12" e-ng-options="s.value as s.text for s in relayList">{{relayShow(sysVal.Relay_12)}}</th>
+							</tr>
+							<tr>
+								<th>7</th>	
+								<th>继电器13</th><th editable-select="sysVal.Relay_13" e-ng-options="s.value as s.text for s in relayList">{{relayShow(sysVal.Relay_13)}}</th>
+								<th>继电器14</th><th editable-select="sysVal.Relay_14" e-ng-options="s.value as s.text for s in relayList">{{relayShow(sysVal.Relay_14)}}</th>
+							</tr>
+							<tr>
+								<th>8</th>
+								<th>继电器15</th><th editable-select="sysVal.Relay_15" e-ng-options="s.value as s.text for s in relayList">{{relayShow(sysVal.Relay_15)}}</th>
+								<th>继电器16</th><th editable-select="sysVal.Relay_16" e-ng-options="s.value as s.text for s in relayList">{{relayShow(sysVal.Relay_16)}}</th>
+							</tr>
+							<tr>
+								<th>9</th>	
+								<th>继电器17</th><th editable-select="sysVal.Relay_17" e-ng-options="s.value as s.text for s in relayList">{{relayShow(sysVal.Relay_17)}}</th>
+								<th>继电器18</th><th editable-select="sysVal.Relay_18" e-ng-options="s.value as s.text for s in relayList">{{relayShow(sysVal.Relay_18)}}</th>
+							</tr>
+							<tr>
+								<th>10</th>
+								<th>继电器19</th><th editable-select="sysVal.Relay_19" e-ng-options="s.value as s.text for s in relayList">{{relayShow(sysVal.Relay_19)}}</th>
+								<th>继电器20</th><th editable-select="sysVal.Relay_20" e-ng-options="s.value as s.text for s in relayList">{{relayShow(sysVal.Relay_20)}}</th>
+							</tr>
+						</tbody>
+					</table>
+				</div>
 			</div>
 
+		
 		</div>
-	</div>
-	<!--=========以下的表用同一个控制器page12_SysvalCtrl=.对应数据在/resetful/nm820/sysPara/SysValTable中================== -->
-	<!--============================================== -->
-		<!-- 第四个表继电器设置 -->
-	<!--============================================== -->
-	<div class="panel panel-default my-page13-relayCode" data-ng-controller="page13_SysvalCtrl">
-		<div class="panel-heading">
-			<span>继电器设置</span>
-			<button type="button" class="btn btn-primary btn-sm pull-right" ng-click="uploadData()">保存设置</button>
-		</div>
-		<div class="panel-body" style="padding:0px;">
-			<table class="table table-bordered table-condensed table-striped ">
-				<tbody>
-					<thead>
-						<tr>
-							<th>序号</th>
-							<th>继电器</th>
-							<th>编码</th>
-							<th>继电器</th>
-							<th>编码</th>
-						</tr>
-					</thead>
-					<tr>
-						<th>1</th>	
-						<th>继电器1</th><th editable-select="sysVal.Relay_1" e-ng-options="s.value as s.text for s in relayList">{{relayShow(sysVal.Relay_1)}}</th>
-						<th>继电器2</th><th editable-select="sysVal.Relay_2" e-ng-options="s.value as s.text for s in relayList">{{relayShow(sysVal.Relay_2)}}</th>
-					</tr>
-					<tr>
-						<th>2</th>	
-						<th>继电器3</th><th editable-select="sysVal.Relay_3" e-ng-options="s.value as s.text for s in relayList">{{relayShow(sysVal.Relay_3)}}</th>
-						<th>继电器4</th><th editable-select="sysVal.Relay_4" e-ng-options="s.value as s.text for s in relayList">{{relayShow(sysVal.Relay_4)}}</th>
-					</tr>
-					<tr>
-						<th>3</th>	
-						<th>继电器5</th><th editable-select="sysVal.Relay_5" e-ng-options="s.value as s.text for s in relayList">{{relayShow(sysVal.Relay_5)}}</th>
-						<th>继电器6</th><th editable-select="sysVal.Relay_6" e-ng-options="s.value as s.text for s in relayList">{{relayShow(sysVal.Relay_6)}}</th>
-					</tr>
-					<tr>
-						<th>4</th>
-						<th>继电器7</th><th editable-select="sysVal.Relay_7" e-ng-options="s.value as s.text for s in relayList">{{relayShow(sysVal.Relay_7)}}</th>
-						<th>继电器8</th><th editable-select="sysVal.Relay_8" e-ng-options="s.value as s.text for s in relayList">{{relayShow(sysVal.Relay_8)}}</th>
-					</tr>
-					<tr>
-						<th>5</th>	
-						<th>继电器9</th><th editable-select="sysVal.Relay_9" e-ng-options="s.value as s.text for s in relayList">{{relayShow(sysVal.Relay_9)}}</th>
-						<th>继电器10</th><th editable-select="sysVal.Relay_10" e-ng-options="s.value as s.text for s in relayList">{{relayShow(sysVal.Relay_10)}}</th>
-					</tr>
-					<tr>
-						<th>6</th>	
-						<th>继电器11</th><th editable-select="sysVal.Relay_11" e-ng-options="s.value as s.text for s in relayList">{{relayShow(sysVal.Relay_11)}}</th>
-						<th>继电器12</th><th editable-select="sysVal.Relay_12" e-ng-options="s.value as s.text for s in relayList">{{relayShow(sysVal.Relay_12)}}</th>
-					</tr>
-					<tr>
-						<th>7</th>	
-						<th>继电器13</th><th editable-select="sysVal.Relay_13" e-ng-options="s.value as s.text for s in relayList">{{relayShow(sysVal.Relay_13)}}</th>
-						<th>继电器14</th><th editable-select="sysVal.Relay_14" e-ng-options="s.value as s.text for s in relayList">{{relayShow(sysVal.Relay_14)}}</th>
-					</tr>
-					<tr>
-						<th>8</th>
-						<th>继电器15</th><th editable-select="sysVal.Relay_15" e-ng-options="s.value as s.text for s in relayList">{{relayShow(sysVal.Relay_15)}}</th>
-						<th>继电器16</th><th editable-select="sysVal.Relay_16" e-ng-options="s.value as s.text for s in relayList">{{relayShow(sysVal.Relay_16)}}</th>
-					</tr>
-					<tr>
-						<th>9</th>	
-						<th>继电器17</th><th editable-select="sysVal.Relay_17" e-ng-options="s.value as s.text for s in relayList">{{relayShow(sysVal.Relay_17)}}</th>
-						<th>继电器18</th><th editable-select="sysVal.Relay_18" e-ng-options="s.value as s.text for s in relayList">{{relayShow(sysVal.Relay_18)}}</th>
-					</tr>
-					<tr>
-						<th>10</th>
-						<th>继电器19</th><th editable-select="sysVal.Relay_19" e-ng-options="s.value as s.text for s in relayList">{{relayShow(sysVal.Relay_19)}}</th>
-						<th>继电器20</th><th editable-select="sysVal.Relay_20" e-ng-options="s.value as s.text for s in relayList">{{relayShow(sysVal.Relay_20)}}</th>
-					</tr>
-				</tbody>
-			</table>
-		</div>
-	</div>
+	    <div class="col-md-5" style="padding:10px;">
+			<!--============================================== -->
+				<!-- 第五个表双向设备设置 -->
+			<!--============================================== -->
+			<div class="panel panel-default my-page13-relayCode" data-ng-controller="page13_SysvalCtrl">
+				<div class="panel-heading">
+					<span>双向设备设置</span>
+					<button type="button" class="btn btn-primary btn-sm pull-right" ng-click="uploadData()">保存设置</button>
+				</div>
+				<div class="panel-body" style="padding:0px;">
+					<table class="table table-bordered table-condensed table-striped ">
+						<tbody>
+							<thead>
+								<tr>
+									<th>序号</th>
+									<th>设备</th>
+									<th>开启时间(秒)</th>
+									<th>关闭时间(秒)</th>
+								</tr>
+							</thead>
+							<tr>
+								<th>1</th>	
+								<th>侧风窗</th>
+								<th editable-number="sysVal.Time_SideWin_ON">{{sysVal.Time_SideWin_ON}}</th>
+								<th editable-number="sysVal.Time_SideWin_ON">{{sysVal.Time_SideWin_OFF}}</th>
+							</tr>
+							<tr>
+								<th>2</th>	
+								<th>幕帘</th>
+								<th editable-number="sysVal.Time_Curtain_ON">{{sysVal.Time_Curtain_ON}}</th>
+								<th editable-number="sysVal.Time_Curtain_OFF">{{sysVal.Time_Curtain_OFF}}</th>
+							</tr>
+							<tr>
+								<th>3</th>	
+								<th>卷帘1</th>
+								<th editable-number="sysVal.Time_Roller_ON_1">{{sysVal.Time_Roller_ON_1}}</th>
+								<th editable-number="sysVal.Time_Roller_OFF_1">{{sysVal.Time_Roller_OFF_1}}</th>
+							</tr>
+							<tr>
+								<th>4</th>	
+								<th>卷帘2</th>
+								<th editable-number="sysVal.Time_Roller_ON_2">{{sysVal.Time_Roller_ON_2}}</th>
+								<th editable-number="sysVal.Time_Roller_OFF_2">{{sysVal.Time_Roller_OFF_2}}</th>
+							</tr>
+							<tr>
+								<th>5</th>	
+								<th>卷帘3</th>
+								<th editable-number="sysVal.Time_Roller_ON_3">{{sysVal.Time_Roller_ON_3}}</th>
+								<th editable-number="sysVal.Time_Roller_OFF_3">{{sysVal.Time_Roller_OFF_3}}</th>
+							</tr>
+							<tr>
+								<th>6</th>	
+								<th>卷帘4</th>
+								<th editable-number="sysVal.Time_Roller_ON_4">{{sysVal.Time_Roller_ON_4}}</th>
+								<th editable-number="sysVal.Time_Roller_OFF_4">{{sysVal.Time_Roller_OFF_4}}</th>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>		    
+			<!--============================================== -->
+				<!-- 第七个表智能控制模式 -->
+			<!--============================================== -->
+			<div class="panel panel-default my-page13-relayCode" data-ng-controller="page13_SysvalCtrl">
+				<div class="panel-heading">
+					<span>温度控制模式设置</span>
+					<button type="button" class="btn btn-primary btn-sm pull-right" ng-click="uploadData()">保存设置</button>
+				</div>
+				<div class="panel-body" style="padding:0px;">
+					<table class="table table-bordered table-condensed table-striped ">
+						<tbody>
+							<thead>
+								<tr>
+									<th>序号</th>
+									<th>设置选项</th>
+									<th>设置值</th>
+								</tr>
+							</thead>
+							<tr>
+								<th>1</th>
+								<th>温度控制模式</th>
+								<th editable-select="sysVal.Mode" e-ng-options="s.value as s.text for s in modeList">{{modeShow(sysVal.Mode)}}</th>
+							</tr>
+							<tr>
+								<th>2</th>
+								<th>目标温度差</th>
+								<th editable-number="sysVal.DTemp_Des">{{sysVal.DTemp_Des}}</th>
+							</tr>
+							<tr>
+								<th>3</th>
+								<th>自设模式目标温度</th>
+								<th editable-number="sysVal.Temp_Des">{{sysVal.Temp_Des}}</th>
+							</tr>
+							<tr>
+								<th>4</th>
+								<th>自设模式加热温度</th>
+								<th editable-number="sysVal.Temp_Heat">{{sysVal.Temp_Heat}}</th>
+							</tr>
+							<tr>
+								<th>5</th>
+								<th>自设模式制冷温度</th>
+								<th editable-number="sysVal.Temp_Cool">{{sysVal.Temp_Cool}}</th>
+							</tr>					
+						</tbody>
+					</table>
+				</div>
+			</div>	
 
-		<!--============================================== -->
-		<!-- 第五个表双向设备设置 -->
-	<!--============================================== -->
-	<div class="panel panel-default my-page13-relayCode" data-ng-controller="page13_SysvalCtrl">
-		<div class="panel-heading">
-			<span>双向设备设置</span>
-			<button type="button" class="btn btn-primary btn-sm pull-right" ng-click="uploadData()">保存设置</button>
-		</div>
-		<div class="panel-body" style="padding:0px;">
-			<table class="table table-bordered table-condensed table-striped ">
-				<tbody>
-					<thead>
-						<tr>
-							<th>序号</th>
-							<th>设备</th>
-							<th>开启时间(秒)</th>
-							<th>关闭时间(秒)</th>
-						</tr>
-					</thead>
-					<tr>
-						<th>1</th>	
-						<th>侧风窗</th>
-						<th editable-number="sysVal.Time_SideWin_ON">{{sysVal.Time_SideWin_ON}}</th>
-						<th editable-number="sysVal.Time_SideWin_ON">{{sysVal.Time_SideWin_OFF}}</th>
-					</tr>
-					<tr>
-						<th>2</th>	
-						<th>幕帘</th>
-						<th editable-number="sysVal.Time_Curtain_ON">{{sysVal.Time_Curtain_ON}}</th>
-						<th editable-number="sysVal.Time_Curtain_OFF">{{sysVal.Time_Curtain_OFF}}</th>
-					</tr>
-					<tr>
-						<th>3</th>	
-						<th>卷帘1</th>
-						<th editable-number="sysVal.Time_Roller_ON_1">{{sysVal.Time_Roller_ON_1}}</th>
-						<th editable-number="sysVal.Time_Roller_OFF_1">{{sysVal.Time_Roller_OFF_1}}</th>
-					</tr>
-					<tr>
-						<th>4</th>	
-						<th>卷帘2</th>
-						<th editable-number="sysVal.Time_Roller_ON_2">{{sysVal.Time_Roller_ON_2}}</th>
-						<th editable-number="sysVal.Time_Roller_OFF_2">{{sysVal.Time_Roller_OFF_2}}</th>
-					</tr>
-					<tr>
-						<th>5</th>	
-						<th>卷帘3</th>
-						<th editable-number="sysVal.Time_Roller_ON_3">{{sysVal.Time_Roller_ON_3}}</th>
-						<th editable-number="sysVal.Time_Roller_OFF_3">{{sysVal.Time_Roller_OFF_3}}</th>
-					</tr>
-					<tr>
-						<th>6</th>	
-						<th>卷帘4</th>
-						<th editable-number="sysVal.Time_Roller_ON_4">{{sysVal.Time_Roller_ON_4}}</th>
-						<th editable-number="sysVal.Time_Roller_OFF_4">{{sysVal.Time_Roller_OFF_4}}</th>
-					</tr>
-				</tbody>
-			</table>
-		</div>
-	</div>
-
-	<!--============================================== -->
-		<!-- 第七个表智能控制模式 -->
-	<!--============================================== -->
-	<div class="panel panel-default my-page13-relayCode" data-ng-controller="page13_SysvalCtrl">
-		<div class="panel-heading">
-			<span>温度控制模式设置</span>
-			<button type="button" class="btn btn-primary btn-sm pull-right" ng-click="uploadData()">保存设置</button>
-		</div>
-		<div class="panel-body" style="padding:0px;">
-			<table class="table table-bordered table-condensed table-striped ">
-				<tbody>
-					<thead>
-						<tr>
-							<th>序号</th>
-							<th>设置选项</th>
-							<th>设置值</th>
-						</tr>
-					</thead>
-					<tr>
-						<th>1</th>
-						<th>温度控制模式</th>
-						<th editable-select="sysVal.Mode" e-ng-options="s.value as s.text for s in modeList">{{modeShow(sysVal.Mode)}}</th>
-					</tr>
-					<tr>
-						<th>2</th>
-						<th>目标温度差</th>
-						<th editable-number="sysVal.DTemp_Des">{{sysVal.DTemp_Des}}</th>
-					</tr>
-					<tr>
-						<th>3</th>
-						<th>自设模式目标温度</th>
-						<th editable-number="sysVal.Temp_Des">{{sysVal.Temp_Des}}</th>
-					</tr>
-					<tr>
-						<th>4</th>
-						<th>自设模式加热温度</th>
-						<th editable-number="sysVal.Temp_Heat">{{sysVal.Temp_Heat}}</th>
-					</tr>
-					<tr>
-						<th>5</th>
-						<th>自设模式制冷温度</th>
-						<th editable-number="sysVal.Temp_Cool">{{sysVal.Temp_Cool}}</th>
-					</tr>					
-				</tbody>
-			</table>
-		</div>
-	</div>	
-
-	<!--============================================== -->
-		<!-- 第六个表报警相关设置 -->
-	<!--============================================== -->
-	<div class="panel panel-default my-page13-relayCode" data-ng-controller="page13_SysvalCtrl">
-		<div class="panel-heading">
-			<span>报警相关设置</span>
-			<button type="button" class="btn btn-primary btn-sm pull-right" ng-click="uploadData()">保存设置</button>
-		</div>
-		<div class="panel-body" style="padding:0px;">
-			<table class="table table-bordered table-condensed table-striped ">
-				<tbody>
-					<thead>
-						<tr>
-							<th>序号</th>
-							<th>设置选项</th>
-							<th>设置值</th>
-						</tr>
-					</thead>
-					<tr>
-						<th>1</th>	
-						<th>报警最高温度</th>
-						<th editable-number="sysVal.Alarm_Temp_Max">{{sysVal.Alarm_Temp_Max}}</th>
-					</tr>
-					<tr>
-						<th>2</th>	
-						<th>高温报警恢复回差</th>
-						<th editable-number="sysVal.AlarmR_Temp_Max">{{sysVal.AlarmR_Temp_Max}}</th>
-					</tr>
-					<tr>
-						<th>3</th>	
-						<th>报警最低温度</th>
-						<th editable-number="sysVal.Alarm_Temp_Min">{{sysVal.Alarm_Temp_Min}}</th>
-					</tr>
-					<tr>
-						<th>4</th>	
-						<th>低温报警恢复回差</th>
-						<th editable-number="sysVal.AlarmR_Temp_Min">{{sysVal.AlarmR_Temp_Min}}</th>
-					</tr>					
-					<tr>
-						<th>5</th>	
-						<th>报警最高温差</th>
-						<th editable-number="sysVal.Alarm_dTemp_Max">{{sysVal.Alarm_dTemp_Max}}</th>
-					</tr>
-					<tr>
-						<th>6</th>	
-						<th>高温差报警恢复回差</th>
-						<th editable-number="sysVal.AlarmR_dTemp_Max">{{sysVal.AlarmR_dTemp_Max}}</th>
-					</tr>
-					<tr>
-						<th>7</th>	
-						<th>报警最低温差</th>
-						<th editable-number="sysVal.Alarm_dTemp_Min">{{sysVal.Alarm_dTemp_Min}}</th>
-					</tr>					
-					<tr>
-						<th>8</th>	
-						<th>低温差报警恢复回差</th>
-						<th editable-number="sysVal.AlarmR_dTemp_Min">{{sysVal.AlarmR_dTemp_Min}}</th>
-					</tr>						
-					<tr>
-						<th>9</th>	
-						<th>报警最高湿度</th>
-						<th editable-number="sysVal.Alarm_Humi_Max">{{sysVal.Alarm_Humi_Max}}</th>
-					</tr>					
-					<tr>
-						<th>10</th>	
-						<th>报警最高湿度恢复回差</th>
-						<th editable-number="sysVal.AlarmR_Humi_Max">{{sysVal.AlarmR_Humi_Max}}</th>
-					</tr>
-					<tr>
-						<th>11</th>	
-						<th>报警最低湿度</th>
-						<th editable-number="sysVal.Alarm_Humi_Min">{{sysVal.Alarm_Humi_Min}}</th>
-					</tr>
-					<tr>
-						<th>12</th>	
-						<th>报警最低湿度恢复回差</th>
-						<th editable-number="sysVal.AlarmR_Humi_Min">{{sysVal.AlarmR_Humi_Min}}</th>
-					</tr>					
-					<tr>
-						<th>13</th>	
-						<th>报警最低光照</th>
-						<th editable-number="sysVal.Alarm_Light_Min">{{sysVal.Alarm_Light_Min}}</th>
-					</tr>
-					<tr>
-						<th>14</th>	
-						<th>报警最低光照恢复回差</th>
-						<th editable-number="sysVal.AlarmR_Light_Min">{{sysVal.AlarmR_Light_Min}}</th>
-					</tr>
-					<tr>
-						<th>15</th>	
-						<th>报警最高氨气</th>
-						<th editable-number="sysVal.Alarm_Humi_Min">{{sysVal.Alarm_NH3_Max}}</th>
-					</tr>
-					<tr>
-						<th>16</th>	
-						<th>报警最高氨气回复回差</th>
-						<th editable-number="sysVal.AlarmR_NH3_Max">{{sysVal.AlarmR_NH3_Max}}</th>
-					</tr>					
-				</tbody>
-			</table>
-		</div>
-	</div>
-
-				
+			<!--============================================== -->
+				<!-- 第六个表报警相关设置 -->
+			<!--============================================== -->
+			<div class="panel panel-default my-page13-relayCode" data-ng-controller="page13_SysvalCtrl">
+				<div class="panel-heading">
+					<span>报警相关设置</span>
+					<button type="button" class="btn btn-primary btn-sm pull-right" ng-click="uploadData()">保存设置</button>
+				</div>
+				<div class="panel-body" style="padding:0px;">
+					<table class="table table-bordered table-condensed table-striped ">
+						<tbody>
+							<thead>
+								<tr>
+									<th>序号</th>
+									<th>设置选项</th>
+									<th>设置值</th>
+								</tr>
+							</thead>
+							<tr>
+								<th>1</th>	
+								<th>报警最高温度</th>
+								<th editable-number="sysVal.Alarm_Temp_Max">{{sysVal.Alarm_Temp_Max}}</th>
+							</tr>
+							<tr>
+								<th>2</th>	
+								<th>报警最低温度</th>
+								<th editable-number="sysVal.Alarm_Temp_Min">{{sysVal.Alarm_Temp_Min}}</th>
+							</tr>				
+							<tr>
+								<th>3</th>	
+								<th>报警最高温差</th>
+								<th editable-number="sysVal.Alarm_dTemp_Max">{{sysVal.Alarm_dTemp_Max}}</th>
+							</tr>
+							<tr>
+								<th>4</th>	
+								<th>报警最低温差</th>
+								<th editable-number="sysVal.Alarm_dTemp_Min">{{sysVal.Alarm_dTemp_Min}}</th>
+							</tr>										
+							<tr>
+								<th>5</th>	
+								<th>报警最高湿度</th>
+								<th editable-number="sysVal.Alarm_Humi_Max">{{sysVal.Alarm_Humi_Max}}</th>
+							</tr>					
+							<tr>
+								<th>6</th>	
+								<th>报警最低湿度</th>
+								<th editable-number="sysVal.Alarm_Humi_Min">{{sysVal.Alarm_Humi_Min}}</th>
+							</tr>					
+							<tr>
+								<th>7</th>	
+								<th>报警最低光照</th>
+								<th editable-number="sysVal.Alarm_Light_Min">{{sysVal.Alarm_Light_Min}}</th>
+							</tr>
+							<tr>
+								<th>8</th>	
+								<th>报警最高氨气</th>
+								<th editable-number="sysVal.Alarm_Humi_Min">{{sysVal.Alarm_NH3_Max}}</th>
+							</tr>				
+						</tbody>
+					</table>
+				</div>
+			</div>
+	    </div>
+	    <div class="col-md-2"></div>
+	</div>			
 </div>
 
