@@ -8,6 +8,30 @@ page12_model.controller('page12_LineCtrl_wenduDay',[
   '$scope',
   '$http',
   function ($scope,$http){
+    //初始化函數用來根据手机还是pC来对图表配置，手机端将不会有动画和圆点
+    var init=function(){
+      if ($(window).width()>400) { //如果是pc端
+        $scope.options={
+          scaleShowHorizontalLines: true,
+          scaleShowVerticalLines: true,
+          tooltipTemplate: '<%= value %> $',
+          responsive: true,
+          pointDot:true, //有点
+          animation:true//有动画
+        };
+      };
+      if ($(window).width()<=400) { //如果是手机端
+        $scope.options={
+          scaleShowHorizontalLines: true,
+          scaleShowVerticalLines: true,
+          tooltipTemplate: '<%= value %> $',
+          responsive: true,
+          pointDot:false, //没有点
+          animation:false//没有动画
+        };
+      };
+    };
+    init();//执行初始化
     //图表点击时动作
     $scope.series=["室内温度","舍外温度"];
     $scope.data = [
@@ -15,6 +39,7 @@ page12_model.controller('page12_LineCtrl_wenduDay',[
       [10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10],
       ];
     $scope.labels=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23];
+
     $http.get('/resetful/nm820Json/Get24TemHumi.json').success(function(data){
       var nowhour=data.Nowhour;//json返回的当前时间
       //以当前时间作为截取，让当前时间对应的温湿度值放到数组的最后，【0,1,2。。now| now+1，。。】变【now+1，。。。，前1小时，now】
@@ -42,6 +67,38 @@ page12_model.controller('page12_LineCtrl_wenduMonth',[
   '$scope',
   '$http',
   function ($scope,$http){
+    //初始化函數用來根据手机还是pC来对图表配置，手机端将不会有动画和圆点
+    var init=function(){
+      if ($(window).width()>400) { //如果是pc端
+        $scope.options={
+          scaleShowHorizontalLines: true,
+          scaleShowVerticalLines: true,
+          tooltipTemplate: '<%= value %> $',
+          responsive: true,
+          datasetFill: false,
+          scaleOverride:true,
+          scaleSteps:4,
+          scaleStartValue:15,
+          scaleStepWidth:5,
+        };
+      };
+      if ($(window).width()<=400) { //如果是手机端
+        $scope.options={
+          scaleShowHorizontalLines: true,
+          scaleShowVerticalLines: true,
+          tooltipTemplate: '<%= value %> $',
+          responsive: true,
+          datasetFill: false,
+          scaleOverride:true,
+          scaleSteps:4,
+          scaleStartValue:15,
+          scaleStepWidth:5,
+          pointDot:false, //没有点
+          animation:false//没有动画
+        };
+      };
+    };
+    init();//执行初始化
     $scope.isRotate=false;//一开始刷新图标是不转的
       //图表点击时动作
     $scope.onClick = function (points, evt) {
@@ -96,6 +153,28 @@ page12_model.controller('page12_LineCtrl_shiduDay',[
   '$scope',
   '$http',
   function ($scope,$http){
+    //初始化函數用來根据手机还是pC来对图表配置，手机端将不会有动画和圆点
+    var init=function(){
+      if ($(window).width()>400) { //如果是pc端
+        $scope.options={
+          scaleOverride:true,
+          scaleSteps:8,
+          scaleStartValue:50,
+          scaleStepWidth:5,
+        };
+      };
+      if ($(window).width()<=400) { //如果是手机端
+        $scope.options={
+          scaleOverride:true,
+          scaleSteps:8,
+          scaleStartValue:50,
+          scaleStepWidth:5,
+          pointDot:false, //没有点
+          animation:false//没有动画
+        };
+      };
+    };
+    init();
     //图表点击时动作
     $scope.series=["室内湿度","舍外湿度"];
     $scope.data = [
@@ -129,6 +208,30 @@ page12_model.controller('page12_LineCtrl_shiduMonth',[
 	'$scope',
   '$http',
 	function ($scope,$http){
+    //初始化函數用來根据手机还是pC来对图表配置，手机端将不会有动画和圆点
+    var init=function(){
+      if ($(window).width()>400) { //如果是pc端
+        $scope.options={
+          datasetFill: false,
+          scaleOverride:true,
+          scaleSteps:10,
+          scaleStartValue:50,
+          scaleStepWidth:5,
+        };
+      };
+      if ($(window).width()<=400) { //如果是手机端
+        $scope.options={
+          datasetFill: false,
+          scaleOverride:true,
+          scaleSteps:10,
+          scaleStartValue:50,
+          scaleStepWidth:5, 
+          pointDot:false, //没有点
+          animation:false//没有动画
+        };
+      };
+    };
+    init();
 	  	//图表点击时动作
 		$scope.onClick = function (points, evt) {
 	    	console.log(points, evt);

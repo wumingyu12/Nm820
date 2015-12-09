@@ -43,7 +43,7 @@ page11_model.factory('page11getstateSer', ['$timeout','$http',function($timeout,
       };
     },
 
-    //一个服务用来获取目标温度
+    //一个服务用来获取目标温度(在系统参数表里面)
     getSysVal:function(ifcurrentp){
       //如果是当前页就请求resetful
       if (ifcurrentp=="yes") {
@@ -194,7 +194,8 @@ page11_model.controller('page11StateMainCtrl', [
   '$http',
   '$timeout',
   'page11getstateSer',
-  function($scope,$http,$timeout,page11getstateSer){
+  '$filter',
+  function ($scope,$http,$timeout,page11getstateSer,$filter){
     //定时更新数据，通过从服务page11getstateSer中
     //用watch更新数据
     /*
@@ -229,6 +230,47 @@ page11_model.controller('page11StateMainCtrl', [
       $timeout(longPoll,1000);
     };
     longPoll();
+    //==================================继电器面板上的设备与继电器编码的对应表===================================================
+    $scope.relayList = [
+      {value: 0, text: '手动'},
+      {value: 1, text: '风机组1'},
+      {value: 2, text: '风机组2'},
+      {value: 3, text: '风机组3'},
+      {value: 4, text: '风机组4'},
+      {value: 5, text: '风机组5'},
+      {value: 6, text: '风机组6'},
+      {value: 7, text: '风机组7'},
+      {value: 8, text: '风机组8'},
+      {value: 9, text: '加热'},
+      {value: 10, text: '冷却水泵'},
+      {value: 11, text: '喷雾'},
+      {value: 12, text: '回流阀'},
+      {value: 13, text: '照明1'},
+      {value: 14, text: '照明2'},
+      {value: 15, text: '侧风窗开'},
+      {value: 16, text: '侧风窗关'},
+      {value: 17, text: '幕帘开'},
+      {value: 18, text: '幕帘关'},
+      {value: 19, text: '卷帘1开'},
+      {value: 20, text: '卷帘1关'},
+      {value: 21, text: '卷帘2开'},
+      {value: 22, text: '卷帘2关'},
+      {value: 23, text: '卷帘3开'},
+      {value: 24, text: '卷帘3关'},
+      {value: 25, text: '卷帘4开'},
+      {value: 26, text: '卷帘4关'},
+      {value: 27, text: '喂料'},
+      {value: 28, text: '额外系统1'},
+      {value: 29, text: '额外系统2'},
+      {value: 30, text: '额外系统3'},
+      {value: 31, text: '额外系统4'}
+    ]; 
+
+    //根据编码值来显示继电器类型
+    $scope.relayModetoName=function(myvalue) {
+      var modename =$filter('filter')($scope.relayList, {value: myvalue});
+      return modename[0].text;
+    }
     //======================================================================================
     //=====================心跳获取目标温度，状态控制模式，为了避免占用过多的串口资源，10分钟一次,定义了外部的$scope.targerTem
     
@@ -265,6 +307,29 @@ page11_model.controller('page11StateMainCtrl', [
       var p=page11getstateSer.getSysVal(page11getstateSer.ifCurrentPage);//reserful请求
       if(p!=null){
         p.success(function(data){
+          //得到继电器的类型编码
+          $scope.Relay_1=data.Relay_1;
+          $scope.Relay_2=data.Relay_2;
+          $scope.Relay_3=data.Relay_3;
+          $scope.Relay_4=data.Relay_4;
+          $scope.Relay_5=data.Relay_5;
+          $scope.Relay_6=data.Relay_6;
+          $scope.Relay_7=data.Relay_7;
+          $scope.Relay_8=data.Relay_8;
+          $scope.Relay_9=data.Relay_9;
+          $scope.Relay_10=data.Relay_10;
+          $scope.Relay_11=data.Relay_11;
+          $scope.Relay_12=data.Relay_12;
+          $scope.Relay_13=data.Relay_13;
+          $scope.Relay_14=data.Relay_14;
+          $scope.Relay_15=data.Relay_15;
+          $scope.Relay_16=data.Relay_16;
+          $scope.Relay_17=data.Relay_17;
+          $scope.Relay_18=data.Relay_18;
+          $scope.Relay_19=data.Relay_19;
+          $scope.Relay_20=data.Relay_20;
+
+
           var mode=data.Mode;//得到控制模式码，温度控制模式 2--曲线+通风 0--自设 1--曲线 表7.1
           if (mode==2) {//如果控制模式为曲线+通风
             getTargetTembyTable();//获取曲线表，根据当前日龄结合温度曲线得到曲线控制时的目标温度

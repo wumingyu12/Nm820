@@ -98,28 +98,29 @@
 				继电器实时状态
 			</div>
 	  		<div class="panel-body my-page11-RelayPan-body">
-			    	<div><p>风机组1</p><div ng-class="{1:'my-page11-RelayPan-On',0:'my-page11-RelayPan-Off'}[RelayState[0]]"></div></div>
-			    	<div><p>风机组2</p><div ng-class="{1:'my-page11-RelayPan-On',0:'my-page11-RelayPan-Off'}[RelayState[1]]"></div></div>
-			    	<div><p>风机组3</p><div ng-class="{1:'my-page11-RelayPan-On',0:'my-page11-RelayPan-Off'}[RelayState[2]]"></div></div>
-					<div><p>风机组4</p><div ng-class="{1:'my-page11-RelayPan-On',0:'my-page11-RelayPan-Off'}[RelayState[3]]"></div></div>
-					<div><p>风机组5</p><div ng-class="{1:'my-page11-RelayPan-On',0:'my-page11-RelayPan-Off'}[RelayState[4]]"></div></div>
-					<div><p>风机组6</p><div ng-class="{1:'my-page11-RelayPan-On',0:'my-page11-RelayPan-Off'}[RelayState[5]]"></div></div>
-					<div><p>风机组7</p><div ng-class="{1:'my-page11-RelayPan-On',0:'my-page11-RelayPan-Off'}[RelayState[6]]"></div></div>
-					<div><p>风机组8</p><div ng-class="{1:'my-page11-RelayPan-On',0:'my-page11-RelayPan-Off'}[RelayState[7]]"></div></div>
+	  				<!-- p 里面是类似于风机组1，照明1，照明2的继电器类型-->
+			    	<div><p>{{relayModetoName(Relay_1)}}</p><div ng-class="{1:'my-page11-RelayPan-On',0:'my-page11-RelayPan-Off'}[RelayState[0]]"></div></div>
+			    	<div><p>{{relayModetoName(Relay_2)}}</p><div ng-class="{1:'my-page11-RelayPan-On',0:'my-page11-RelayPan-Off'}[RelayState[1]]"></div></div>
+			    	<div><p>{{relayModetoName(Relay_3)}}</p><div ng-class="{1:'my-page11-RelayPan-On',0:'my-page11-RelayPan-Off'}[RelayState[2]]"></div></div>
+					<div><p>{{relayModetoName(Relay_4)}}</p><div ng-class="{1:'my-page11-RelayPan-On',0:'my-page11-RelayPan-Off'}[RelayState[3]]"></div></div>
+					<div><p>{{relayModetoName(Relay_5)}}</p><div ng-class="{1:'my-page11-RelayPan-On',0:'my-page11-RelayPan-Off'}[RelayState[4]]"></div></div>
+					<div><p>{{relayModetoName(Relay_6)}}</p><div ng-class="{1:'my-page11-RelayPan-On',0:'my-page11-RelayPan-Off'}[RelayState[5]]"></div></div>
+					<div><p>{{relayModetoName(Relay_7)}}</p><div ng-class="{1:'my-page11-RelayPan-On',0:'my-page11-RelayPan-Off'}[RelayState[6]]"></div></div>
+					<div><p>{{relayModetoName(Relay_8)}}</p><div ng-class="{1:'my-page11-RelayPan-On',0:'my-page11-RelayPan-Off'}[RelayState[7]]"></div></div>
 
-					<div><p>加热</p><div ng-class="{1:'my-page11-RelayPan-On',0:'my-page11-RelayPan-Off'}[RelayState[8]]"></div></div>
-			    	<div><p>冷却水泵</p><div ng-class="{1:'my-page11-RelayPan-On',0:'my-page11-RelayPan-Off'}[RelayState[9]]"></div></div>
-			    	<div><p>喷雾</p><div ng-class="{1:'my-page11-RelayPan-On',0:'my-page11-RelayPan-Off'}[RelayState[10]]"></div></div>
-					<div><p>照明1</p><div ng-class="{1:'my-page11-RelayPan-On',0:'my-page11-RelayPan-Off'}[RelayState[11]]"></div></div>
-					<div><p>照明2</p><div ng-class="{1:'my-page11-RelayPan-On',0:'my-page11-RelayPan-Off'}[RelayState[12]]"></div></div>
-					<div><p>吊顶窗开</p><div ng-class="{1:'my-page11-RelayPan-On',0:'my-page11-RelayPan-Off'}[RelayState[13]]"></div></div>
-					<div><p>吊顶窗关</p><div ng-class="{1:'my-page11-RelayPan-On',0:'my-page11-RelayPan-Off'}[RelayState[14]]"></div></div>
-					<div><p>幕帘开</p><div ng-class="{1:'my-page11-RelayPan-On',0:'my-page11-RelayPan-Off'}[RelayState[15]]"></div></div>
+					<div><p>{{relayModetoName(Relay_9)}}</p><div ng-class="{1:'my-page11-RelayPan-On',0:'my-page11-RelayPan-Off'}[RelayState[8]]"></div></div>
+			    	<div><p>{{relayModetoName(Relay_10)}}</p><div ng-class="{1:'my-page11-RelayPan-On',0:'my-page11-RelayPan-Off'}[RelayState[9]]"></div></div>
+			    	<div><p>{{relayModetoName(Relay_11)}}</p><div ng-class="{1:'my-page11-RelayPan-On',0:'my-page11-RelayPan-Off'}[RelayState[10]]"></div></div>
+					<div><p>{{relayModetoName(Relay_12)}}</p><div ng-class="{1:'my-page11-RelayPan-On',0:'my-page11-RelayPan-Off'}[RelayState[11]]"></div></div>
+					<div><p>{{relayModetoName(Relay_13)}}</p><div ng-class="{1:'my-page11-RelayPan-On',0:'my-page11-RelayPan-Off'}[RelayState[12]]"></div></div>
+					<div><p>{{relayModetoName(Relay_14)}}</p><div ng-class="{1:'my-page11-RelayPan-On',0:'my-page11-RelayPan-Off'}[RelayState[13]]"></div></div>
+					<div><p>{{relayModetoName(Relay_15)}}</p><div ng-class="{1:'my-page11-RelayPan-On',0:'my-page11-RelayPan-Off'}[RelayState[14]]"></div></div>
+					<div><p>{{relayModetoName(Relay_16)}}</p><div ng-class="{1:'my-page11-RelayPan-On',0:'my-page11-RelayPan-Off'}[RelayState[15]]"></div></div>
 
-					<div><p>幕帘关</p><div ng-class="{1:'my-page11-RelayPan-On',0:'my-page11-RelayPan-Off'}[RelayState[16]]"></div></div>
-			    	<div><p>喂料</p><div ng-class="{1:'my-page11-RelayPan-On',0:'my-page11-RelayPan-Off'}[RelayState[17]]"></div></div>
-			    	<div><p>额外系统1</p><div ng-class="{1:'my-page11-RelayPan-On',0:'my-page11-RelayPan-Off'}[RelayState[18]]"></div></div>
-					<div><p>报警输出</p><div ng-class="{1:'my-page11-RelayPan-On',0:'my-page11-RelayPan-Off'}[RelayState[19]]"></div></div>
+					<div><p>{{relayModetoName(Relay_17)}}</p><div ng-class="{1:'my-page11-RelayPan-On',0:'my-page11-RelayPan-Off'}[RelayState[16]]"></div></div>
+			    	<div><p>{{relayModetoName(Relay_18)}}</p><div ng-class="{1:'my-page11-RelayPan-On',0:'my-page11-RelayPan-Off'}[RelayState[17]]"></div></div>
+			    	<div><p>{{relayModetoName(Relay_19)}}</p><div ng-class="{1:'my-page11-RelayPan-On',0:'my-page11-RelayPan-Off'}[RelayState[18]]"></div></div>
+					<div><p>{{relayModetoName(Relay_20)}}</p><div ng-class="{1:'my-page11-RelayPan-On',0:'my-page11-RelayPan-Off'}[RelayState[19]]"></div></div>
 	  		</div>
 		</div>
     </div>
