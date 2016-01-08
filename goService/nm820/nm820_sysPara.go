@@ -425,7 +425,7 @@ func (nm *NM820_SysVal) addData() error {
 	<-chanSerialBusy
 
 	if sumCheck(b[0:147]) != b[147] { //前面99个数的校验和是否等于最后一个校验位,b[0]--b[98]
-		return errors.New("sum check is wrong!!")
+		return errors.New("NM820_SysVal.addData() sum check is wrong!!")
 	}
 
 	//用反射的方式将byte数组赋值到结构体内

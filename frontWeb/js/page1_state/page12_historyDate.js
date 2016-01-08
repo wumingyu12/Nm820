@@ -157,18 +157,18 @@ page12_model.controller('page12_LineCtrl_shiduDay',[
     var init=function(){
       if ($(window).width()>400) { //如果是pc端
         $scope.options={
-          scaleOverride:true,
-          scaleSteps:8,
-          scaleStartValue:50,
-          scaleStepWidth:5,
+          //scaleOverride:true,//不限制刻度条
+          //scaleSteps:8,
+          //scaleStartValue:50,
+          //scaleStepWidth:5,
         };
       };
       if ($(window).width()<=400) { //如果是手机端
         $scope.options={
-          scaleOverride:true,
-          scaleSteps:8,
-          scaleStartValue:50,
-          scaleStepWidth:5,
+          //scaleOverride:true,
+          //scaleSteps:8,
+          //scaleStartValue:50,
+          //scaleStepWidth:5,
           pointDot:false, //没有点
           animation:false//没有动画
         };
@@ -213,19 +213,19 @@ page12_model.controller('page12_LineCtrl_shiduMonth',[
       if ($(window).width()>400) { //如果是pc端
         $scope.options={
           datasetFill: false,
-          scaleOverride:true,
-          scaleSteps:10,
-          scaleStartValue:50,
-          scaleStepWidth:5,
+          //scaleOverride:true,
+          //scaleSteps:10,
+          //scaleStartValue:50,
+          //scaleStepWidth:5,
         };
       };
       if ($(window).width()<=400) { //如果是手机端
         $scope.options={
           datasetFill: false,
-          scaleOverride:true,
-          scaleSteps:10,
-          scaleStartValue:50,
-          scaleStepWidth:5, 
+          //scaleOverride:true,
+          //scaleSteps:10,
+          //scaleStartValue:50,
+          //scaleStepWidth:5, 
           pointDot:false, //没有点
           animation:false//没有动画
         };

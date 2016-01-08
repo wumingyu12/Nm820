@@ -8,9 +8,17 @@
  -->
 
 <div class="my-page51-main" ng-controller="page51_mainvideoCtrl">  
-	<div class="my-page51-phonemain"><!-- 用于手机端时演示 rtsp://admin:wumingyu12@10.33.51.187:554/h264/ch1/main/av_stream-->
-		<video autoplay class="my-page51-phonevido1" src="/view/page5_video/tes.mp4">111</video>
+	<!-- 用于手机端时演示 rtsp://admin:wumingyu12@10.33.51.187:554/h264/ch1/main/av_stream-->
+	<video autoplay class="my-page51-phonevido1" src="rtsp://admin:wumingyu12@10.33.35.14:554/h264/ch1/main/av_stream">111</video>
+	<div class="my-page51-buttonform-phone">
+		<button style="font-size:30px" ng-mousedown="hkptzResetful('1','panright','30')" ng-mouseup="hkptzResetful('1','stop','30')">左</button>
+		<button ng-mousedown="hkptzResetful('1','panleft','30')" ng-mouseup="hkptzResetful('1','stop','30')">右</button>
+		<button ng-mousedown="hkptzResetful('1','tiltup','30')" ng-mouseup="hkptzResetful('1','stop','30')" >上</button>
+		<button ng-mousedown="hkptzResetful('1','tiltdown','30')" ng-mouseup="hkptzResetful('1','stop','30')">下</button>
+		<button ng-mousedown="hkptzResetful('1','zoomfar','30')" ng-mouseup="hkptzResetful('1','stopzoom','30')">近</button>
+		<button ng-mousedown="hkptzResetful('1','zoomnear','30')" ng-mouseup="hkptzResetful('1','stopzoom','30')">远</button>
 	</div>
+
 	<script type ="text/javascript" src="/frame/jwplayer/jwplayer.js"></script>
 		<!-- 视频1 -->
 		<div  class="my-page51-video1">
@@ -24,7 +32,9 @@
 	                          //file:"rtmp://localhost/oflaDemo/hello",
 	                          //file : "/view/tes.mp4",//本地
 	                          //file:"rtmp://202.117.80.19:1935/live/live1",//cctv5
-	                          file:"rtmp://"+window.location.hostname+"/live/livestream", //用默认端口1935，用srs
+	                          //file:"rtmp://"+window.location.hostname+"/live/livestream", //用默认端口1935，用srs
+
+	                          file:"rtmp://10.33.51.103:1935/live/livestream/1", //用默认端口1935，用srs
 	                          //file:"rtmp://"
 	                          height : 480 ,
 
@@ -37,12 +47,12 @@
 			</script>
 			<!-- 视频1的控制 -->
 			<div class="my-page51-video1-ptz"><!-- 按下时发送连续运动命令，松开时发送停止命令 -->
-				<button ng-mousedown="hkptzResetful('1','panleft','60')" ng-mouseup="hkptzResetful('1','stop','60')">左</button>
-				<button ng-mousedown="hkptzResetful('1','panright','60')" ng-mouseup="hkptzResetful('1','stop','60')">右</button>
-				<button ng-mousedown="hkptzResetful('1','tiltup','60')" ng-mouseup="hkptzResetful('1','stop','60')" >上</button>
-				<button ng-mousedown="hkptzResetful('1','tiltdown','60')" ng-mouseup="hkptzResetful('1','stop','60')">下</button>
-				<button ng-mousedown="hkptzResetful('1','zoomfar','60')" ng-mouseup="hkptzResetful('1','stopzoom','60')">近</button>
-				<button ng-mousedown="hkptzResetful('1','zoomnear','60')" ng-mouseup="hkptzResetful('1','stopzoom','60')">远</button>
+				<button ng-mousedown="hkptzResetful('1','panright','30')" ng-mouseup="hkptzResetful('1','stop','30')">左</button>
+				<button ng-mousedown="hkptzResetful('1','panleft','30')" ng-mouseup="hkptzResetful('1','stop','30')">右</button>
+				<button ng-mousedown="hkptzResetful('1','tiltup','30')" ng-mouseup="hkptzResetful('1','stop','30')" >上</button>
+				<button ng-mousedown="hkptzResetful('1','tiltdown','30')" ng-mouseup="hkptzResetful('1','stop','30')">下</button>
+				<button ng-mousedown="hkptzResetful('1','zoomfar','30')" ng-mouseup="hkptzResetful('1','stopzoom','30')">近</button>
+				<button ng-mousedown="hkptzResetful('1','zoomnear','30')" ng-mouseup="hkptzResetful('1','stopzoom','30')">远</button>
 			</div>
 		</div>
 		<!-- 视频1的控制 -->
@@ -58,7 +68,8 @@
 
 		                          //file : "/view/tes.mp4",//本地
 		                          //file:"rtmp://202.117.80.19:1935/live/live1",//cctv5
-		                          file:"rtmp://"+window.location.hostname+"/live/livestream1",
+		                          //file:"rtmp://"+window.location.hostname+"/live/livestream1",
+		                          file:"rtmp://10.33.51.103:1935/live/livestream/2", //用默认端口1935，用srs
 		                          //file: "http://bcs.duapp.com/images-link/sample.mp4",
 		                          height : 480 ,
 

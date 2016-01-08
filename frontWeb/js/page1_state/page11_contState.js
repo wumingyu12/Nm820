@@ -13,16 +13,15 @@ var page11_model=angular.module('MyApp.page11', []);
      TemAvg 温度  HumiAvg 湿度  GDay 日龄 FanLevel 通风等级
      Year Month Day Hour Min Sec 时间
     2.ifCurrentPage 指示是否是当前页，只有确定是当前页才进行重复地请求
-  方法：1.getstate(ifcurrentp),通过传入的ifcurrentp值确定是否请求resetful
+  方法：1.如果当前页面是页面1就有返回否则无
         2.
 ==================================================================================================*/
 page11_model.factory('page11getstateSer', ['$timeout','$http',function($timeout,$http){
 
-  var ifCurrentPage="yes";//是否为当前页，是的话resetful请求就可以
   return {
-    getstate:function(ifcurrentp){
+    getstate:function(){
       //如果是当前页就请求resetful
-      if (ifcurrentp=="yes") {
+      if (window.location.hash=="#/page1/contState") {
         return $http.get("/resetful/nm820/GetState"+"?timestamp=" + new Date().getTime());
         //加时间标记避免手机端的缓存
         //return $http({method: 'GET', url: '/resetful/nm820/GetState'+'?timestamp=' + new Date().getTime(), cache: false});
@@ -33,10 +32,10 @@ page11_model.factory('page11getstateSer', ['$timeout','$http',function($timeout,
     },
 
     //一个服务用来获取目标温度
-    getTargetTem:function(ifcurrentp){
+    getTargetTem:function(){
       //如果是当前页就请求resetful
-      if (ifcurrentp=="yes") {
-        return $http.get("/resetful/nm820/sysPara/WenduCurve");
+      if (window.location.hash=="#/page1/contState") {
+        return $http.get("/resetful/nm820/sysPara/WenduCurve"+"?timestamp=" + new Date().getTime());
       }
       else {
         return null;
@@ -44,16 +43,15 @@ page11_model.factory('page11getstateSer', ['$timeout','$http',function($timeout,
     },
 
     //一个服务用来获取目标温度(在系统参数表里面)
-    getSysVal:function(ifcurrentp){
+    getSysVal:function(){
       //如果是当前页就请求resetful
-      if (ifcurrentp=="yes") {
-        return $http.get("/resetful/nm820/sysPara/SysValTable");
+      if (window.location.hash=="#/page1/contState") {
+        return $http.get("/resetful/nm820/sysPara/SysValTable"+"?timestamp=" + new Date().getTime());
       }
       else {
         return null;
       };
     },
-    ifCurrentPage:ifCurrentPage,//这个就是用于上面的参数
   };
 }]);
 
@@ -211,7 +209,7 @@ page11_model.controller('page11StateMainCtrl', [
     };
     //======================心跳获取状态值,每一秒=============================================
     var longPoll=function(){
-      var p=page11getstateSer.getstate(page11getstateSer.ifCurrentPage);
+      var p=page11getstateSer.getstate();
       if (p!=null) {//说明在当前页面，返回一个$q对象不是null具体看服务page11getstateSer。
         p.success(function(data){
           $scope.TemAvg=data.TemAvg/10;//返回的数值是乘上10的
@@ -276,7 +274,7 @@ page11_model.controller('page11StateMainCtrl', [
     
     //获取曲线表，根据当前日龄结合温度曲线得到曲线控制时的目标温度
     var getTargetTembyTable=function(){
-      var p=page11getstateSer.getTargetTem(page11getstateSer.ifCurrentPage);
+      var p=page11getstateSer.getTargetTem();
       if (p!=null) {//说明在当前页面，返回一个$q对象不是null具体看服务page11getstateSer。
         p.success(function(data){
           var d=data.Day; //resetful后得到的曲线表
@@ -304,7 +302,7 @@ page11_model.controller('page11StateMainCtrl', [
     //定时任务
     var longPollTargerTem=function(){
       //获取当前的控制方式
-      var p=page11getstateSer.getSysVal(page11getstateSer.ifCurrentPage);//reserful请求
+      var p=page11getstateSer.getSysVal();//reserful请求
       if(p!=null){
         p.success(function(data){
           //得到继电器的类型编码

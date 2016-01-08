@@ -352,7 +352,10 @@ func GetState(w http.ResponseWriter, r *http.Request) {
 	currentStatehasLink = 1
 
 	//将para转换为json
+
 	b, err := json.Marshal(currentState) //用这个函数时一定要确保字段名首位大写
+	log.Println(currentState)
+	log.Println("连接ip：" + r.RemoteAddr) //远程连接的ip地址
 	checkerr(err)
 	//必须要string,确保没发送其他了否则解释不了为json在angular
 	fmt.Fprintf(w, "%s", b) //注意在armlinux下面不能用fmt.Fprintf(w, string(b))的方式

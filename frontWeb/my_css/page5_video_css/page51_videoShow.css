@@ -1,6 +1,5 @@
 /*视频监控，及设备监控css样式表*/
 /*
-my-page51-phonemain  手机端时显示
 |__my-page51-phonevido1
 my-page51-main
 |__my-page51-video1 视频1 布局div
@@ -9,23 +8,15 @@ my-page51-main
 	|__	|__my-page51-video1-ptz 海康的ptz控制按钮
 */
 .my-page51-main{
-	position: relative;
 	width: 100%;
 	height: 100%;
 	background-color: grey;
 }
 /*手机*/
 @media all and (max-width: 400px) {
-	.my-page51-phonemain{
-		width:100%;                         
-		height:100px;
-		margin-top: 10px;
-		position: relative;
 
-	}
 	.my-page51-phonevido1{
 		width: 100%;
-		position: absolute;
 	}
 	.my-page51-videos1{
 		display: none;
@@ -40,7 +31,8 @@ my-page51-main
 }
 /*pc*/
 @media all and (min-width: 400px) {
-	.my-page51-phonemain{
+	.my-page51-phonevido1{
+		width: 100%;
 		display: none;
 	}
 	.my-page51-video1{
@@ -61,5 +53,8 @@ my-page51-main
 		position: absolute;
 		top: 2%;
 		right: 7%;
+	}
+	.my-page51-buttonform-phone{
+		display: none;
 	}
 }
