@@ -225,7 +225,7 @@ page11_model.controller('page11StateMainCtrl', [
           $scope.RelayState=data.RelayState;//继电器开关,用于指示风机动画是否显示，左上角的风机组状态显示
         })
       };
-      $timeout(longPoll,1000);
+      $timeout(longPoll,2000);
     };
     longPoll();
     //==================================继电器面板上的设备与继电器编码的对应表===================================================

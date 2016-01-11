@@ -11,7 +11,7 @@ import (
 	"fmt"
 	"github.com/gorilla/mux"   //路由库
 	"github.com/huin/goserial" //引入串口库
-	"io"
+	//"io"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -44,13 +44,22 @@ var currentStatehasLink int = 1       //代表是否有请求得到状态变量�
 		  3.
 	作用：1.一直死循环向io.read发送命令并接受返回的n个字节，放到通道中
 		  2.具有一个锁没有东西放进来会堵塞
-	参数：1.io。已经初始化的io.readWriteCloser
+	参数
 		  2.wb.  chan []byte要发送到io里面的的[]byte
 		  4.rb 将读到的数据放到rb中
 		  5.rbnum 需要读取的字节长度，也是read函数要读取的字节数，注意也是阻塞的标志，只有取出后才会开始一次读取
 	使用示范：可以参看/C_cmd/serial-yc/serial-package/goserial/serial_gopackage3.go
 *====================================================*/
-func goSendSerial(wb <-chan []byte, rb chan<- []byte, rbnum <-chan int, io io.ReadWriteCloser) {
+func goSendSerial(wb <-chan []byte, rb chan<- []byte, rbnum <-chan int) {
+	c := &goserial.Config{
+		Name: con_PORTNAME,
+		Baud: con_BAUD,
+		//ReadTimeout: time.Second * 5, //读取超时
+		Size:     goserial.Byte8,
+		StopBits: goserial.StopBits1,
+		Parity:   goserial.ParityNone,
+	} //以波特率和串口名打开
+
 	log.SetFlags(log.Lshortfile | log.LstdFlags)
 	log.Println("线程goSendSerial启动,死循环发送命令")
 	for {
@@ -60,17 +69,32 @@ func goSendSerial(wb <-chan []byte, rb chan<- []byte, rbnum <-chan int, io io.Re
 		log.Println("堵塞终止")
 		send := <-wb
 		log.Printf("重通道中得到发送命令：%x\n", send)
-		io.Write(send) //发送命令,wb中取出一个
+
+		s, err := goserial.OpenPort(c) //打开串口
+		checkerr(err)
+		s.Write(send) //发送命令,wb中取出一个
+		log.Printf("命令发送成功")
+
 		b := make([]byte, 1)
+		timer1 := time.NewTicker(2 * time.Second) //定时器到时间会退出下面的for
+		defer timer1.Stop()
 		for i := 0; i < rbnum; i++ {
-			io.Read(b)
-			readbuf[i] = b[0]
-			//log.Printf("接收到：%d--%x\n", i, b[0])
+			select {
+			case <-timer1.C:
+				fmt.Println("接收数据超时")
+				break //如果2秒后还没完成读取数据的任务就退出
+			default: //如果定时器还没动作就进行以下的默认操作
+				s.Read(b)
+				readbuf[i] = b[0]
+			}
 		}
 		//io.Read(readbuf) //接收串口数据,一个个字节读取否则有bug
 		rb <- readbuf
+		s.Close() //使用完后关闭
+
 		log.Printf("已经发送：%x\n", send)
 		fmt.Printf("接收到串口数据:%x\n", readbuf)
+		time.Sleep(200 * time.Microsecond)
 		//io.Close() //关闭io口
 		//checkerr(err)
 		//_, err = s.Write(append(g_cmd, sumCheck(g_cmd))) //在原来的命令后面再加一个校验和比特再发送
@@ -237,20 +261,10 @@ func goFlashCurrentState() {
 =======================================================================*/
 func init() {
 	log.SetFlags(log.Lshortfile | log.LstdFlags)
-	c := &goserial.Config{
-		Name: con_PORTNAME,
-		Baud: con_BAUD,
-		//ReadTimeout: time.Second * 5, //读取超时
-		Size:     goserial.Byte8,
-		StopBits: goserial.StopBits1,
-		Parity:   goserial.ParityNone,
-	} //以波特率和串口名打开
-	s, err := goserial.OpenPort(c) //打开串口
-	checkerr(err)
 
-	go goSendSerial(chanWb, chanRb, chanRbNum, s) //串口收发线程
-	go goGet24TemHumi()                           //24小时温湿度读取
-	go goFlashCurrentState()                      //每一秒更新nm820的状态值
+	go goSendSerial(chanWb, chanRb, chanRbNum) //串口收发线程
+	go goGet24TemHumi()                        //24小时温湿度读取
+	go goFlashCurrentState()                   //每一秒更新nm820的状态值
 }
 
 //-------------------------------------------------

@@ -1,10 +1,10 @@
 package nm820
 
 import (
-	"errors"
+	//"errors"
 	//"fmt"
 	//"github.com/huin/goserial" //引入串口库
-	//"log"
+	"log"
 	//"time"
 )
 
@@ -59,7 +59,9 @@ func (nm *NM820_StatePara) reflashValue(b []byte) error { //默认输入的是10
 	//判断校验和是否一样
 	//fmt.Printf("last:%x\n", b[99])
 	if sumCheck(b[0:99]) != b[99] { //前面99个数的校验和是否等于最后一个校验位,b[0]--b[98]
-		return errors.New("sum check is wrong!!")
+		//return errors.New("sum check is wrong!!")
+		log.SetFlags(log.Lshortfile | log.LstdFlags)
+		log.Println("sum check is wrong!!")
 	}
 	//按小端的方式(具有就是高字节打头，如下)将byte赋值给结构体，重00 09 5a后面开始，就是byte[9]开始
 	nm.GDay = twobyte_to_uint16(b[10], b[9])

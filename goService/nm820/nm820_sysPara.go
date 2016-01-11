@@ -1,7 +1,7 @@
 package nm820
 
 import (
-	"errors"
+	//"errors"
 	"log"
 	"reflect" //通过反射来初始化结构体
 )
@@ -60,7 +60,9 @@ func (nm *NM820_WindTables) addData() error {
 
 	//判断校验和是否一样
 	if sumCheck(b[0:251]) != b[251] { //前面99个数的校验和是否等于最后一个校验位,b[0]--b[98]
-		return errors.New("sum check is wrong!!")
+		log.SetFlags(log.Lshortfile | log.LstdFlags)
+		log.Println("sum check is wrong!!")
+		//return errors.New("sum check is wrong!!")
 	}
 	//将有效数组保存
 	var tem []byte
@@ -81,7 +83,9 @@ func (nm *NM820_WindTables) addData() error {
 
 	//判断校验和是否一样
 	if sumCheck(b1[0:251]) != b1[251] { //前面99个数的校验和是否等于最后一个校验位,b[0]--b[98]
-		return errors.New("sum check is wrong!!")
+		log.SetFlags(log.Lshortfile | log.LstdFlags)
+		log.Println("sum check is wrong!!")
+		//return errors.New("sum check is wrong!!")
 	}
 	//将有效数组保存
 	tem = append(tem, b1[9:249]...)
@@ -205,7 +209,9 @@ func (nm *NM820_WenduCurve) addData() error {
 
 	//判断校验和是否一样
 	if sumCheck(b[0:91]) != b[91] { //前面99个数的校验和是否等于最后一个校验位,b[0]--b[98]
-		return errors.New("sum check is wrong!!")
+		log.SetFlags(log.Lshortfile | log.LstdFlags)
+		log.Println("sum check is wrong!!")
+		//return errors.New("sum check is wrong!!")
 	}
 	for i := 0; i < 10; i++ {
 		nm.Day = append(nm.Day, twobyte_to_uint16(b[10+i*8], b[9+i*8]))
@@ -278,7 +284,9 @@ func (nm *NM820_WindLevel) addData() error {
 
 	//判断校验和是否一样
 	if sumCheck(b[0:71]) != b[71] { //前面99个数的校验和是否等于最后一个校验位,b[0]--b[98]
-		return errors.New("sum check is wrong!!")
+		//return errors.New("sum check is wrong!!")
+		log.SetFlags(log.Lshortfile | log.LstdFlags)
+		log.Println("sum check is wrong!!")
 	}
 	for i := 0; i < 10; i++ {
 		nm.Day = append(nm.Day, twobyte_to_uint16(b[10+i*6], b[9+i*6]))
@@ -425,7 +433,9 @@ func (nm *NM820_SysVal) addData() error {
 	<-chanSerialBusy
 
 	if sumCheck(b[0:147]) != b[147] { //前面99个数的校验和是否等于最后一个校验位,b[0]--b[98]
-		return errors.New("NM820_SysVal.addData() sum check is wrong!!")
+		log.SetFlags(log.Lshortfile | log.LstdFlags)
+		log.Println("sum check is wrong!!")
+		//return errors.New("NM820_SysVal.addData() sum check is wrong!!")
 	}
 
 	//用反射的方式将byte数组赋值到结构体内
