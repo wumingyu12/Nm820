@@ -9,8 +9,9 @@ import (
 	//"errors"
 	"encoding/json"
 	"fmt"
-	"github.com/gorilla/mux"   //路由库
-	"github.com/huin/goserial" //引入串口库
+	"github.com/gorilla/mux" //路由库
+	//"github.com/huin/goserial" //引入串口库
+	"github.com/tarm/serial"
 	//"io"
 	"io/ioutil"
 	"log"
@@ -51,15 +52,15 @@ var currentStatehasLink int = 1       //代表是否有请求得到状态变量�
 	使用示范：可以参看/C_cmd/serial-yc/serial-package/goserial/serial_gopackage3.go
 *====================================================*/
 func goSendSerial(wb <-chan []byte, rb chan<- []byte, rbnum <-chan int) {
-	c := &goserial.Config{
-		Name: con_PORTNAME,
-		Baud: con_BAUD,
-		//ReadTimeout: time.Second * 5, //读取超时
-		Size:     goserial.Byte8,
-		StopBits: goserial.StopBits1,
-		Parity:   goserial.ParityNone,
-	} //以波特率和串口名打开
-
+	//c := &goserial.Config{
+	//	Name: con_PORTNAME,
+	//	Baud: con_BAUD,
+	//ReadTimeout: time.Second * 2, //读取超时
+	//	Size:     goserial.Byte8,
+	//	StopBits: goserial.StopBits1,
+	//	Parity:   goserial.ParityNone,
+	//} //以波特率和串口名打开
+	c := &serial.Config{Name: con_PORTNAME, Baud: con_BAUD, ReadTimeout: time.Second * 2}
 	log.SetFlags(log.Lshortfile | log.LstdFlags)
 	log.Println("线程goSendSerial启动,死循环发送命令")
 	for {
@@ -70,7 +71,8 @@ func goSendSerial(wb <-chan []byte, rb chan<- []byte, rbnum <-chan int) {
 		send := <-wb
 		log.Printf("重通道中得到发送命令：%x\n", send)
 
-		s, err := goserial.OpenPort(c) //打开串口
+		//s, err := goserial.OpenPort(c) //打开串口
+		s, err := serial.OpenPort(c) //打开串口
 		checkerr(err)
 		s.Write(send) //发送命令,wb中取出一个
 		log.Printf("命令发送成功")
