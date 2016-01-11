@@ -21,8 +21,9 @@ import (
 
 //用到的常量
 const (
-	con_PORTNAME = "/dev/ttySAC3" //要连接的串口名字，在window下可以用“COM1”
-	con_BAUD     = 4800           //要连接的串口波特率
+	con_PORTNAME = "/dev/ttyO2" //周立功M3352
+	//con_PORTNAME = "/dev/ttySAC3" //扬创要连接的串口名字，在window下可以用“COM1”
+	con_BAUD = 4800 //要连接的串口波特率
 	//CON_ADDR_H   = 0x00           //通信地址高位
 	//CON_ADDR_L   = 0x01           //通信地址低位，可以通过nm820的界面参看就是栏舍号
 	//CMD []byte={}
@@ -214,10 +215,10 @@ func goFlashCurrentState() {
 			err := currentState.reflashValue(rec)
 			checkerr(err)
 
-			time.Sleep(1 * time.Second) //延迟1秒再次更新
+			time.Sleep(2 * time.Second) //延迟1秒再次更新
 			currentStatehasLink = 0     //将请求变回0
 		} else {
-			time.Sleep(1 * time.Second) //延迟1秒再次更新，不加这个会导致很严重的死循环
+			time.Sleep(2 * time.Second) //延迟1秒再次更新，不加这个会导致很严重的死循环
 		}
 	}
 
