@@ -22,7 +22,7 @@ import (
 
 //用到的常量
 const (
-	con_PORTNAME = "/dev/ttyO2" //周立功M3352
+	con_PORTNAME = "/dev/ttyO4" //周立功M3352,用485，nm820是232的要转换
 	//con_PORTNAME = "/dev/ttySAC3" //扬创要连接的串口名字，在window下可以用“COM1”
 	con_BAUD = 4800 //要连接的串口波特率
 	//CON_ADDR_H   = 0x00           //通信地址高位
@@ -60,13 +60,14 @@ func goSendSerial(wb <-chan []byte, rb chan<- []byte, rbnum <-chan int) {
 	//	StopBits: goserial.StopBits1,
 	//	Parity:   goserial.ParityNone,
 	//} //以波特率和串口名打开
-	c := &serial.Config{Name: con_PORTNAME, Baud: con_BAUD, ReadTimeout: time.Second * 2}
+	c := &serial.Config{Name: con_PORTNAME, Baud: con_BAUD, ReadTimeout: time.Second * 4}
 	log.SetFlags(log.Lshortfile | log.LstdFlags)
 	log.Println("线程goSendSerial启动,死循环发送命令")
 	for {
 		log.Println("堵塞中")
 		rbnum := <-rbnum
 		readbuf := make([]byte, rbnum) //堵塞，如果有值可以取出，开始一次发送命令
+
 		log.Println("堵塞终止")
 		send := <-wb
 		log.Printf("重通道中得到发送命令：%x\n", send)
@@ -80,23 +81,28 @@ func goSendSerial(wb <-chan []byte, rb chan<- []byte, rbnum <-chan int) {
 		b := make([]byte, 1)
 		timer1 := time.NewTicker(2 * time.Second) //定时器到时间会退出下面的for
 		defer timer1.Stop()
+		istimeout := false //用来退出下面的for如果超时
 		for i := 0; i < rbnum; i++ {
 			select {
 			case <-timer1.C:
 				fmt.Println("接收数据超时")
-				break //如果2秒后还没完成读取数据的任务就退出
+				istimeout = true
+				//如果2秒后还没完成读取数据的任务就退出
+
 			default: //如果定时器还没动作就进行以下的默认操作
 				s.Read(b)
 				readbuf[i] = b[0]
 			}
+			if istimeout { //如果超时了就退出for循环
+				break
+			}
 		}
-		//io.Read(readbuf) //接收串口数据,一个个字节读取否则有bug
+
 		rb <- readbuf
 		s.Close() //使用完后关闭
 
 		log.Printf("已经发送：%x\n", send)
 		fmt.Printf("接收到串口数据:%x\n", readbuf)
-		time.Sleep(200 * time.Microsecond)
 		//io.Close() //关闭io口
 		//checkerr(err)
 		//_, err = s.Write(append(g_cmd, sumCheck(g_cmd))) //在原来的命令后面再加一个校验和比特再发送

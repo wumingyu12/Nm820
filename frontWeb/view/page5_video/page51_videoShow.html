@@ -1,16 +1,14 @@
 <!-- 实时视频监控与设备开关监控 -->
 <!-- css -->
 
-<link rel="stylesheet" href="/my_css/page5_video_css/page51_videoShow.css">
-<!-- js -->
-<script src="/js/page51_videoShow.js"></script>
+
 <!-- 
  -->
 
-<div class="my-page51-main" ng-controller="page51_mainvideoCtrl">  
+<div class="my-page51-main" >  
 	<!-- 用于手机端时演示 rtsp://admin:wumingyu12@10.33.51.187:554/h264/ch1/main/av_stream-->
-	<video autoplay class="my-page51-phonevido1" src="rtsp://admin:wumingyu12@10.33.35.14:554/h264/ch1/main/av_stream">111</video>
-	<div class="my-page51-buttonform-phone">
+	<!-- <video autoplay class="my-page51-phonevido1" src="rtsp://admin:wumingyu12@10.33.35.14:554/h264/ch1/main/av_stream">111</video> -->
+	<div class="my-page51-buttonform-phone" ng-controller="page51_mainvideoCtrl">
 		<button style="font-size:30px" ng-mousedown="hkptzResetful('1','panright','30')" ng-mouseup="hkptzResetful('1','stop','30')">左</button>
 		<button ng-mousedown="hkptzResetful('1','panleft','30')" ng-mouseup="hkptzResetful('1','stop','30')">右</button>
 		<button ng-mousedown="hkptzResetful('1','tiltup','30')" ng-mouseup="hkptzResetful('1','stop','30')" >上</button>
@@ -46,7 +44,7 @@
 	    		}
 			</script>
 			<!-- 视频1的控制 -->
-			<div class="my-page51-video1-ptz"><!-- 按下时发送连续运动命令，松开时发送停止命令 -->
+			<div class="my-page51-video1-ptz" ng-controller="page51_mainvideoCtrl"><!-- 按下时发送连续运动命令，松开时发送停止命令 -->
 				<button ng-mousedown="hkptzResetful('1','panright','30')" ng-mouseup="hkptzResetful('1','stop','30')">左</button>
 				<button ng-mousedown="hkptzResetful('1','panleft','30')" ng-mouseup="hkptzResetful('1','stop','30')">右</button>
 				<button ng-mousedown="hkptzResetful('1','tiltup','30')" ng-mouseup="hkptzResetful('1','stop','30')" >上</button>
@@ -82,7 +80,7 @@
 
 			</script>
 			<!-- 视频2的ptz控制 -->
-			<div class="my-page51-video1-ptz"><!-- 按下时发送连续运动命令，松开时发送停止命令 这里的速度用30，第二个个1900元的速度太快-->
+			<div class="my-page51-video1-ptz" ng-controller="page51_mainvideoCtrl"><!-- 按下时发送连续运动命令，松开时发送停止命令 这里的速度用30，第二个个1900元的速度太快-->
 				<button ng-mousedown="hkptzResetful('2','panleft','30')" ng-mouseup="hkptzResetful('2','stop','60')">左</button>
 				<button ng-mousedown="hkptzResetful('2','panright','30')" ng-mouseup="hkptzResetful('2','stop','60')">右</button>
 				<button ng-mousedown="hkptzResetful('2','tiltup','30')" ng-mouseup="hkptzResetful('2','stop','60')" >上</button>
