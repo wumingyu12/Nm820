@@ -13,6 +13,7 @@ import (
 	//"github.com/huin/goserial" //引入串口库
 	"github.com/tarm/serial"
 	//"io"
+
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -295,56 +296,6 @@ func checkerr(err error) {
 	}
 }
 
-//----------------------------------------------------------------------------
-//将两个byte类型合并为一个uint16类型,组合后b1，b2排列，如果是小端请自行调换位置
-//------------------------------------------------------------------------------
-func twobyte_to_uint16(bh byte, bl byte) uint16 {
-	return uint16(bh)<<8 + uint16(bl) //bh左移8位再加上低位的bl
-}
-
-//----------------------------------------------------------------------------
-//将4个byte类型合并为一个uint32类型,组合后b1，b2排列，如果是小端请自行调换位置
-//------------------------------------------------------------------------------
-func twobyte_to_uint32(b1 byte, b2 byte, b3 byte, b4 byte) uint32 {
-	return uint32(b1)<<24 + uint32(b2)<<16 + uint32(b3)<<8 + uint32(b4) //bh左移8位再加上低位的bl
-}
-
-//--------------------------------
-//同上不过是int16
-//-----------------------------------
-func twobyte_to_int16(b1 byte, b2 byte) int16 {
-	return int16(b1)<<8 + int16(b2) //b1左移8位再加上低位的b2
-}
-
-//------------------------------------
-//--uint16转换为2个byte
-//----------------------------------
-func uint16_to_twobyte(i uint16) (byte, byte) {
-	bh := byte(i >> 8)   //高位
-	bl := byte(i & 0xff) //低位
-	return bh, bl
-}
-
-//------------------------------------
-//--int16转换为2个byte
-//----------------------------------
-func int16_to_twobyte(i int16) (byte, byte) {
-	bh := byte(i >> 8)   //高位
-	bl := byte(i & 0xff) //低位
-	return bh, bl
-}
-
-//------------------------------------
-//--uint32转换为4个byte
-//----------------------------------
-func uint32_to_fourbyte(i uint32) (byte, byte, byte, byte) {
-	bhh := byte(i >> 24) //高位
-	bh := byte(i >> 16)  //低位
-	bl := byte(i >> 8)
-	bll := byte(i & 0xff) //低位
-	return bhh, bh, bl, bll
-}
-
 /**************************************************************************
 给resetful调用的函数，外部可访问,resetful
 ***************************************************************************/
@@ -393,7 +344,6 @@ func GetState(w http.ResponseWriter, r *http.Request) {
 	作用：以当前日龄为准，向前倒推30日的历史温度数据，并返回
 	返回：
 	依赖的函数：
-		1.uint16_to_twobyte
 		2.NM820_StatePara.go
 =========================================================================================*/
 func GetTempHistory(w http.ResponseWriter, r *http.Request) {
@@ -437,7 +387,6 @@ func GetTempHistory(w http.ResponseWriter, r *http.Request) {
 	作用：获取温度曲线表
 	返回：
 	依赖的函数：
-		1.uint16_to_twobyte
 		2.NM820_sysPara.go
 =========================================================================================*/
 func WenduCurve(w http.ResponseWriter, r *http.Request) {
@@ -462,7 +411,6 @@ func WenduCurve(w http.ResponseWriter, r *http.Request) {
 	作用：获取最大最小通风等级
 	返回：
 	依赖的函数：
-		1.uint16_to_twobyte
 		2.NM820_sysPara.go
 =========================================================================================*/
 func WindLevel(w http.ResponseWriter, r *http.Request) {
@@ -487,7 +435,6 @@ func WindLevel(w http.ResponseWriter, r *http.Request) {
 	作用： 获取温度曲线表
 	返回：
 	依赖的函数：
-		1.uint16_to_twobyte
 		2.NM820_sysPara.go
 =========================================================================================*/
 func WindTables(w http.ResponseWriter, r *http.Request) {
@@ -512,7 +459,6 @@ func WindTables(w http.ResponseWriter, r *http.Request) {
 	作用：更新获取温度曲线表,post的数据实例
 	返回：
 	依赖的函数：
-		1.uint16_to_twobyte
 		2.NM820_sysPara.go
 =========================================================================================*/
 func ReflashWindTables(w http.ResponseWriter, r *http.Request) {
@@ -540,7 +486,6 @@ func ReflashWindTables(w http.ResponseWriter, r *http.Request) {
 	作用：修改温度曲线表
 	返回：
 	依赖的函数：
-		1.uint16_to_twobyte
 		2.NM820_sysPara.go
 	注意：1.前端经过xeditable的使用后是string类型的，用`json:",string"`是不适用于数组，所以要在前端进行将string转int
 		  2.
@@ -564,7 +509,6 @@ func ReflashWenduCurve(w http.ResponseWriter, r *http.Request) {
 	作用：修改温度曲线表
 	返回：
 	依赖的函数：
-		1.uint16_to_twobyte
 		2.NM820_sysPara.go
 	注意：1.前端经过xeditable的使用后是string类型的，用`json:",string"`是不适用于数组，所以要在前端进行将string转int
 		  2.
@@ -612,7 +556,6 @@ func GetSysVal(w http.ResponseWriter, r *http.Request) {
 	作用：修改系统变量参数表
 	返回：
 	依赖的函数：
-		1.uint16_to_twobyte
 		2.NM820_sysPara.go
 	注意：1.前端经过xeditable的使用后是string类型的，用`json:",string"`是不适用于数组，所以要在前端进行将string转int
 		  2.

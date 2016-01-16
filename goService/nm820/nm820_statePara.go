@@ -4,6 +4,7 @@ import (
 	//"errors"
 	//"fmt"
 	//"github.com/huin/goserial" //引入串口库
+	"../mylib/Int2byte" //整数与byte的转换
 	"log"
 	//"time"
 )
@@ -64,27 +65,27 @@ func (nm *NM820_StatePara) reflashValue(b []byte) error { //默认输入的是10
 		log.Println("sum check is wrong!!")
 	}
 	//按小端的方式(具有就是高字节打头，如下)将byte赋值给结构体，重00 09 5a后面开始，就是byte[9]开始
-	nm.GDay = twobyte_to_uint16(b[10], b[9])
-	nm.Year = twobyte_to_uint16(b[12], b[11])
-	nm.Month = twobyte_to_uint16(b[14], b[13])
-	nm.Day = twobyte_to_uint16(b[16], b[15])
-	nm.Hour = twobyte_to_uint16(b[18], b[17])
-	nm.Min = twobyte_to_uint16(b[20], b[19])
-	nm.Sec = twobyte_to_uint16(b[22], b[21])
-	nm.TemAvg = twobyte_to_int16(b[24], b[23]) //
+	nm.GDay = Int2byte.Twobyte_to_uint16(b[10], b[9])
+	nm.Year = Int2byte.Twobyte_to_uint16(b[12], b[11])
+	nm.Month = Int2byte.Twobyte_to_uint16(b[14], b[13])
+	nm.Day = Int2byte.Twobyte_to_uint16(b[16], b[15])
+	nm.Hour = Int2byte.Twobyte_to_uint16(b[18], b[17])
+	nm.Min = Int2byte.Twobyte_to_uint16(b[20], b[19])
+	nm.Sec = Int2byte.Twobyte_to_uint16(b[22], b[21])
+	nm.TemAvg = Int2byte.Twobyte_to_int16(b[24], b[23]) //
 	for i := 0; i < 5; i++ {
-		nm.Tem_1to5[i] = twobyte_to_int16(b[26+i*2], b[25+i*2])
+		nm.Tem_1to5[i] = Int2byte.Twobyte_to_int16(b[26+i*2], b[25+i*2])
 	}
-	nm.HumiAvg = twobyte_to_uint16(b[36], b[35])
-	nm.Hmi_1to2[0] = twobyte_to_uint16(b[38], b[37])
-	nm.Hmi_1to2[1] = twobyte_to_uint16(b[40], b[39])
-	nm.NH3 = twobyte_to_uint16(b[42], b[41])
-	nm.Light = twobyte_to_uint16(b[44], b[43])
-	nm.FanLevel = twobyte_to_uint16(b[46], b[45])
-	nm.Pos_SideWin = twobyte_to_uint16(b[48], b[47])
-	nm.Pos_Curtain = twobyte_to_uint16(b[50], b[49])
+	nm.HumiAvg = Int2byte.Twobyte_to_uint16(b[36], b[35])
+	nm.Hmi_1to2[0] = Int2byte.Twobyte_to_uint16(b[38], b[37])
+	nm.Hmi_1to2[1] = Int2byte.Twobyte_to_uint16(b[40], b[39])
+	nm.NH3 = Int2byte.Twobyte_to_uint16(b[42], b[41])
+	nm.Light = Int2byte.Twobyte_to_uint16(b[44], b[43])
+	nm.FanLevel = Int2byte.Twobyte_to_uint16(b[46], b[45])
+	nm.Pos_SideWin = Int2byte.Twobyte_to_uint16(b[48], b[47])
+	nm.Pos_Curtain = Int2byte.Twobyte_to_uint16(b[50], b[49])
 	for i := 0; i < 4; i++ {
-		nm.Pos_Roller[i] = twobyte_to_uint16(b[52+i*2], b[51+i*2])
+		nm.Pos_Roller[i] = Int2byte.Twobyte_to_uint16(b[52+i*2], b[51+i*2])
 	}
 	for i := 0; i < 20; i++ {
 		nm.RelayType[i] = b[59+i]

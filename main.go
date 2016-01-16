@@ -3,6 +3,7 @@ package main
 import (
 	"./goService/hkPtz" //海康威视的Ptz控制
 	"./goService/nm820" //nm820的引用库
+	"./goService/toledo"
 	"fmt"
 	"github.com/gorilla/mux" //路由库
 	"html/template"
@@ -26,6 +27,9 @@ func NotFoundHandler(w http.ResponseWriter, r *http.Request) { //如果路由规
 }
 
 //================================================================
+/**
+ *
+ */
 
 func main() {
 	//nm820.GetState()
@@ -72,6 +76,10 @@ func main() {
 	//camNum 摄像头的指定，mode运动的模式上下左右停止等，speed运动的速度默认60
 	mux_router.HandleFunc("/resetful/hkPtz/Continuous/{camNum}/{mode}/{speed}", hkPtz.Continuous).Methods("GET")
 	//============================================================================================================
+
+	//=============================================托利多读取数据============================================================
+	//得到毛重 净重,实际对应2个寄存器地址0001 与0002 返回grossWeight:xxx,netWeight:xxx
+	mux_router.HandleFunc("/resetful/toledo/read/GetWeight", toledo.GetWeight).Methods("GET")
 
 	http.Handle("/", mux_router) //这一句别忘了 否则前面的mux_router是不作用的
 	fmt.Println("正在监听2234端口,main.go")

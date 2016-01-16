@@ -1,6 +1,7 @@
 package nm820
 
 import (
+	"../mylib/Int2byte" //整数与byte的转换
 	"log"
 )
 
@@ -71,7 +72,7 @@ func (hs *NM820_History30) addData(baseDay int16, sensorType string) {
 		if day < 0 { //如果baseday小于0，不动作
 			continue
 		}
-		bh, bl := int16_to_twobyte(day)
+		bh, bl := Int2byte.Int16_to_twobyte(day)
 		cmd2 := append(cmd1, bh, bl) //将日龄添加到发送命令行中
 		cmd3 := append(cmd2, sumCheck(cmd2))
 
@@ -82,11 +83,10 @@ func (hs *NM820_History30) addData(baseDay int16, sensorType string) {
 		<-chanSerialBusy
 
 		//日龄,解析得到的包，并加到数组中
-		hs.Days = append(hs.Days, twobyte_to_uint16(rec[12], rec[11]))
-		hs.Maxs = append(hs.Maxs, float32(twobyte_to_uint16(rec[14], rec[13]))/10)
-		hs.Mins = append(hs.Mins, float32(twobyte_to_uint16(rec[16], rec[15]))/10)
-		hs.Avgs = append(hs.Avgs, float32(twobyte_to_uint16(rec[18], rec[17]))/10)
+		hs.Days = append(hs.Days, Int2byte.Twobyte_to_uint16(rec[12], rec[11]))
+		hs.Maxs = append(hs.Maxs, float32(Int2byte.Twobyte_to_uint16(rec[14], rec[13]))/10)
+		hs.Mins = append(hs.Mins, float32(Int2byte.Twobyte_to_uint16(rec[16], rec[15]))/10)
+		hs.Avgs = append(hs.Avgs, float32(Int2byte.Twobyte_to_uint16(rec[18], rec[17]))/10)
 		//log.Printf("days:%d-%d-%d-%d", days_buf, maxs_buf, mins_buf, avgs_buf)
 	}
-
 }

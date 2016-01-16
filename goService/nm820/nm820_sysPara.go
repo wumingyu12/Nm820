@@ -2,6 +2,7 @@ package nm820
 
 import (
 	//"errors"
+	"../mylib/Int2byte" //整数与byte的转换
 	"log"
 	"reflect" //通过反射来初始化结构体
 )
@@ -92,18 +93,18 @@ func (nm *NM820_WindTables) addData() error {
 
 	for i := 0; i < 20; i++ {
 		n := NM820_WindTable{}
-		n.On = float32(twobyte_to_uint16(tem[1+i*24], tem[0+i*24])) / 10
-		n.Off = float32(twobyte_to_uint16(tem[3+i*24], tem[2+i*24])) / 10
-		n.DTemp = float32(twobyte_to_uint16(tem[5+i*24], tem[4+i*24])) / 10
-		n.SideWindow = twobyte_to_uint16(tem[7+i*24], tem[6+i*24])
-		n.Curtain = twobyte_to_uint16(tem[9+i*24], tem[8+i*24])
-		n.VSFan = twobyte_to_uint16(tem[11+i*24], tem[10+i*24])
-		n.Roller1 = twobyte_to_uint16(tem[13+i*24], tem[12+i*24])
-		n.Roller2 = twobyte_to_uint16(tem[15+i*24], tem[14+i*24])
-		n.Roller3 = twobyte_to_uint16(tem[17+i*24], tem[16+i*24])
-		n.Roller4 = twobyte_to_uint16(tem[19+i*24], tem[18+i*24])
+		n.On = float32(Int2byte.Twobyte_to_uint16(tem[1+i*24], tem[0+i*24])) / 10
+		n.Off = float32(Int2byte.Twobyte_to_uint16(tem[3+i*24], tem[2+i*24])) / 10
+		n.DTemp = float32(Int2byte.Twobyte_to_uint16(tem[5+i*24], tem[4+i*24])) / 10
+		n.SideWindow = Int2byte.Twobyte_to_uint16(tem[7+i*24], tem[6+i*24])
+		n.Curtain = Int2byte.Twobyte_to_uint16(tem[9+i*24], tem[8+i*24])
+		n.VSFan = Int2byte.Twobyte_to_uint16(tem[11+i*24], tem[10+i*24])
+		n.Roller1 = Int2byte.Twobyte_to_uint16(tem[13+i*24], tem[12+i*24])
+		n.Roller2 = Int2byte.Twobyte_to_uint16(tem[15+i*24], tem[14+i*24])
+		n.Roller3 = Int2byte.Twobyte_to_uint16(tem[17+i*24], tem[16+i*24])
+		n.Roller4 = Int2byte.Twobyte_to_uint16(tem[19+i*24], tem[18+i*24])
 		//n.Fan = tem[20+i*24] //默认是下面的方式的用了4个字节，但我们其实就一个字节数据
-		n.Fan = twobyte_to_uint32(tem[23+i*24], tem[22+i*24], tem[21+i*24], tem[20+i*24])
+		n.Fan = Int2byte.Twobyte_to_uint32(tem[23+i*24], tem[22+i*24], tem[21+i*24], tem[20+i*24])
 		nm.WindTables = append(nm.WindTables, n)
 	}
 	return nil
@@ -115,37 +116,37 @@ func (nm *NM820_WindTables) uploadData() error {
 	databyte1 := []byte{} //用来得到要发送的字节，注意是小端
 	//先将结构体序列化为byte，长度为480
 	for i := 0; i < 20; i++ {
-		bh, bl := uint16_to_twobyte(uint16(nm.WindTables[i].On * 10))
+		bh, bl := Int2byte.Uint16_to_twobyte(uint16(nm.WindTables[i].On * 10))
 		databyte1 = append(databyte1, bl) //先低位
 		databyte1 = append(databyte1, bh)
-		bh, bl = uint16_to_twobyte(uint16(nm.WindTables[i].Off * 10))
+		bh, bl = Int2byte.Uint16_to_twobyte(uint16(nm.WindTables[i].Off * 10))
 		databyte1 = append(databyte1, bl) //先低位
 		databyte1 = append(databyte1, bh)
-		bh, bl = uint16_to_twobyte(uint16(nm.WindTables[i].DTemp * 10))
+		bh, bl = Int2byte.Uint16_to_twobyte(uint16(nm.WindTables[i].DTemp * 10))
 		databyte1 = append(databyte1, bl) //先低位
 		databyte1 = append(databyte1, bh)
-		bh, bl = uint16_to_twobyte(nm.WindTables[i].SideWindow)
+		bh, bl = Int2byte.Uint16_to_twobyte(nm.WindTables[i].SideWindow)
 		databyte1 = append(databyte1, bl) //先低位
 		databyte1 = append(databyte1, bh)
-		bh, bl = uint16_to_twobyte(nm.WindTables[i].Curtain)
+		bh, bl = Int2byte.Uint16_to_twobyte(nm.WindTables[i].Curtain)
 		databyte1 = append(databyte1, bl) //先低位
 		databyte1 = append(databyte1, bh)
-		bh, bl = uint16_to_twobyte(nm.WindTables[i].VSFan)
+		bh, bl = Int2byte.Uint16_to_twobyte(nm.WindTables[i].VSFan)
 		databyte1 = append(databyte1, bl) //先低位
 		databyte1 = append(databyte1, bh)
-		bh, bl = uint16_to_twobyte(nm.WindTables[i].Roller1)
+		bh, bl = Int2byte.Uint16_to_twobyte(nm.WindTables[i].Roller1)
 		databyte1 = append(databyte1, bl) //先低位
 		databyte1 = append(databyte1, bh)
-		bh, bl = uint16_to_twobyte(nm.WindTables[i].Roller2)
+		bh, bl = Int2byte.Uint16_to_twobyte(nm.WindTables[i].Roller2)
 		databyte1 = append(databyte1, bl) //先低位
 		databyte1 = append(databyte1, bh)
-		bh, bl = uint16_to_twobyte(nm.WindTables[i].Roller3)
+		bh, bl = Int2byte.Uint16_to_twobyte(nm.WindTables[i].Roller3)
 		databyte1 = append(databyte1, bl) //先低位
 		databyte1 = append(databyte1, bh)
-		bh, bl = uint16_to_twobyte(nm.WindTables[i].Roller4)
+		bh, bl = Int2byte.Uint16_to_twobyte(nm.WindTables[i].Roller4)
 		databyte1 = append(databyte1, bl) //先低位
 		databyte1 = append(databyte1, bh)
-		bhh, bh, bl, bll := uint32_to_fourbyte(nm.WindTables[i].Fan)
+		bhh, bh, bl, bll := Int2byte.Uint32_to_fourbyte(nm.WindTables[i].Fan)
 		databyte1 = append(databyte1, bll) //先低位
 		databyte1 = append(databyte1, bl)
 		databyte1 = append(databyte1, bh) //先低位
@@ -214,10 +215,10 @@ func (nm *NM820_WenduCurve) addData() error {
 		//return errors.New("sum check is wrong!!")
 	}
 	for i := 0; i < 10; i++ {
-		nm.Day = append(nm.Day, twobyte_to_uint16(b[10+i*8], b[9+i*8]))
-		nm.Target = append(nm.Target, float32(twobyte_to_uint16(b[12+i*8], b[11+i*8]))/10)
-		nm.Heat = append(nm.Heat, float32(twobyte_to_uint16(b[14+i*8], b[13+i*8]))/10)
-		nm.Cool = append(nm.Cool, float32(twobyte_to_uint16(b[16+i*8], b[15+i*8]))/10)
+		nm.Day = append(nm.Day, Int2byte.Twobyte_to_uint16(b[10+i*8], b[9+i*8]))
+		nm.Target = append(nm.Target, float32(Int2byte.Twobyte_to_uint16(b[12+i*8], b[11+i*8]))/10)
+		nm.Heat = append(nm.Heat, float32(Int2byte.Twobyte_to_uint16(b[14+i*8], b[13+i*8]))/10)
+		nm.Cool = append(nm.Cool, float32(Int2byte.Twobyte_to_uint16(b[16+i*8], b[15+i*8]))/10)
 	}
 	return nil
 }
@@ -227,16 +228,16 @@ func (nm *NM820_WenduCurve) uploadData() error {
 	databyte1 := []byte{} //用来得到要发送的字节，注意是小端
 	//组数据包
 	for i := 0; i < 10; i++ {
-		bh, bl := uint16_to_twobyte(nm.Day[i])
+		bh, bl := Int2byte.Uint16_to_twobyte(nm.Day[i])
 		databyte1 = append(databyte1, bl)
 		databyte1 = append(databyte1, bh)
-		bh, bl = uint16_to_twobyte(uint16(nm.Target[i] * 10))
+		bh, bl = Int2byte.Uint16_to_twobyte(uint16(nm.Target[i] * 10))
 		databyte1 = append(databyte1, bl)
 		databyte1 = append(databyte1, bh)
-		bh, bl = uint16_to_twobyte(uint16(nm.Heat[i] * 10))
+		bh, bl = Int2byte.Uint16_to_twobyte(uint16(nm.Heat[i] * 10))
 		databyte1 = append(databyte1, bl)
 		databyte1 = append(databyte1, bh)
-		bh, bl = uint16_to_twobyte(uint16(nm.Cool[i] * 10))
+		bh, bl = Int2byte.Uint16_to_twobyte(uint16(nm.Cool[i] * 10))
 		databyte1 = append(databyte1, bl)
 		databyte1 = append(databyte1, bh)
 	}
@@ -289,9 +290,9 @@ func (nm *NM820_WindLevel) addData() error {
 		log.Println("sum check is wrong!!")
 	}
 	for i := 0; i < 10; i++ {
-		nm.Day = append(nm.Day, twobyte_to_uint16(b[10+i*6], b[9+i*6]))
-		nm.Min = append(nm.Min, twobyte_to_uint16(b[12+i*6], b[11+i*6]))
-		nm.Max = append(nm.Max, twobyte_to_uint16(b[14+i*6], b[13+i*6]))
+		nm.Day = append(nm.Day, Int2byte.Twobyte_to_uint16(b[10+i*6], b[9+i*6]))
+		nm.Min = append(nm.Min, Int2byte.Twobyte_to_uint16(b[12+i*6], b[11+i*6]))
+		nm.Max = append(nm.Max, Int2byte.Twobyte_to_uint16(b[14+i*6], b[13+i*6]))
 	}
 	return nil
 }
@@ -301,13 +302,13 @@ func (nm *NM820_WindLevel) uploadData() error {
 	databyte1 := []byte{} //用来得到要发送的字节，注意是小端
 	//组数据包
 	for i := 0; i < 10; i++ {
-		bh, bl := uint16_to_twobyte(nm.Day[i])
+		bh, bl := Int2byte.Uint16_to_twobyte(nm.Day[i])
 		databyte1 = append(databyte1, bl)
 		databyte1 = append(databyte1, bh)
-		bh, bl = uint16_to_twobyte(nm.Min[i])
+		bh, bl = Int2byte.Uint16_to_twobyte(nm.Min[i])
 		databyte1 = append(databyte1, bl)
 		databyte1 = append(databyte1, bh)
-		bh, bl = uint16_to_twobyte(nm.Max[i])
+		bh, bl = Int2byte.Uint16_to_twobyte(nm.Max[i])
 		databyte1 = append(databyte1, bl)
 		databyte1 = append(databyte1, bh)
 	}
@@ -445,15 +446,15 @@ func (nm *NM820_SysVal) addData() error {
 		f := refnm.Field(i)
 		switch f.Kind() {
 		case reflect.Uint16: //如果反射值为uint16值
-			uint16value := twobyte_to_uint16(b[bpoint+1], b[bpoint]) //根据byte数组得到要设置的值
-			bpoint = bpoint + 2                                      //因为是uint16的用来2个byte
-			cansetvalue := reflect.ValueOf(uint16value)              //将得到的uint16变为可以用于reflect设置的类型
+			uint16value := Int2byte.Twobyte_to_uint16(b[bpoint+1], b[bpoint]) //根据byte数组得到要设置的值
+			bpoint = bpoint + 2                                               //因为是uint16的用来2个byte
+			cansetvalue := reflect.ValueOf(uint16value)                       //将得到的uint16变为可以用于reflect设置的类型
 			f.Set(cansetvalue)
 
 		case reflect.Uint32: //如果反射值为uint32值
-			uint32value := twobyte_to_uint32(b[bpoint+3], b[bpoint+2], b[bpoint+1], b[bpoint]) //根据byte数组得到要设置的值
-			bpoint = bpoint + 4                                                                //因为是uint16的用来2个byte
-			cansetvalue := reflect.ValueOf(uint32value)                                        //将得到的uint16变为可以用于reflect设置的类型
+			uint32value := Int2byte.Twobyte_to_uint32(b[bpoint+3], b[bpoint+2], b[bpoint+1], b[bpoint]) //根据byte数组得到要设置的值
+			bpoint = bpoint + 4                                                                         //因为是uint16的用来2个byte
+			cansetvalue := reflect.ValueOf(uint32value)                                                 //将得到的uint16变为可以用于reflect设置的类型
 			f.Set(cansetvalue)
 
 		case reflect.Uint8: //如果反射值为uint8值
@@ -463,9 +464,9 @@ func (nm *NM820_SysVal) addData() error {
 			f.Set(cansetvalue)                         //如果有Setint就可以用
 
 		case reflect.Float32: //请注意如果是Float32我们还是用2个字节来实例化，其本质为uint16我们为了可以显示为小数才这样赋值，比如温度*10
-			float32value := float32(twobyte_to_uint16(b[bpoint+1], b[bpoint])) / 10 //根据byte数组得到要设置的值,比如都回来是温度233，我们要转为23.3
-			bpoint = bpoint + 2                                                     //因为是uint16的用来2个byte
-			cansetvalue := reflect.ValueOf(float32value)                            //将得到的uint16变为可以用于reflect设置的类型
+			float32value := float32(Int2byte.Twobyte_to_uint16(b[bpoint+1], b[bpoint])) / 10 //根据byte数组得到要设置的值,比如都回来是温度233，我们要转为23.3
+			bpoint = bpoint + 2                                                              //因为是uint16的用来2个byte
+			cansetvalue := reflect.ValueOf(float32value)                                     //将得到的uint16变为可以用于reflect设置的类型
 			f.Set(cansetvalue)
 		}
 	}
@@ -481,12 +482,12 @@ func (nm *NM820_SysVal) uploadData() error {
 		f := refnm.Field(i)
 		switch f.Kind() {
 		case reflect.Uint16: //如果反射值为uint16值
-			bh, bl := uint16_to_twobyte(uint16(f.Uint()))
+			bh, bl := Int2byte.Uint16_to_twobyte(uint16(f.Uint()))
 			databyte1 = append(databyte1, bl)
 			databyte1 = append(databyte1, bh)
 
 		case reflect.Uint32: //如果反射值为uint32值
-			bhh, bh, bl, bll := uint32_to_fourbyte(uint32(f.Uint()))
+			bhh, bh, bl, bll := Int2byte.Uint32_to_fourbyte(uint32(f.Uint()))
 			databyte1 = append(databyte1, bll) //先低位
 			databyte1 = append(databyte1, bl)
 			databyte1 = append(databyte1, bh) //先低位
@@ -497,7 +498,7 @@ func (nm *NM820_SysVal) uploadData() error {
 			databyte1 = append(databyte1, b8)
 
 		case reflect.Float32: //请注意如果是Float32我们还是用2个字节来实例化，其本质为uint16我们为了可以显示为小数才这样赋值，比如温度*10
-			bh, bl := uint16_to_twobyte(uint16(f.Float() * 10))
+			bh, bl := Int2byte.Uint16_to_twobyte(uint16(f.Float() * 10))
 			databyte1 = append(databyte1, bl)
 			databyte1 = append(databyte1, bh)
 		}
